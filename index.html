@@ -36,25 +36,77 @@
         }
         .btn:hover { background-color: #0062cc; transform: scale(1.02); color: white; }
 
-        /* Footer Styling (wird via JS eingefügt) */
-        .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; }
-        .social-icons { display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; }
-        .social-icon { width: 28px; height: 28px; fill: #666; transition: all 0.3s ease; }
-        .social-icon:hover { fill: #fff; transform: scale(1.2); filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
-        .legal-links { font-size: 0.85rem; color: #444; }
-        .legal-links a { color: #666; margin: 0 10px; }
-        .legal-links a:hover { color: #aaa; text-decoration: underline; }
+        /* Footer Styling */
+        .footer-container { 
+            margin-top: 80px; 
+            padding-top: 30px; 
+            border-top: 1px solid #222; 
+            width: 100%; 
+        }
+        
+        .social-icons { 
+            display: flex; 
+            justify-content: center; 
+            gap: 25px; 
+            margin: 20px 0; 
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: #007aff;
+            transform: scale(1.15);
+        }
+        
+        .social-icon { 
+            width: 20px; 
+            height: 20px; 
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+        
+        .social-link:hover .social-icon {
+            color: white;
+        }
+        
+        .legal-links { 
+            font-size: 0.85rem; 
+            color: #444; 
+            margin-top: 20px;
+        }
+        
+        .legal-links a { 
+            color: #666; 
+            margin: 0 10px; 
+            text-decoration: none;
+        }
+        
+        .legal-links a:hover { 
+            color: #aaa; 
+            text-decoration: underline; 
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Sandro Exenberger</h1>
         <p>Willkommen auf meiner persönlichen Website.<br>Hier findest du meine Kontaktmöglichkeiten.</p>
-        <p>E-Mail: <br><a href="mailto:sandro@exemail.at" style="font-size: 1.2rem; font-weight: 500;">sandro@exemail.at</a></p>
-        <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" class="btn" target="_blank">Mein LinkedIn Profil</a>
-
+        
+        <!-- Dieser Container wird von footer.js automatisch gefüllt -->
         <div id="central-footer"></div>
     </div>
+    
+    <!-- Scripts in richtiger Reihenfolge laden -->
+    <script src="config.js"></script>
     <script src="footer.js"></script>
 </body>
 </html>
