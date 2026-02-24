@@ -460,5 +460,63 @@
         window.addEventListener("scroll", reveal);
         reveal();
     </script>
+
+<script>
+        let keySequence = '';
+        const secretCode = 'sandro';
+
+        document.addEventListener('keydown', (e) => {
+            // Speichere den Tastendruck (Kleinbuchstaben)
+            keySequence += e.key.toLowerCase();
+
+            // Halte den Speicher klein, damit er nicht vollläuft
+            if (keySequence.length > 20) {
+                keySequence = keySequence.slice(-10);
+            }
+
+            // Prüfe, ob "sandro" getippt wurde
+            if (keySequence.includes(secretCode)) {
+                
+                // 1. Visuelles Feedback
+                alert("🔓 SYSTEM UNLOCKED: Welcome, Sandro!");
+
+                // 2. Ändere die Hauptfarben auf Neon-Grün
+                const hackerGreen = '#00ff00';
+
+                // Texte und Linien ändern
+                document.querySelectorAll('.subtitle, h2').forEach(el => {
+                    el.style.color = hackerGreen;
+                    el.style.borderColor = hackerGreen;
+                });
+
+                // Rahmen der Boxen ändern
+                document.querySelectorAll('.content-box, .cv-column, .terminal-window').forEach(el => {
+                    el.style.borderColor = hackerGreen;
+                    el.style.boxShadow = `0 0 15px ${hackerGreen}`;
+                });
+
+                // Balken und Buttons ändern
+                document.querySelectorAll('.progress-bar, .terminal-toggle').forEach(el => {
+                    el.style.background = hackerGreen;
+                    el.style.boxShadow = `0 0 10px ${hackerGreen}`;
+                    el.style.color = 'black'; // Damit man Text auf Grün lesen kann
+                });
+
+                // Terminal Text ändern
+                document.querySelectorAll('.terminal-body, .cmd').forEach(el => {
+                    el.style.color = hackerGreen;
+                });
+
+                // Icons einfärben
+                document.querySelectorAll('.social-icon').forEach(icon => {
+                    icon.style.fill = hackerGreen;
+                });
+
+                // Reset Sequence
+                keySequence = '';
+            }
+        });
+    </script>
+    
 </body>
 </html>
