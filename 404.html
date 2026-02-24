@@ -3,181 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - System Critical</title>
+    <title>404 - Connection Lost</title>
     <style>
-        /* --- TERMINAL STYLE --- */
+        /* --- GRUNDDESIGN --- */
         body {
             background-color: #050505;
-            color: #007aff;
+            color: #ccc;
             font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 20px;
-            overflow-x: hidden;
-            /* Automatisches Scrollen ermöglichen */
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
-        /* Der feste Header (bleibt oben oder scrollt mit, je nach Wunsch) */
-        .header-area {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 20px;
+        /* 1. HEADER BEREICH */
+        .error-header {
+            text-align: center;
+            margin-bottom: 30px;
+            z-index: 10;
         }
 
         h1 {
-            font-size: 4rem;
+            font-size: 5rem;
             margin: 0;
-            color: #ff5f56; /* Error Rot */
-            text-shadow: 0 0 10px rgba(255, 95, 86, 0.5);
+            color: #ff5f56; /* Signalrot */
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px rgba(255, 95, 86, 0.4);
+            /* Der Unterstrich */
+            border-bottom: 4px solid #ff5f56;
             display: inline-block;
+            padding-bottom: 10px;
         }
 
-        /* Der Bereich für den unendlichen Text */
-        #console-output {
-            font-size: 1rem;
-            line-height: 1.4;
-            color: #aaa;
+        .subtitle {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #007aff; /* Sandro-Blau */
+            font-weight: bold;
+        }
+
+        /* 2. CMD FENSTER */
+        .cmd-window {
+            width: 90%;
+            max-width: 700px;
+            height: 400px;
+            background-color: #000;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 15px;
+            overflow: hidden; /* Scrollbalken verstecken, JS scrollt */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Leiste vom CMD Fenster */
+        .cmd-bar {
+            border-bottom: 1px solid #333;
+            margin: -15px -15px 10px -15px;
+            padding: 5px 15px;
+            background: #111;
+            font-size: 0.8rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Der Text-Inhalt */
+        #terminal-output {
             flex: 1;
-            word-break: break-all;
+            overflow-y: auto; /* Scrollen erlauben */
+            font-size: 0.95rem;
+            line-height: 1.4;
+            /* Scrollbar verstecken für Clean-Look */
+            scrollbar-width: none; 
         }
+        #terminal-output::-webkit-scrollbar { display: none; }
 
-        /* Einzelne Log-Zeilen Styles */
-        .log-line { display: block; margin-bottom: 2px; }
-        .log-time { color: #555; margin-right: 10px; }
-        .log-error { color: #ff5f56; }
-        .log-success { color: #007aff; }
-        .log-sys { color: #4caf50; }
+        /* Text Styles */
+        .line { display: block; margin-bottom: 2px; }
+        .highlight { color: #fff; font-weight: bold; }
+        .error { color: #ff5f56; }
+        .warning { color: #ffbd2e; }
+        .system { color: #007aff; }
+        .dim { color: #555; }
 
-        /* Der Cursor am Ende */
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 1em;
-            background-color: #007aff;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* Der Reboot Button (Fixiert, damit man immer rauskommt) */
-        .fixed-nav {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 100;
-        }
-
+        /* 3. BUTTON */
+        .btn-container { margin-top: 30px; }
+        
         .btn {
-            padding: 15px 30px;
-            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 30px;
+            background: transparent;
             border: 2px solid #007aff;
             color: #007aff;
             text-decoration: none;
-            border-radius: 5px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);
+            border-radius: 4px;
             transition: 0.3s;
-            backdrop-filter: blur(5px);
         }
-
+        
         .btn:hover {
             background: #007aff;
             color: white;
-            box-shadow: 0 0 40px rgba(0, 122, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
         }
+
     </style>
 </head>
 <body>
 
-    <div class="header-area">
-        <h1 id="title-text"></h1><span class="cursor"></span>
+    <div class="error-header">
+        <h1>ERROR 404</h1>
+        <div class="subtitle">RESOURCE_NOT_FOUND_EXCEPTION</div>
     </div>
 
-    <div id="console-output"></div>
+    <div class="cmd-window">
+        <div class="cmd-bar">
+            <span>root@exemail-server:~</span>
+            <span>zsh</span>
+        </div>
+        <div id="terminal-output">
+            </div>
+    </div>
 
-    <div class="fixed-nav">
-        <a href="index.html" class="btn">FORCE REBOOT (HOME)</a>
+    <div class="btn-container">
+        <a href="index.html" class="btn">System Reboot (Home)</a>
     </div>
 
     <script>
-        const outputElement = document.getElementById('console-output');
-        const titleElement = document.getElementById('title-text');
-        
-        // Zufällige technische Begriffe für den Loop
-        const systemTerms = [
-            "allocating_memory", "pointer_reference", "stack_overflow", "buffer_underrun", 
-            "kernel_panic", "connection_refused", "resolving_host", "packet_loss", 
-            "garbage_collection", "mounting_volume", "decrypting_key"
+        const output = document.getElementById('terminal-output');
+
+        // Die 5 Start-Meldungen (Laufen langsam durch)
+        const bootSequence = [
+            { text: "> Initializing connection protocol...", type: "system", delay: 200 },
+            { text: "> Resolving host exemail.at...", type: "system", delay: 400 },
+            { text: "> Sending GET request to requested path...", type: "highlight", delay: 300 },
+            { text: "> ERROR: Target URI not found (404).", type: "error", delay: 600 },
+            { text: "> CRITICAL: Resource unreachable. Dumping memory stack...", type: "warning", delay: 800 }
         ];
-        
-        const fileExtensions = [".dat", ".sys", ".log", ".bin", ".conf", ".php", ".html"];
 
-        // 1. Start-Sequenz (Typewriter für den Titel)
-        async function startSequence() {
-            const title = "Error 404: Resource_Unreachable";
-            for (let i = 0; i < title.length; i++) {
-                titleElement.textContent += title.charAt(i);
-                await new Promise(r => setTimeout(r, 50));
-            }
-            // Startet den unendlichen Loop
-            infiniteLogLoop();
-        }
+        // Zufällige Begriffe für den unendlichen Loop
+        const technicalJargon = [
+            "segmentation_fault", "buffer_overflow", "socket_timeout", "kernel_panic", 
+            "allocating_virtual_memory", "pointer_reference_error", "garbage_collection", 
+            "packet_loss_detected", "re-routing_packet", "handshake_failed"
+        ];
 
-        // 2. Der unendliche Loop
-        function infiniteLogLoop() {
-            setInterval(() => {
-                addLogLine();
-                // Automatisch nach unten scrollen
-                window.scrollTo(0, document.body.scrollHeight);
-            }, 50); // Geschwindigkeit des Scrollens (kleiner = schneller)
-        }
-
-        // Generiert eine zufällige Log-Zeile
-        function addLogLine() {
+        // Hilfsfunktion: Zeitstempel generieren
+        function getTime() {
             const now = new Date();
-            const time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}.${now.getMilliseconds().toString().padStart(3,'0')}`;
-            const rand = Math.random();
-            
-            let msg = "";
-            let typeClass = "";
-
-            if (rand < 0.1) {
-                // Kritischer Fehler (Rot)
-                msg = `CRITICAL: 0x${Math.floor(Math.random()*16777215).toString(16)} reference missing.`;
-                typeClass = "log-error";
-            } else if (rand < 0.3) {
-                // System Info (Grün)
-                msg = `SYSTEM: Reserving block ${Math.floor(Math.random()*9000)+1000} for recovery.`;
-                typeClass = "log-sys";
-            } else if (rand < 0.5) {
-                // Success/Versuch (Blau)
-                msg = `NETWORK: Pinging index${fileExtensions[Math.floor(Math.random()*fileExtensions.length)]}... request timed out.`;
-                typeClass = "log-success";
-            } else {
-                // Rauschen (Grau)
-                const term = systemTerms[Math.floor(Math.random() * systemTerms.length)];
-                msg = `PROCESS: ${term} at address failure. Retrying...`;
-                typeClass = "";
-            }
-
-            const line = document.createElement('div');
-            line.classList.add('log-line');
-            line.innerHTML = `<span class="log-time">[${time}]</span> <span class="${typeClass}">${msg}</span>`;
-            
-            outputElement.appendChild(line);
-
-            // Performance: Lösche alte Zeilen, wenn es zu viele werden (> 200), damit der Browser nicht laggt
-            if (outputElement.childElementCount > 200) {
-                outputElement.removeChild(outputElement.firstChild);
-            }
+            return `[${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}.${now.getMilliseconds().toString().padStart(3,'0')}]`;
         }
 
-        // Start
-        document.addEventListener('DOMContentLoaded', startSequence);
+        // Hilfsfunktion: Zeile schreiben
+        function printLine(text, type = "") {
+            const div = document.createElement('div');
+            div.classList.add('line');
+            if(type) div.classList.add(type);
+            div.innerHTML = `<span class="dim">${getTime()}</span> ${text}`;
+            output.appendChild(div);
+            output.scrollTop = output.scrollHeight; // Immer nach unten scrollen
+        }
+
+        // 1. Start-Sequenz abspielen
+        async function runBootSequence() {
+            for (let item of bootSequence) {
+                printLine(item.text, item.type);
+                await new Promise(r => setTimeout(r, item.delay));
+            }
+            // Startet den unendlichen Loop nach der Sequenz
+            startInfiniteLoop();
+        }
+
+        // 2. Unendlicher Loop
+        function startInfiniteLoop() {
+            setInterval(() => {
+                const rand = Math.random();
+                let msg = "";
+                let style = "";
+
+                if (rand < 0.1) {
+                    msg = `FATAL: 0x${Math.floor(Math.random()*999999)} address invalid.`;
+                    style = "error";
+                } else if (rand < 0.3) {
+                    msg = `INFO: Retrying connection to port ${Math.floor(Math.random()*65000)}...`;
+                    style = "system";
+                } else {
+                    const term = technicalJargon[Math.floor(Math.random() * technicalJargon.length)];
+                    msg = `DEBUG: Process ${term} terminated unexpectedly.`;
+                    style = "dim";
+                }
+
+                printLine(msg, style);
+
+                // Performance: Löschen, wenn mehr als 100 Zeilen, damit Browser nicht hängt
+                if (output.childElementCount > 100) {
+                    output.removeChild(output.firstChild);
+                }
+
+            }, 50); // Geschwindigkeit (50ms = sehr schnell)
+        }
+
+        // Los geht's
+        document.addEventListener('DOMContentLoaded', runBootSequence);
     </script>
 
 </body>
