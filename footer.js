@@ -3,7 +3,7 @@ const config = {
     instagram: "https://instagram.com/sandro_exe_2008",
     github:    "https://github.com/Sandroexe",
     reddit:    "https://reddit.com/user/Sandro_exe08",
-    phone:     "+676767",      // Nummer für den Anruf (keine Leerzeichen)
+    phone:     "+43 676 7406799",      // Nummer für den Anruf (keine Leerzeichen)
     email:     "sandro@exemail.at"
 };
 
