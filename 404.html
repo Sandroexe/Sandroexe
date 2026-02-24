@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Connection Lost</title>
+    <title>404 - System Failure</title>
     <style>
-        /* --- GRUNDDESIGN --- */
+        /* --- TERMINAL STYLE --- */
         body {
             background-color: #050505;
             color: #ccc;
@@ -17,202 +17,166 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            text-align: left;
+            /* Der rote Atem-Effekt */
+            animation: red-breath 4s ease-in-out infinite;
         }
 
-        /* 1. HEADER BEREICH */
-        .error-header {
-            text-align: center;
-            margin-bottom: 30px;
-            z-index: 10;
+        /* DIE ATEM-ANIMATION (Rot pulsierender Rand) */
+        @keyframes red-breath {
+            0% { box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.2); }
+            50% { box-shadow: inset 0 0 150px rgba(255, 0, 0, 0.7); }
+            100% { box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.2); }
         }
 
+        .terminal-container {
+            max-width: 650px;
+            width: 90%;
+            z-index: 2; /* Über dem Schatten liegen */
+        }
+
+        /* Der große 404 Header */
         h1 {
             font-size: 5rem;
-            margin: 0;
-            color: #ff5f56; /* Signalrot */
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 20px rgba(255, 95, 86, 0.4);
-            /* Der Unterstrich */
-            border-bottom: 4px solid #ff5f56;
-            display: inline-block;
-            padding-bottom: 10px;
+            margin: 0 0 10px 0;
+            color: #ff5f56; /* Fehler-Rot */
+            text-shadow: 0 0 20px rgba(255, 95, 86, 0.8);
+            letter-spacing: -2px;
+            min-height: 1.2em;
         }
 
-        .subtitle {
-            margin-top: 10px;
-            font-size: 1.2rem;
+        /* Die Log-Zeilen */
+        .log-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
             color: #007aff; /* Sandro-Blau */
-            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: 500;
         }
 
-        /* 2. CMD FENSTER */
-        .cmd-window {
-            width: 90%;
-            max-width: 700px;
-            height: 400px;
-            background-color: #000;
-            border: 1px solid #333;
-            border-radius: 5px;
-            padding: 15px;
-            overflow: hidden; /* Scrollbalken verstecken, JS scrollt */
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-            position: relative;
-            display: flex;
-            flex-direction: column;
+        /* Blinkender Cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #007aff;
+            vertical-align: bottom;
+            animation: blink 1s step-end infinite;
         }
 
-        /* Header Leiste vom CMD Fenster */
-        .cmd-bar {
-            border-bottom: 1px solid #333;
-            margin: -15px -15px 10px -15px;
-            padding: 5px 15px;
-            background: #111;
-            font-size: 0.8rem;
-            color: #666;
-            display: flex;
-            justify-content: space-between;
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Der Button (am Anfang unsichtbar) */
+        .btn-container {
+            margin-top: 50px;
+            opacity: 0; /* Versteckt bis Animation fertig */
+            transition: opacity 1.5s ease-in;
         }
 
-        /* Der Text-Inhalt */
-        #terminal-output {
-            flex: 1;
-            overflow-y: auto; /* Scrollen erlauben */
-            font-size: 0.95rem;
-            line-height: 1.4;
-            /* Scrollbar verstecken für Clean-Look */
-            scrollbar-width: none; 
-        }
-        #terminal-output::-webkit-scrollbar { display: none; }
-
-        /* Text Styles */
-        .line { display: block; margin-bottom: 2px; }
-        .highlight { color: #fff; font-weight: bold; }
-        .error { color: #ff5f56; }
-        .warning { color: #ffbd2e; }
-        .system { color: #007aff; }
-        .dim { color: #555; }
-
-        /* 3. BUTTON */
-        .btn-container { margin-top: 30px; }
-        
         .btn {
-            padding: 12px 30px;
-            background: transparent;
-            border: 2px solid #007aff;
-            color: #007aff;
+            padding: 14px 28px;
+            border: 2px solid #ff5f56; /* Roter Rahmen passend zum Alarm */
+            background: rgba(255, 95, 86, 0.1);
+            color: #ff5f56;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            text-transform: uppercase;
             border-radius: 4px;
+            font-weight: bold;
             transition: 0.3s;
-        }
-        
-        .btn:hover {
-            background: #007aff;
-            color: white;
-            box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(255, 95, 86, 0.2);
         }
 
+        .btn:hover {
+            background: #ff5f56;
+            color: white;
+            box-shadow: 0 0 30px #ff5f56;
+        }
+        
+        /* Scanline Effekt (Optionaler Monitor-Look) */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            z-index: 1;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <div class="error-header">
-        <h1>ERROR 404</h1>
-        <div class="subtitle">RESOURCE_NOT_FOUND_EXCEPTION</div>
-    </div>
+    <div class="scanlines"></div>
 
-    <div class="cmd-window">
-        <div class="cmd-bar">
-            <span>root@exemail-server:~</span>
-            <span>zsh</span>
+    <div class="terminal-container">
+        <h1 id="error-title"></h1>
+        
+        <div id="console-output"></div>
+        
+        <span class="cursor"></span>
+
+        <div class="btn-container" id="home-btn">
+            <a href="index.html" class="btn">Emergency Reboot (Home)</a>
         </div>
-        <div id="terminal-output">
-            </div>
-    </div>
-
-    <div class="btn-container">
-        <a href="index.html" class="btn">System Reboot (Home)</a>
     </div>
 
     <script>
-        const output = document.getElementById('terminal-output');
-
-        // Die 5 Start-Meldungen (Laufen langsam durch)
-        const bootSequence = [
-            { text: "> Initializing connection protocol...", type: "system", delay: 200 },
-            { text: "> Resolving host exemail.at...", type: "system", delay: 400 },
-            { text: "> Sending GET request to requested path...", type: "highlight", delay: 300 },
-            { text: "> ERROR: Target URI not found (404).", type: "error", delay: 600 },
-            { text: "> CRITICAL: Resource unreachable. Dumping memory stack...", type: "warning", delay: 800 }
+        // TEXT KONFIGURATION
+        const titleText = "ERROR 404";
+        const logLines = [
+            "> SYSTEM ALERT: Critical failure detected.",
+            "> Analyzing network path to 'exemail.at'...",
+            "> ERROR: Target resource unreachable.",
+            "> DIAGNOSTIC: Page does not exist or was moved.",
+            "> INITIATING FAILSAFE PROTOCOL..."
         ];
 
-        // Zufällige Begriffe für den unendlichen Loop
-        const technicalJargon = [
-            "segmentation_fault", "buffer_overflow", "socket_timeout", "kernel_panic", 
-            "allocating_virtual_memory", "pointer_reference_error", "garbage_collection", 
-            "packet_loss_detected", "re-routing_packet", "handshake_failed"
-        ];
+        const titleElement = document.getElementById('error-title');
+        const outputElement = document.getElementById('console-output');
+        const btnElement = document.getElementById('home-btn');
 
-        // Hilfsfunktion: Zeitstempel generieren
-        function getTime() {
-            const now = new Date();
-            return `[${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}.${now.getMilliseconds().toString().padStart(3,'0')}]`;
+        // VERZÖGERUNGS-FUNKTION (Sleep)
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
-        // Hilfsfunktion: Zeile schreiben
-        function printLine(text, type = "") {
-            const div = document.createElement('div');
-            div.classList.add('line');
-            if(type) div.classList.add(type);
-            div.innerHTML = `<span class="dim">${getTime()}</span> ${text}`;
-            output.appendChild(div);
-            output.scrollTop = output.scrollHeight; // Immer nach unten scrollen
-        }
-
-        // 1. Start-Sequenz abspielen
-        async function runBootSequence() {
-            for (let item of bootSequence) {
-                printLine(item.text, item.type);
-                await new Promise(r => setTimeout(r, item.delay));
+        // TYPEWRITER FUNKTION
+        async function typeWriter() {
+            
+            // 1. Titel tippen (Error 404)
+            for (let i = 0; i < titleText.length; i++) {
+                titleElement.textContent += titleText.charAt(i);
+                await sleep(200); // Langsam und dramatisch
             }
-            // Startet den unendlichen Loop nach der Sequenz
-            startInfiniteLoop();
+
+            await sleep(800); // Kurz warten
+
+            // 2. Log-Zeilen tippen
+            for (let line of logLines) {
+                const p = document.createElement('div');
+                p.classList.add('log-text');
+                
+                // Färbe die Zeile rot wenn "ERROR" oder "ALERT" vorkommt
+                if(line.includes("ERROR") || line.includes("ALERT") || line.includes("FAILSAFE")) {
+                    p.style.color = "#ff5f56";
+                }
+                
+                outputElement.appendChild(p); 
+
+                for (let i = 0; i < line.length; i++) {
+                    p.textContent += line.charAt(i);
+                    await sleep(Math.random() * 20 + 20); // Schnelles Tippen
+                }
+                await sleep(400); // Pause zwischen Zeilen
+            }
+
+            // 3. Button einblenden
+            await sleep(600);
+            btnElement.style.opacity = 1;
         }
 
-        // 2. Unendlicher Loop
-        function startInfiniteLoop() {
-            setInterval(() => {
-                const rand = Math.random();
-                let msg = "";
-                let style = "";
-
-                if (rand < 0.1) {
-                    msg = `FATAL: 0x${Math.floor(Math.random()*999999)} address invalid.`;
-                    style = "error";
-                } else if (rand < 0.3) {
-                    msg = `INFO: Retrying connection to port ${Math.floor(Math.random()*65000)}...`;
-                    style = "system";
-                } else {
-                    const term = technicalJargon[Math.floor(Math.random() * technicalJargon.length)];
-                    msg = `DEBUG: Process ${term} terminated unexpectedly.`;
-                    style = "dim";
-                }
-
-                printLine(msg, style);
-
-                // Performance: Löschen, wenn mehr als 100 Zeilen, damit Browser nicht hängt
-                if (output.childElementCount > 100) {
-                    output.removeChild(output.firstChild);
-                }
-
-            }, 50); // Geschwindigkeit (50ms = sehr schnell)
-        }
-
-        // Los geht's
-        document.addEventListener('DOMContentLoaded', runBootSequence);
+        // START
+        document.addEventListener('DOMContentLoaded', typeWriter);
     </script>
 
 </body>
