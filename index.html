@@ -9,9 +9,9 @@
     <meta property="og:description" content="Portfolio von Sandro Exenberger: CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schülerunion.">
     
     <style>
-        /* --- GRUNDDESIGN --- */
+        /* --- GRUNDDESIGN & SCROLLBAR --- */
         body {
-            background-color: #111;
+            background-color: #0f0f0f;
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
@@ -22,9 +22,41 @@
             overflow-x: hidden;
         }
 
-        .container { max-width: 900px; width: 100%; text-align: center; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #007aff; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0056b3; }
 
-        h1 { font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; letter-spacing: -1px; }
+        .container { max-width: 900px; width: 100%; text-align: center; position: relative; z-index: 2; }
+
+        /* NETZWERK HINTERGRUND */
+        #network-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1; /* Hinter dem Inhalt */
+            opacity: 0.4; /* Dezent */
+            pointer-events: none;
+        }
+
+        /* GLITCH EFFEKT FÜR DEN NAMEN */
+        h1 { 
+            font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; letter-spacing: -1px; 
+            position: relative; display: inline-block;
+        }
+        h1:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #007aff;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
         
         /* TYPEWRITER STYLING */
         .subtitle { 
@@ -52,15 +84,16 @@
         }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* BOX-DESIGN (Neon Glow für alle Boxen) */
+        /* BOX-DESIGN */
         .content-box, .cv-column {
             margin-top: 40px;
             text-align: left;
             padding: 30px;
-            background: #1a1a1a;
+            background: rgba(26, 26, 26, 0.95); /* Leicht transparent für Hintergrund */
             border-radius: 16px;
             border: 1px solid #222;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
@@ -146,7 +179,7 @@
         .cmd { color: #fff; font-weight: bold; }
 
         /* --- FOOTER --- */
-        .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
+        .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; }
         .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
         .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
         
@@ -159,8 +192,10 @@
 </head>
 <body>
 
+    <canvas id="network-canvas"></canvas>
+
     <div class="container">
-        <h1>Sandro Exenberger</h1>
+        <h1 title="Sandro Exenberger">Sandro Exenberger</h1>
         
         <div class="subtitle">
             Ich bin <span id="typewriter"></span><span class="cursor">&nbsp;</span>
@@ -234,7 +269,7 @@
                     <span class="cv-org">Open Maker Space</span>
                 </div>
                 <div class="cv-item">
-                    <span class="cv-date">Sommer 2024 & 2025</span>
+                    <span class="cv-date">2024 – 2025</span>
                     <span class="cv-title">Praktikum Netzwerkinfrastruktur</span>
                     <span class="cv-org">Stadtwerke Wörgl (WörglWeb)</span>
                 </div>
@@ -291,56 +326,94 @@
     </div>
 
     <script>
-        // 1. Typewriter Animation
+        // 1. TYPEWRITER
         const textElement = document.getElementById('typewriter');
         const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter"];
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+        let phraseIndex = 0; let charIndex = 0; let isDeleting = false;
 
         function type() {
             const currentPhrase = phrases[phraseIndex];
-            if (isDeleting) {
-                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
-            }
+            if (isDeleting) { textElement.textContent = currentPhrase.substring(0, charIndex - 1); charIndex--; } 
+            else { textElement.textContent = currentPhrase.substring(0, charIndex + 1); charIndex++; }
             let typeSpeed = isDeleting ? 50 : 100;
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                typeSpeed = 2000; isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500;
-            }
+            if (!isDeleting && charIndex === currentPhrase.length) { typeSpeed = 2000; isDeleting = true; } 
+            else if (isDeleting && charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500; }
             setTimeout(type, typeSpeed);
         }
 
-        // 2. Scroll Reveal & Skill Bar Trigger
+        // 2. SCROLL REVEAL
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
                 var elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
+                if (elementTop < windowHeight - elementVisible) { reveals[i].classList.add("active"); }
             }
         }
 
-        // Bars füllen
+        // 3. SKILL BARS
         setTimeout(() => {
             const bars = document.querySelectorAll('.progress-bar');
             bars.forEach(bar => { bar.style.width = bar.getAttribute('data-width'); });
         }, 500);
 
-        // Events starten
-        document.addEventListener('DOMContentLoaded', type);
-        window.addEventListener("scroll", reveal);
-        reveal();
+        // 4. NETWORK PARTICLE BACKGROUND
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        // 3. TERMINAL LOGIC
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 80; i++) { particles.push(new Particle()); }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 120) {
+                        ctx.strokeStyle = `rgba(0, 122, 255, ${1 - distance / 120})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // 5. TERMINAL LOGIC
         const terminalOverlay = document.getElementById('terminal-overlay');
         const terminalInput = document.getElementById('terminal-input');
         const terminalOutput = document.getElementById('terminal-output');
@@ -351,10 +424,7 @@
                 setTimeout(() => terminalOverlay.style.display = 'none', 300);
             } else {
                 terminalOverlay.style.display = 'flex';
-                setTimeout(() => {
-                    terminalOverlay.classList.add('open');
-                    terminalInput.focus();
-                }, 10);
+                setTimeout(() => { terminalOverlay.classList.add('open'); terminalInput.focus(); }, 10);
             }
         }
 
@@ -370,44 +440,25 @@
                 responseLine.style.color = "#ccc";
 
                 switch(command) {
-                    case 'help':
-                        responseLine.innerHTML = `Verfügbare Befehle:<br>
-                        - <span class="cmd">whoami</span>: Über mich<br>
-                        - <span class="cmd">skills</span>: Mein Tech-Stack<br>
-                        - <span class="cmd">projects</span>: Meine Projekte<br>
-                        - <span class="cmd">contact</span>: Kontakt<br>
-                        - <span class="cmd">clear</span>: Screen leeren<br>
-                        - <span class="cmd">exit</span>: Schließen`;
-                        break;
-                    case 'whoami':
-                        responseLine.innerHTML = "Sandro Exenberger.<br>Elektroniker, Netzwerktechniker (CCNA) & Schülervertreter.<br>Leidenschaftlicher Linux-User und Maker.";
-                        break;
-                    case 'skills':
-                        responseLine.innerHTML = "• Linux / Debian [Expert]<br>• Cisco CCNA [Certified]<br>• Python / Chatbots<br>• IoT & Electronics";
-                        break;
-                    case 'projects':
-                        responseLine.innerHTML = "• HTL-Incubator Lead (Maker Space)<br>• Stadtwerke Wörgl (WörglWeb)<br>• Regionalvorstand Schülerunion";
-                        break;
-                    case 'contact':
-                        responseLine.innerHTML = "E-Mail: sandro@exemail.at<br>Phone: +43 676 7406799<br>Loc: Schwoich, Tirol";
-                        break;
-                    case 'clear':
-                        terminalOutput.innerHTML = '';
-                        responseLine.innerHTML = '';
-                        break;
-                    case 'exit':
-                        toggleTerminal();
-                        break;
-                    default:
-                        responseLine.innerHTML = `Befehl nicht gefunden: ${command}. Tippe <span class="cmd">help</span>.`;
-                        responseLine.style.color = "#ff5f56";
+                    case 'help': responseLine.innerHTML = `Commands: <span class="cmd">whoami</span>, <span class="cmd">skills</span>, <span class="cmd">projects</span>, <span class="cmd">contact</span>, <span class="cmd">clear</span>, <span class="cmd">exit</span>`; break;
+                    case 'whoami': responseLine.innerHTML = "Sandro Exenberger. Elektroniker, CCNA, Schülervertreter."; break;
+                    case 'skills': responseLine.innerHTML = "• Linux, CCNA, Python, IoT, 3D-Druck"; break;
+                    case 'projects': responseLine.innerHTML = "• HTL-Incubator, WörglWeb, Schülerunion"; break;
+                    case 'contact': responseLine.innerHTML = "Mail: sandro@exemail.at | Tel: +43 676 7406799"; break;
+                    case 'clear': terminalOutput.innerHTML = ''; responseLine.innerHTML = ''; break;
+                    case 'exit': toggleTerminal(); break;
+                    default: responseLine.innerHTML = `Error: Command '${command}' not found.`; responseLine.style.color = "#ff5f56";
                 }
-
                 if(command !== 'clear') { terminalOutput.appendChild(responseLine); }
                 this.value = '';
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
             }
         });
+
+        // INIT ALL
+        document.addEventListener('DOMContentLoaded', type);
+        window.addEventListener("scroll", reveal);
+        reveal();
     </script>
 </body>
 </html>
