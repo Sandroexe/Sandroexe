@@ -1,33 +1,64 @@
-# exemail.at 🌐
+# 🌐 exemail.at | Sandro Exenberger Portfolio
 
-![Status](https://img.shields.io/website?url=https%3A%2F%2Fexemail.at&label=Status&style=flat-square)
-![Hosted on](https://img.shields.io/badge/Hosted_on-GitHub_Pages-blue?style=flat-square&logo=github)
-![Domain](https://img.shields.io/badge/Domain-INWX-red?style=flat-square)
+![Status](https://img.shields.io/website?url=https%3A%2F%2Fexemail.at&label=Status&style=flat-square&color=success)
+![Size](https://img.shields.io/github/repo-size/Sandroexe/exemail.at?style=flat-square&color=blue)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
-Willkommen im Repository meiner persönlichen Landing Page.  
-Dieses Projekt dient als meine digitale Visitenkarte und zentraler Hub für alle meine Profile.
+> **"All Systems Operational."** 🟢
 
-## 🚀 Über das Projekt
-Die Webseite ist eine minimalistische "Link-in-Bio" Lösung, die direkt auf GitHub Pages gehostet wird. Sie bietet Besuchern einen schnellen Überblick über meine Kontaktmöglichkeiten und sozialen Netzwerke.
-
-**Highlights:**
-* 📱 **Full Responsive:** Optimiert für Smartphones, Tablets und Desktop-PCs.
-* 🌑 **Modern Dark Mode:** Ein cleanes Design, das die Augen schont.
-* ⚡ **Performance:** Extrem schnelle Ladezeiten durch Verzicht auf schwere Frameworks.
-* ⚖️ **Rechtssicher:** Vollständiges Impressum und Datenschutzerklärung nach österreichischem Recht.
-
-## 🛠 Tech Stack
-* **Frontend:** HTML5 & CSS3 (Flexbox & SVG Icons)
-* **Hosting:** GitHub Pages
-* **Domain:** exemail.at (via INWX)
-
-## 🔗 Meine Profile
-* 🌍 **Webseite:** [exemail.at](https://exemail.at)
-* 💼 **LinkedIn:** [Sandro Exenberger](https://www.linkedin.com/in/sandro-exenberger-1a5486315/)
-* 📸 **Instagram:** [@sandro_exe_2008](https://instagram.com/sandro_exe_2008)
-* 💻 **GitHub:** [@Sandroexe](https://github.com/Sandroexe)
-* 💬 **Reddit:** [u/Sandro_exe08](https://reddit.com/user/Sandro_exe08)
-* 📞 **Discord:** [Mein Profil](https://discordapp.com/users/653308381273948171)
+Willkommen im Source-Code meiner persönlichen Portfolio-Website. Dieses Projekt dient als digitale Visitenkarte, Lebenslauf und Showcase meiner technischen Fähigkeiten als Elektroniker und Netzwerktechniker.
 
 ---
-*© 2026 Sandro Exenberger | Schwoich, Österreich*
+
+## 🚀 Features & Highlights
+
+Diese Seite ist mehr als nur statisches HTML. Sie enthält interaktive Elemente, die meine Leidenschaft für Code und Hardware widerspiegeln:
+
+* **💻 Interaktives Terminal (CLI):** Ein voll funktionsfähiges, simuliertes Linux-Terminal (unten rechts), das Befehle wie `whoami`, `skills` oder `contact` verarbeitet.
+* **🕸️ Neural Network Background:** Ein dynamischer Partikel-Hintergrund, der Netzwerkverbindungen und Routing visualisiert (HTML5 Canvas).
+* **⚡ Glitch-Effekte:** Cyberpunk-inspirierte Hover-Animationen für den Titel.
+* **⌨️ Typewriter Animation:** Dynamischer Textwechsel, der meine Rollen (Elektroniker, Maker, Schülervertreter) durchtippt.
+* **🌓 Dark Mode by Default:** Ein modernes, augenschonendes Design mit Neon-Akzenten (`#007aff`).
+* **📱 Fully Responsive:** Optimiert für Desktop, Tablet und Mobile.
+* **🔒 Privacy First:** Keine Cookies, keine Tracker, keine externen Analysetools. DSGVO-konform.
+
+---
+
+## 🛠 Tech Stack
+
+Dieses Projekt wurde **ohne** schwere Frameworks gebaut, um maximale Performance und Ladezeit zu garantieren ("Vanilla Code").
+
+| Technologie | Beschreibung |
+| :--- | :--- |
+| ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white) | Semantische Struktur |
+| ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) | Styling, Flexbox, Grid, Keyframe Animations |
+| ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) | Terminal Logic, Particle Canvas, DOM Manipulation |
+| ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=flat-square&logo=github&logoColor=white) | Hosting & Deployment |
+
+---
+
+## 👨‍💻 Über Mich
+
+Ich bin Sandro Exenberger, wohnhaft in Schwoich, Tirol. Mein Fokus liegt auf der Schnittstelle zwischen Hardware, Software und Networking.
+
+* **🎓 Ausbildung:** HTBLVA Anichstraße (Elektronik & Techn. Informatik)
+* **📜 Zertifizierung:** Cisco Certified Network Associate (CCNA)
+* **🐧 OS:** Linux / Debian Enthusiast
+* **💼 Rollen:** Regionalvorstand Schülerunion, Schulsprecher, HTL-Incubator Lead
+
+---
+
+## 📟 Terminal Befehle
+
+Probier es auf der Webseite aus! Klicke unten rechts auf `_CMD`.
+Verfügbare Befehle im Web-Terminal:
+
+```bash
+guest@sandro:~$ help
+Verfügbare Befehle:
+- whoami   : Kurzprofil anzeigen
+- skills   : Tech-Stack auflisten
+- projects : Meine Rollen & Projekte
+- contact  : Kontaktinformationen
+- clear    : Terminal leeren
+- exit     : Fenster schließen
