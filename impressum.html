@@ -5,29 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impressum - Sandro Exenberger</title>
     <style>
-        body { background-color: #111; color: #ccc; font-family: -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .container { max-width: 650px; width: 100%; text-align: left; }
-        h1 { color: #fff; border-bottom: 2px solid #007aff; padding-bottom: 10px; }
-        h2 { color: #fff; font-size: 1.2rem; margin-top: 35px; border-left: 4px solid #007aff; padding-left: 10px; }
-        p { line-height: 1.6; }
-        a { color: #007aff; text-decoration: none; }
-        .btn-back { display: inline-block; margin-top: 30px; padding: 10px 20px; border: 1px solid #444; color: #888; border-radius: 8px; text-decoration: none; }
-        
+        body { background-color: #111; color: #ccc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .container { max-width: 700px; width: 100%; text-align: left; }
+        h1 { color: #fff; border-bottom: 2px solid #007aff; padding-bottom: 10px; margin-bottom: 30px; }
+        h2 { color: #fff; font-size: 1.3rem; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid #007aff; padding-left: 15px; }
+        h3 { color: #fff; font-size: 1.1rem; margin-top: 25px; margin-bottom: 10px; }
+        p { line-height: 1.7; margin-bottom: 15px; color: #bbb; }
+        a { color: #007aff; text-decoration: none; transition: 0.2s; }
+        a:hover { text-decoration: underline; }
+        .btn-back { display: inline-block; margin-top: 40px; padding: 10px 20px; border: 1px solid #444; color: #888; border-radius: 8px; text-decoration: none; }
+        .btn-back:hover { background: #222; color: #fff; text-decoration: none; }
+
+        /* FOOTER */
         .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
-        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; }
-        .social-icon { width: 32px; height: 32px; }
+        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
         .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: #007aff; } .icon-phone { fill: #4caf50; }
+        .social-icons a:hover .social-icon { transform: scale(1.25); }
+        .legal-links { font-size: 0.85rem; color: #444; margin-top: 10px; }
+        .legal-links a { color: #666; margin: 0 10px; }
+        .legal-links a:hover { color: #aaa; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Impressum</h1>
+
         <h2>Angaben gemäß § 5 E-Commerce-Gesetz (ECG)</h2>
-        <p>Sandro Exenberger<br>6334 - Schwoich<br>Österreich</p>
+        <p>
+            <strong>Sandro Exenberger</strong><br>
+            6334 - Schwoich<br>
+            Österreich
+        </p>
+
         <h2>Kontakt</h2>
-        <p>E-Mail: <a href="mailto:sandro@exemail.at">sandro@exemail.at</a><br>Telefon: +43 676 7406799</p>
-        <h2>Zusätzliche Informationen</h2>
-        <p><strong>Zweck:</strong> Diese Webseite dient der persönlichen Information und Vorstellung beruflicher Qualifikationen.</p>
+        <p>
+            Telefon: +43 676 7406799<br>
+            E-Mail: <a href="mailto:sandro@exemail.at">sandro@exemail.at</a>
+        </p>
+
+        <h2>Offenlegung gemäß § 25 Mediengesetz</h2>
+        <p><strong>Medieninhaber & Herausgeber:</strong> Sandro Exenberger</p>
+        <p><strong>Unternehmensgegenstand:</strong> Betreiben einer privaten Webseite zur Präsentation des persönlichen Portfolios, beruflicher Qualifikationen und technischer Projekte.</p>
+        <p><strong>Grundlegende Richtung (Blattlinie):</strong> Information über den beruflichen Werdegang sowie schulische und private Projekte des Medieninhabers.</p>
+
+        <h2>Haftungsausschluss (Disclaimer)</h2>
+        
+        <h3>Haftung für Inhalte</h3>
+        <p>Als Diensteanbieter bin ich für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch keine Gewähr übernehmen.</p>
+
+        <h3>Haftung für Links</h3>
+        <p>Mein Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte ich keinen Einfluss habe. Deshalb kann ich für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+
+        <h3>Urheberrecht</h3>
+        <p>Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem österreichischen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+
         <center><a href="index.html" class="btn-back">← Zurück zur Startseite</a></center>
     </div>
 
@@ -38,6 +70,10 @@
             <a href="https://github.com/Sandroexe" target="_blank"><svg class="social-icon icon-github" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
             <a href="mailto:sandro@exemail.at"><svg class="social-icon icon-mail" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
             <a href="tel:+436767406799"><svg class="social-icon icon-phone" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>
+        </div>
+        <div class="legal-links">
+            <a href="impressum.html">Impressum</a> &bull; 
+            <a href="datenschutz.html">Datenschutz</a>
         </div>
     </div>
 </body>
