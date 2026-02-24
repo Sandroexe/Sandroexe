@@ -5,21 +5,29 @@
 ![Domain](https://img.shields.io/badge/Domain-INWX-red?style=flat-square)
 
 Willkommen im Repository meiner persönlichen Landing Page.  
-Dieses Projekt dient als meine digitale Visitenkarte und zentraler Hub für meine Online-Präsenz.
+Dieses Projekt dient als zentraler Hub für meine Online-Präsenz und Kontaktmöglichkeiten.
 
 ## 🚀 Über das Projekt
-Diese Webseite ist minimalistisch gehalten und dient aktuell dazu, Besucher direkt zu meinen Kontaktmöglichkeiten und professionellen Netzwerken zu leiten. Sie ist unter meiner eigenen Domain **[exemail.at](https://exemail.at)** erreichbar.
+Die Webseite ist als minimalistische "Digital Business Card" (Link-in-Bio) konzipiert. Besucher finden hier schnell alle wichtigen Links zu meinen sozialen Netzwerken sowie direkte Kontaktmöglichkeiten per E-Mail oder Telefon.
+
+**Features:**
+* 🎨 **Modernes Design:** Clean Dark Mode & Responsive (Mobile-First).
+* 🔗 **Social Hub:** Verlinkung zu LinkedIn, Instagram, GitHub und Reddit.
+* 📞 **Direct Contact:** "Click-to-Call" und "Mail-to" Funktionen.
+* ⚖️ **Rechtssicher:** Inklusive Impressum und Datenschutzerklärung (gemäß österreichischem Recht).
 
 ## 🛠 Tech Stack
-Das Projekt basiert auf einem modernen, schlanken Setup ohne unnötigen Ballast:
-* **Frontend:** HTML5 & CSS3 (Flexbox Design)
+Das Projekt verzichtet bewusst auf schwere Frameworks, um maximale Ladeeschwindigkeit zu garantieren:
+* **Frontend:** HTML5 & CSS3 (Flexbox & SVG Icons)
 * **Hosting:** GitHub Pages
-* **DNS & Domain:** Verwaltet über INWX
+* **DNS:** INWX (A-Records & CNAME)
 * **Security:** HTTPS enforced via GitHub
 
 ## 🔗 Links
 * 🌍 **Live Webseite:** [https://exemail.at](https://exemail.at)
-* 💼 **LinkedIn:** [Mein Profil](https://www.linkedin.com/in/sandro-exenberger-1a5486315/)
+* 💼 **LinkedIn:** [Sandro Exenberger](https://www.linkedin.com/in/sandro-exenberger-1a5486315/)
+* 📸 **Instagram:** [@sandro_exe_2008](https://instagram.com/sandro_exe_2008)
+* 💻 **GitHub:** [@Sandroexe](https://github.com/Sandroexe)
 
 ---
 *© 2026 Sandro Exenberger*
