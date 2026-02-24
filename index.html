@@ -20,7 +20,24 @@
         .container { max-width: 900px; width: 100%; text-align: center; }
 
         h1 { font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; }
-        .subtitle { color: #007aff; font-size: 1.3rem; margin-bottom: 2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Typewriter Styling */
+        .subtitle { 
+            color: #007aff; 
+            font-size: 1.3rem; 
+            margin-bottom: 2rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            min-height: 1.5em; /* Damit der Text nicht springt */
+        }
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            background-color: #fff;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
 
         /* ÜBER MICH SEKTION */
         .about-section {
@@ -49,37 +66,14 @@
         .cv-title { font-weight: 600; font-size: 1.1rem; display: block; color: #fff; }
         .cv-org { color: #888; font-size: 0.95rem; display: block; }
 
-        /* MOBILE OPTIMIERUNG */
-        @media (max-width: 768px) {
-            .cv-grid { flex-direction: column; }
-        }
+        @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
 
         /* --- FOOTER --- */
-        .footer-container {
-            margin-top: 80px;
-            padding-top: 30px;
-            border-top: 1px solid #222;
-            width: 100%;
-            text-align: center;
-        }
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
+        .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
+        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
         .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
-        
-        /* Originale Markenfarben */
-        .icon-linkedin { fill: #0077b5; }
-        .icon-instagram { fill: #E4405F; }
-        .icon-github { fill: #ffffff; }
-        .icon-mail { fill: #007aff; }
-        .icon-phone { fill: #4caf50; }
-        
+        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: #007aff; } .icon-phone { fill: #4caf50; }
         .social-icons a:hover .social-icon { transform: scale(1.2); }
-
         .legal-links { font-size: 0.85rem; color: #444; }
         .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
         .legal-links a:hover { color: #aaa; text-decoration: underline; }
@@ -89,44 +83,10 @@
 
     <div class="container">
         <h1>Sandro Exenberger</h1>
-        <div class="subtitle">
-    Ich bin <span id="typewriter" style="color: #fff; border-right: 2px solid #007aff;"></span>
-</div>
-
-<script>
-    const textElement = document.getElementById('typewriter');
-    const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter", "Maker"];
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-
-    function type() {
-        const currentPhrase = phrases[phraseIndex];
         
-        if (isDeleting) {
-            textElement.textContent = currentPhrase.substring(0, charIndex - 1);
-            charIndex--;
-        } else {
-            textElement.textContent = currentPhrase.substring(0, charIndex + 1);
-            charIndex++;
-        }
-
-        let typeSpeed = isDeleting ? 50 : 100;
-
-        if (!isDeleting && charIndex === currentPhrase.length) {
-            typeSpeed = 2000; // Wartezeit wenn Wort fertig
-            isDeleting = true;
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            typeSpeed = 500;
-        }
-
-        setTimeout(type, typeSpeed);
-    }
-
-    document.addEventListener('DOMContentLoaded', type);
-</script>
+        <div class="subtitle">
+            Ich bin <span id="typewriter"></span><span class="cursor">&nbsp;</span>
+        </div>
         
         <div class="about-section">
             <h2>Über mich</h2>
@@ -202,9 +162,45 @@
                 </a>
             </div>
             <div class="legal-links">
-                <a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a>
+                <a href="impressum.html">Impressum</a> &bull; 
+                <a href="datenschutz.html">Datenschutz</a>
             </div>
         </div>
     </div>
+
+    <script>
+        const textElement = document.getElementById('typewriter');
+        const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter"];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        document.addEventListener('DOMContentLoaded', type);
+    </script>
 </body>
 </html>
