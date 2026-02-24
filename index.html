@@ -15,21 +15,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden; /* Verhindert seitliches Scrollen bei Animationen */
         }
 
         .container { max-width: 900px; width: 100%; text-align: center; }
 
-        h1 { font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; }
+        h1 { font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; letter-spacing: -1px; }
         
-        /* Typewriter Styling */
+        /* TYPEWRITER STYLING */
         .subtitle { 
             color: #007aff; 
             font-size: 1.3rem; 
-            margin-bottom: 2rem; 
+            margin-bottom: 3rem; 
             font-weight: 600; 
             text-transform: uppercase; 
             letter-spacing: 1px;
-            min-height: 1.5em; /* Damit der Text nicht springt */
+            min-height: 1.5em;
         }
         .cursor {
             display: inline-block;
@@ -39,26 +40,74 @@
         }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* ÜBER MICH SEKTION */
-        .about-section {
+        /* SCROLL ANIMATION (REVEAL) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* SEKTIONEN STYLING */
+        .section-box {
             margin-top: 40px;
             text-align: left;
             padding: 30px;
             background: #1a1a1a;
             border-radius: 16px;
             border: 1px solid #222;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .about-section h2 { border-left: 4px solid #007aff; padding-left: 15px; font-size: 1.6rem; margin-bottom: 20px; }
-        .about-section p { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
+        
+        .section-box h2 { 
+            border-left: 4px solid #007aff; 
+            padding-left: 15px; 
+            font-size: 1.6rem; 
+            margin-bottom: 20px; 
+            color: #fff;
+        }
+        
+        .section-box p { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
 
-        /* LEBENSLAUF GRID */
+        /* SKILL BARS */
+        .skill-item { margin-bottom: 15px; }
+        .skill-info { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.95rem; color: #ddd; }
+        .progress-bg { background: #333; border-radius: 10px; height: 8px; width: 100%; overflow: hidden; }
+        .progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, #007aff, #00c6ff); 
+            border-radius: 10px; 
+            width: 0%; 
+            transition: width 1.5s ease-in-out; 
+        }
+
+        /* LEBENSLAUF GRID (NEBENEINANDER) */
         .cv-grid {
             display: flex;
             gap: 30px;
             margin-top: 40px;
             text-align: left;
         }
-        .cv-column { flex: 1; background: #1a1a1a; padding: 25px; border-radius: 16px; border: 1px solid #222; }
+        
+        .cv-column { 
+            flex: 1; 
+            background: #1a1a1a; 
+            padding: 25px; 
+            border-radius: 16px; 
+            border: 1px solid #222; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* NEON GLOW HOVER EFFEKT */
+        .cv-column:hover {
+            transform: translateY(-5px);
+            border-color: #007aff;
+            box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25);
+        }
+
         .cv-column h2 { font-size: 1.4rem; color: #fff; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
 
         .cv-item { margin-bottom: 25px; position: relative; padding-left: 15px; border-left: 2px solid #333; }
@@ -66,14 +115,25 @@
         .cv-title { font-weight: 600; font-size: 1.1rem; display: block; color: #fff; }
         .cv-org { color: #888; font-size: 0.95rem; display: block; }
 
-        @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
+        /* MOBILE OPTIMIERUNG */
+        @media (max-width: 768px) {
+            .cv-grid { flex-direction: column; }
+        }
 
         /* --- FOOTER --- */
         .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
         .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
-        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: #007aff; } .icon-phone { fill: #4caf50; }
-        .social-icons a:hover .social-icon { transform: scale(1.2); }
+        
+        /* ICONS ORIGINALFARBEN */
+        .icon-linkedin { fill: #0077b5; }
+        .icon-instagram { fill: #E4405F; }
+        .icon-github { fill: #ffffff; }
+        .icon-mail { fill: #007aff; }
+        .icon-phone { fill: #4caf50; }
+        
+        .social-icons a:hover .social-icon { transform: scale(1.25); }
+
         .legal-links { font-size: 0.85rem; color: #444; }
         .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
         .legal-links a:hover { color: #aaa; text-decoration: underline; }
@@ -88,7 +148,7 @@
             Ich bin <span id="typewriter"></span><span class="cursor">&nbsp;</span>
         </div>
         
-        <div class="about-section">
+        <div class="section-box reveal">
             <h2>Über mich</h2>
             <p>
                 Ich bin angehender Techniker mit dem Schwerpunkt Elektronik und Technische Informatik an der HTBLVA Anichstraße in Innsbruck. 
@@ -100,7 +160,31 @@
             </p>
         </div>
 
-        <div class="cv-grid">
+        <div class="section-box reveal">
+            <h2>Tech Stack</h2>
+            
+            <div class="skill-item">
+                <div class="skill-info"><span>🐧 Linux / Debian</span><span>Fortgeschritten</span></div>
+                <div class="progress-bg"><div class="progress-bar" data-width="85%"></div></div>
+            </div>
+
+            <div class="skill-item">
+                <div class="skill-info"><span>🌐 Netzwerktechnik (CCNA)</span><span>Zertifiziert</span></div>
+                <div class="progress-bg"><div class="progress-bar" data-width="90%"></div></div>
+            </div>
+
+            <div class="skill-item">
+                <div class="skill-info"><span>📡 IoT & Elektronik</span><span>Erfahren</span></div>
+                <div class="progress-bg"><div class="progress-bar" data-width="75%"></div></div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-info"><span>🖨️ 3D-Druck / Maker Space</span><span>Experte</span></div>
+                <div class="progress-bg"><div class="progress-bar" data-width="95%"></div></div>
+            </div>
+        </div>
+
+        <div class="cv-grid reveal">
             <div class="cv-column">
                 <h2>Schullaufbahn</h2>
                 <div class="cv-item">
@@ -128,7 +212,7 @@
                 <div class="cv-item">
                     <span class="cv-date">Seit 10/2025</span>
                     <span class="cv-title">Gewählte Schülervertretung</span>
-                    <span class="cv-org">HTBLVA Anichstraße</span>
+                    <span class="cv-org">SGA-Mitglied, HTBLVA Anichstraße</span>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">Seit 06/2025</span>
@@ -136,14 +220,14 @@
                     <span class="cv-org">Open Maker Space</span>
                 </div>
                 <div class="cv-item">
-                    <span class="cv-date">2024 – 2025</span>
+                    <span class="cv-date">Sommer 2024 & 2025</span>
                     <span class="cv-title">Praktikum Netzwerkinfrastruktur</span>
                     <span class="cv-org">Stadtwerke Wörgl (WörglWeb)</span>
                 </div>
             </div>
         </div>
 
-        <div class="footer-container">
+        <div class="footer-container reveal">
             <div class="social-icons">
                 <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" title="LinkedIn">
                     <svg class="social-icon icon-linkedin" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -169,6 +253,7 @@
     </div>
 
     <script>
+        // 1. Typewriter Animation
         const textElement = document.getElementById('typewriter');
         const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter"];
         let phraseIndex = 0;
@@ -177,7 +262,6 @@
 
         function type() {
             const currentPhrase = phrases[phraseIndex];
-            
             if (isDeleting) {
                 textElement.textContent = currentPhrase.substring(0, charIndex - 1);
                 charIndex--;
@@ -185,9 +269,7 @@
                 textElement.textContent = currentPhrase.substring(0, charIndex + 1);
                 charIndex++;
             }
-
             let typeSpeed = isDeleting ? 50 : 100;
-
             if (!isDeleting && charIndex === currentPhrase.length) {
                 typeSpeed = 2000;
                 isDeleting = true;
@@ -196,11 +278,34 @@
                 phraseIndex = (phraseIndex + 1) % phrases.length;
                 typeSpeed = 500;
             }
-
             setTimeout(type, typeSpeed);
         }
 
+        // 2. Scroll Reveal & 3. Skill Bar Trigger
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        // Bars füllen
+        setTimeout(() => {
+            const bars = document.querySelectorAll('.progress-bar');
+            bars.forEach(bar => {
+                bar.style.width = bar.getAttribute('data-width');
+            });
+        }, 500);
+
+        // Events starten
         document.addEventListener('DOMContentLoaded', type);
+        window.addEventListener("scroll", reveal);
+        reveal(); // Initial call
     </script>
 </body>
 </html>
