@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandro Exenberger | Portfolio</title>
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sandro Exenberger | Elektroniker & Netzwerktechniker">
+    <meta property="og:description" content="Portfolio von Sandro Exenberger: CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schülerunion.">
+    
     <style>
         /* --- GRUNDDESIGN --- */
         body {
@@ -46,13 +50,10 @@
             transform: translateY(30px);
             transition: all 0.8s ease-out;
         }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* BOX-DESIGN (Für alle Sektionen) */
-        .content-box {
+        /* BOX-DESIGN (Neon Glow für alle Boxen) */
+        .content-box, .cv-column {
             margin-top: 40px;
             text-align: left;
             padding: 30px;
@@ -60,18 +61,17 @@
             border-radius: 16px;
             border: 1px solid #222;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            /* Übergänge für den Hover-Effekt */
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
-        /* NEON GLOW HOVER EFFEKT (Gilt jetzt für alle Boxen) */
+        /* NEON GLOW HOVER EFFEKT */
         .content-box:hover, .cv-column:hover {
             transform: translateY(-5px);
             border-color: #007aff;
             box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25);
         }
         
-        .content-box h2 { 
+        .content-box h2, .cv-column h2 { 
             border-left: 4px solid #007aff; 
             padding-left: 15px; 
             font-size: 1.6rem; 
@@ -94,48 +94,64 @@
         }
 
         /* LEBENSLAUF GRID */
-        .cv-grid {
-            display: flex;
-            gap: 30px;
-            margin-top: 40px;
-            text-align: left;
-        }
-        
-        .cv-column { 
-            flex: 1; 
-            background: #1a1a1a; 
-            padding: 25px; 
-            border-radius: 16px; 
-            border: 1px solid #222; 
-            /* Übergänge für den Hover-Effekt */
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .cv-column h2 { font-size: 1.4rem; color: #fff; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .cv-grid { display: flex; gap: 30px; margin-top: 40px; text-align: left; }
+        .cv-column { flex: 1; }
+        .cv-column h2 { font-size: 1.4rem; border-left: none; border-bottom: 1px solid #333; padding-bottom: 10px; padding-left: 0; }
 
         .cv-item { margin-bottom: 25px; position: relative; padding-left: 15px; border-left: 2px solid #333; }
         .cv-date { color: #007aff; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 5px; }
         .cv-title { font-weight: 600; font-size: 1.1rem; display: block; color: #fff; }
         .cv-org { color: #888; font-size: 0.95rem; display: block; }
 
-        /* MOBILE OPTIMIERUNG */
-        @media (max-width: 768px) {
-            .cv-grid { flex-direction: column; }
+        @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
+
+        /* --- TERMINAL STYLES --- */
+        .terminal-toggle {
+            position: fixed; bottom: 20px; right: 20px;
+            background: #1a1a1a; border: 1px solid #333; color: #007aff;
+            padding: 12px 18px; border-radius: 30px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'Courier New', monospace; font-weight: bold;
+            transition: 0.3s; z-index: 1000;
         }
+        .terminal-toggle:hover { background: #007aff; color: white; transform: translateY(-3px); }
+        .terminal-toggle svg { width: 20px; fill: currentColor; }
+
+        .terminal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; transition: opacity 0.3s;
+        }
+        .terminal-overlay.open { display: flex; opacity: 1; }
+
+        .terminal-window {
+            width: 90%; max-width: 700px; height: 500px;
+            background: #0c0c0c; border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #333;
+            display: flex; flex-direction: column;
+            font-family: 'Courier New', monospace; font-size: 1rem;
+        }
+        .terminal-header {
+            background: #1f1f1f; padding: 10px 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #333; color: #ccc; font-size: 0.9rem;
+        }
+        .close-btn { cursor: pointer; color: #ff5f56; font-weight: bold; }
+        .terminal-body { flex: 1; padding: 20px; color: #4caf50; overflow-y: auto; text-align: left; }
+        .terminal-input-line { display: flex; padding: 10px 20px; background: #0c0c0c; }
+        .prompt { color: #007aff; margin-right: 10px; }
+        #terminal-input { background: transparent; border: none; color: #fff; flex: 1; font-family: 'Courier New', monospace; font-size: 1rem; outline: none; }
+        .cmd { color: #fff; font-weight: bold; }
 
         /* --- FOOTER --- */
         .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
         .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
         .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
         
-        .icon-linkedin { fill: #0077b5; }
-        .icon-instagram { fill: #E4405F; }
-        .icon-github { fill: #ffffff; }
-        .icon-mail { fill: #007aff; }
-        .icon-phone { fill: #4caf50; }
-        
+        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: #007aff; } .icon-phone { fill: #4caf50; }
         .social-icons a:hover .social-icon { transform: scale(1.25); }
-
         .legal-links { font-size: 0.85rem; color: #444; }
         .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
         .legal-links a:hover { color: #aaa; text-decoration: underline; }
@@ -164,22 +180,18 @@
 
         <div class="content-box reveal">
             <h2>Tech Stack</h2>
-            
             <div class="skill-item">
                 <div class="skill-info"><span>🐧 Linux / Debian</span><span>Fortgeschritten</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="85%"></div></div>
             </div>
-
             <div class="skill-item">
                 <div class="skill-info"><span>🌐 Netzwerktechnik (CCNA)</span><span>Zertifiziert</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="90%"></div></div>
             </div>
-
             <div class="skill-item">
                 <div class="skill-info"><span>📡 IoT & Elektronik</span><span>Erfahren</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="75%"></div></div>
             </div>
-            
             <div class="skill-item">
                 <div class="skill-info"><span>🖨️ 3D-Druck / Maker Space</span><span>Experte</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="95%"></div></div>
@@ -214,7 +226,7 @@
                 <div class="cv-item">
                     <span class="cv-date">Seit 10/2025</span>
                     <span class="cv-title">Gewählte Schülervertretung</span>
-                    <span class="cv-org">SGA-Mitglied, HTBLVA Anichstraße</span>
+                    <span class="cv-org">HTBLVA Anichstraße</span>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">Seit 06/2025</span>
@@ -254,6 +266,30 @@
         </div>
     </div>
 
+    <div class="terminal-toggle" onclick="toggleTerminal()" title="Terminal öffnen">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM0 0h24v24H0z" fill="none"/><path d="M12 10l-2-2-6 6 1.41 1.41L12 8.83l7.59 7.59L21 15z" fill="none"/><path d="M7.5 17l-1.41-1.41L9.67 12 6.09 8.41 7.5 7l5 5-5 5zM18 17h-6v-2h6v2z"/></svg>
+        <span>_CMD</span>
+    </div>
+
+    <div id="terminal-overlay" class="terminal-overlay">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <span class="terminal-title">sandro@exemail:~</span>
+                <span class="close-btn" onclick="toggleTerminal()">✕</span>
+            </div>
+            <div class="terminal-body" id="terminal-output">
+                <div style="margin-bottom:10px;">
+                    Welcome to SandroOS v1.0 (Debian/Linux Kernel)<br>
+                    Tippe <span class="cmd">help</span> für eine Liste der Befehle.<br>
+                </div>
+            </div>
+            <div class="terminal-input-line">
+                <span class="prompt">guest@sandro:~$</span>
+                <input type="text" id="terminal-input" autocomplete="off" autofocus>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 1. Typewriter Animation
         const textElement = document.getElementById('typewriter');
@@ -273,23 +309,20 @@
             }
             let typeSpeed = isDeleting ? 50 : 100;
             if (!isDeleting && charIndex === currentPhrase.length) {
-                typeSpeed = 2000;
-                isDeleting = true;
+                typeSpeed = 2000; isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeSpeed = 500;
+                isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500;
             }
             setTimeout(type, typeSpeed);
         }
 
-        // 2. Scroll Reveal & 3. Skill Bar Trigger
+        // 2. Scroll Reveal & Skill Bar Trigger
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
+                var elementVisible = 100;
                 if (elementTop < windowHeight - elementVisible) {
                     reveals[i].classList.add("active");
                 }
@@ -299,15 +332,82 @@
         // Bars füllen
         setTimeout(() => {
             const bars = document.querySelectorAll('.progress-bar');
-            bars.forEach(bar => {
-                bar.style.width = bar.getAttribute('data-width');
-            });
+            bars.forEach(bar => { bar.style.width = bar.getAttribute('data-width'); });
         }, 500);
 
         // Events starten
         document.addEventListener('DOMContentLoaded', type);
         window.addEventListener("scroll", reveal);
-        reveal(); // Initial call
+        reveal();
+
+        // 3. TERMINAL LOGIC
+        const terminalOverlay = document.getElementById('terminal-overlay');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+
+        function toggleTerminal() {
+            if (terminalOverlay.classList.contains('open')) {
+                terminalOverlay.classList.remove('open');
+                setTimeout(() => terminalOverlay.style.display = 'none', 300);
+            } else {
+                terminalOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    terminalOverlay.classList.add('open');
+                    terminalInput.focus();
+                }, 10);
+            }
+        }
+
+        terminalInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value.toLowerCase().trim();
+                const outputLine = document.createElement('div');
+                outputLine.innerHTML = `<span class="prompt">guest@sandro:~$</span> <span class="cmd">${this.value}</span>`;
+                terminalOutput.appendChild(outputLine);
+
+                const responseLine = document.createElement('div');
+                responseLine.style.marginBottom = "10px";
+                responseLine.style.color = "#ccc";
+
+                switch(command) {
+                    case 'help':
+                        responseLine.innerHTML = `Verfügbare Befehle:<br>
+                        - <span class="cmd">whoami</span>: Über mich<br>
+                        - <span class="cmd">skills</span>: Mein Tech-Stack<br>
+                        - <span class="cmd">projects</span>: Meine Projekte<br>
+                        - <span class="cmd">contact</span>: Kontakt<br>
+                        - <span class="cmd">clear</span>: Screen leeren<br>
+                        - <span class="cmd">exit</span>: Schließen`;
+                        break;
+                    case 'whoami':
+                        responseLine.innerHTML = "Sandro Exenberger.<br>Elektroniker, Netzwerktechniker (CCNA) & Schülervertreter.<br>Leidenschaftlicher Linux-User und Maker.";
+                        break;
+                    case 'skills':
+                        responseLine.innerHTML = "• Linux / Debian [Expert]<br>• Cisco CCNA [Certified]<br>• Python / Chatbots<br>• IoT & Electronics";
+                        break;
+                    case 'projects':
+                        responseLine.innerHTML = "• HTL-Incubator Lead (Maker Space)<br>• Stadtwerke Wörgl (WörglWeb)<br>• Regionalvorstand Schülerunion";
+                        break;
+                    case 'contact':
+                        responseLine.innerHTML = "E-Mail: sandro@exemail.at<br>Phone: +43 676 7406799<br>Loc: Schwoich, Tirol";
+                        break;
+                    case 'clear':
+                        terminalOutput.innerHTML = '';
+                        responseLine.innerHTML = '';
+                        break;
+                    case 'exit':
+                        toggleTerminal();
+                        break;
+                    default:
+                        responseLine.innerHTML = `Befehl nicht gefunden: ${command}. Tippe <span class="cmd">help</span>.`;
+                        responseLine.style.color = "#ff5f56";
+                }
+
+                if(command !== 'clear') { terminalOutput.appendChild(responseLine); }
+                this.value = '';
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+        });
     </script>
 </body>
 </html>
