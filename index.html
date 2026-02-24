@@ -20,6 +20,12 @@
             text-align: center;
         }
 
+        /* Container für besseren Lesefluss */
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
         /* Typografie */
         h1 {
             font-size: 2.5rem;
@@ -42,60 +48,67 @@
             transition: opacity 0.2s;
         }
         a:hover {
-            opacity: 0.7;
+            opacity: 0.8;
         }
 
-        /* Der blaue Button */
+        /* Der blaue LinkedIn Button */
         .btn {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 15px;
             padding: 12px 24px;
             background-color: #007aff;
             color: white;
             border-radius: 99px; /* Runde "Pill"-Form */
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3); /* Leichter Schein */
+            text-decoration: none;
         }
         .btn:hover {
             background-color: #0062cc;
-            color: white;
-            opacity: 1;
             transform: scale(1.02); /* Leichter Zoom-Effekt */
+            color: white;
         }
 
-        /* Fußzeile (Impressum Link) */
+        /* Fußzeile (Rechtliches) */
         .footer {
-            margin-top: 60px;
+            margin-top: 80px;
             font-size: 0.85rem;
+            color: #444;
+            border-top: 1px solid #222;
+            padding-top: 20px;
+            width: 100%;
+            max-width: 300px;
         }
         .footer a {
-            color: #444; /* Sehr dezent grau */
-            border-bottom: 1px solid transparent;
+            color: #666;
+            margin: 0 5px;
         }
         .footer a:hover {
-            color: #888;
-            border-bottom: 1px solid #888;
+            color: #aaa;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <div>
+    <div class="container">
         <h1>Sandro Exenberger</h1>
+        
         <p>Willkommen auf meiner persönlichen Website.<br>Hier findest du meine Kontaktmöglichkeiten.</p>
         
         <p>
             E-Mail: <br>
-            <a href="mailto:sandro@exemail.at">sandro@exemail.at</a>
+            <a href="mailto:sandro@exemail.at" style="font-size: 1.2rem; font-weight: 500;">sandro@exemail.at</a>
         </p>
 
         <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" class="btn" target="_blank">
             Mein LinkedIn Profil
         </a>
-    </div>
 
-    <div class="footer">
-        <a href="impressum.html">Impressum</a>
+        <div class="footer">
+            <a href="impressum.html">Impressum</a> &bull; 
+            <a href="datenschutz.html">Datenschutz</a>
+        </div>
     </div>
 
 </body>
