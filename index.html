@@ -34,7 +34,7 @@
         .about-section h2 { border-left: 4px solid #007aff; padding-left: 15px; font-size: 1.6rem; margin-bottom: 20px; }
         .about-section p { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
 
-        /* LEBENSLAUF GRID (NEBENEINANDER) */
+        /* LEBENSLAUF GRID */
         .cv-grid {
             display: flex;
             gap: 30px;
@@ -55,17 +55,34 @@
         }
 
         /* --- FOOTER --- */
-        .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; }
-        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; }
+        .footer-container {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid #222;
+            width: 100%;
+            text-align: center;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
         .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
+        
+        /* Originale Markenfarben */
         .icon-linkedin { fill: #0077b5; }
         .icon-instagram { fill: #E4405F; }
         .icon-github { fill: #ffffff; }
         .icon-mail { fill: #007aff; }
         .icon-phone { fill: #4caf50; }
+        
         .social-icons a:hover .social-icon { transform: scale(1.2); }
+
         .legal-links { font-size: 0.85rem; color: #444; }
         .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
+        .legal-links a:hover { color: #aaa; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -77,13 +94,12 @@
         <div class="about-section">
             <h2>Über mich</h2>
             <p>
-                Ich bin angehender Techniker im Bereich Elektronik und Technischer Informatik an der HTBLVA Anichstraße[cite: 89, 90]. 
-                Neben meiner Ausbildung engagiere ich mich stark als Regionalvorstand Tiroler Unterland bei der Schülerunion Österreich [cite: 19, 27] 
-                sowie als gewählter Schülervertreter für ca. 1600 Mitschüler:innen[cite: 20, 34, 35].
+                Ich bin angehender Techniker mit dem Schwerpunkt Elektronik und Technische Informatik an der HTBLVA Anichstraße in Innsbruck. 
+                Mein technisches Fundament festige ich durch meine CCNA-Zertifizierung sowie fundierte Kenntnisse in Linux-Systemen und IoT-Grundlagen.
             </p>
             <p>
-                Zusätzlich leite ich den "HTL-Incubator", einen Open Maker Space für innovative Projekte an der Schnittstelle von Hardware und Software[cite: 21, 46, 49]. 
-                Mein technischer Fokus liegt auf Netzwerkprotokollen (CCNA-zertifiziert), Linux-Systemen und der Entwicklung innovativer IoT-Lösungen[cite: 5, 10, 11, 22].
+                Parallel zu meiner technischen Ausbildung engagiere ich mich als Regionalvorstand Tiroler Unterland bei der Schülerunion Österreich 
+                und leite den "HTL-Incubator", wo ich Projekte an der Schnittstelle von Hardware und Software vorantreibe.
             </p>
         </div>
 
@@ -93,17 +109,15 @@
                 <div class="cv-item">
                     <span class="cv-date">Seit 09/2022</span>
                     <span class="cv-title">Elektronik & Techn. Informatik</span>
-                    <span class="cv-org">HTBLVA Anichstraße, Innsbruck [cite: 89, 91]</span>
+                    <span class="cv-org">HTBLVA Anichstraße, Innsbruck</span>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">2018 – 2022</span>
                     <span class="cv-title">Mittelschule 2 Kufstein</span>
-                    <span class="cv-org">Abschluss [cite: 92, 93]</span>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">2014 – 2018</span>
                     <span class="cv-title">Volksschule Schwoich</span>
-                    <span class="cv-org">Primarstufe [cite: 94, 95]</span>
                 </div>
             </div>
 
@@ -112,22 +126,22 @@
                 <div class="cv-item">
                     <span class="cv-date">Seit 10/2025</span>
                     <span class="cv-title">Regionalvorstand Tiroler Unterland</span>
-                    <span class="cv-org">Schülerunion Österreich [cite: 27, 28]</span>
+                    <span class="cv-org">Schülerunion Österreich</span>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">Seit 10/2025</span>
                     <span class="cv-title">Gewählte Schülervertretung</span>
-                    <span class="cv-org">SGA-Mitglied, HTBLVA Anichstraße [cite: 34, 37]</span>
+                    <span class="cv-org">HTBLVA Anichstraße</span>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">Seit 06/2025</span>
                     <span class="cv-title">Leitung HTL-Incubator</span>
-                    <span class="cv-org">Open Maker Space [cite: 46, 47, 49]</span>
+                    <span class="cv-org">Open Maker Space</span>
                 </div>
                 <div class="cv-item">
-                    <span class="cv-date">Sommer 2024 & 2025</span>
-                    <span class="cv-title">Praktikum WörglWeb</span>
-                    <span class="cv-org">Stadtwerke Wörgl GmbH [cite: 58, 59, 71, 72]</span>
+                    <span class="cv-date">2024 – 2025</span>
+                    <span class="cv-title">Praktikum Netzwerkinfrastruktur</span>
+                    <span class="cv-org">Stadtwerke Wörgl (WörglWeb)</span>
                 </div>
             </div>
         </div>
