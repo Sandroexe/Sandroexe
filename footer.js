@@ -1,6 +1,6 @@
 // --- KONFIGURATION (HIER ÄNDERN) ---
 const config = {
-    instagram: "https://instagram.com/sandro_exe_2008",
+    instagram: "https://instagram.com/sandro_essen",
     github:    "https://github.com/Sandroexe",
     reddit:    "https://reddit.com/user/Sandro_exe08",
     phone:     "+43 676 7406799",      // Nummer für den Anruf (keine Leerzeichen)
