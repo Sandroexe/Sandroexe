@@ -84,18 +84,62 @@ title: Links
         box-shadow: 0 10px 25px rgba(0, 122, 255, 0.25);
         background: rgba(20, 20, 20, 0.9);
     }
+
+    /* HOME BUTTON HIGHLIGHT */
+    .link-btn-home {
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        margin-bottom: 10px;
+    }
+
+    /* FOOTER FIX & FARBIGE ICONS */
+    .footer-container {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid #222;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-bottom: 20px;
+    }
+    
+    .social-icon {
+        width: 30px;
+        height: 30px;
+        transition: transform 0.3s ease;
+    }
+    
+    /* Markenfarben für die Icons */
+    .icon-linkedin { fill: #0077b5 !important; }
+    .icon-instagram { fill: #E4405F !important; }
+    .icon-github { fill: #ffffff !important; }
+    .icon-mail { fill: #007aff !important; }
+    .icon-phone { fill: #4caf50 !important; }
+    
+    .social-icons a:hover .social-icon {
+        transform: scale(1.3);
+        filter: drop-shadow(0 0 8px currentColor);
+    }
 </style>
 
 <div class="container">
     <div class="links-wrapper">
         <div class="header-links">
             <h1>[NETWORK_LINKS]</h1>
-            <a href="index.html">← TERMINATE_SESSION (BACK TO HOME)</a>
+            <a href="index.html">← TERMINATE_SESSION</a>
         </div>
 
         <img src="profile.jpg" alt="Sandro Exenberger" class="profile-img" onerror="this.src='https://via.placeholder.com/150'">
 
         <div class="links-list">
+            <!-- Link zur Hauptseite -->
+            <a href="index.html" class="link-btn link-btn-home">RETURN_TO_DASHBOARD</a>
+            
             <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" class="link-btn">LINKEDIN_PROFILE</a>
             <a href="https://github.com/Sandroexe" target="_blank" class="link-btn">GITHUB_REPOSITORY</a>
             <a href="https://instagram.com/sandro_exe_2008" target="_blank" class="link-btn">INSTAGRAM_SOCIAL</a>
