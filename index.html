@@ -148,17 +148,60 @@ layout: null
         }
         .terminal-overlay.open { display: flex; opacity: 1; }
         .terminal-window {
-            width: 90%; max-width: 700px; height: 500px; background: #0c0c0c; border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #333; display: flex; flex-direction: column;
-            font-family: 'Courier New', monospace; font-size: 1rem;
+            width: 90%; max-width: 720px; height: 560px; background: #0c0c0c; border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px #222; border: 1px solid #2a2a2a; display: flex; flex-direction: column;
+            font-family: 'Courier New', monospace; font-size: 0.95rem;
         }
-        .terminal-header { background: #1f1f1f; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; color: #ccc; font-size: 0.9rem; }
-        .close-btn { cursor: pointer; color: #ff5f56; font-weight: bold; }
-        .terminal-body { flex: 1; padding: 20px; color: #4caf50; overflow-y: auto; text-align: left; }
-        .terminal-input-line { display: flex; padding: 10px 20px; background: #0c0c0c; }
-        .prompt { color: #007aff; margin-right: 10px; }
-        #terminal-input { background: transparent; border: none; color: #fff; flex: 1; font-family: 'Courier New', monospace; font-size: 1rem; outline: none; }
+        .terminal-header {
+            background: #161616; padding: 10px 16px; display: flex; justify-content: space-between;
+            align-items: center; border-bottom: 1px solid #2a2a2a; color: #777; font-size: 0.85rem;
+            border-radius: 10px 10px 0 0;
+        }
+        .terminal-dots { display: flex; gap: 7px; align-items: center; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-red { background: #ff5f56; cursor: pointer; }
+        .dot-red:hover { filter: brightness(1.3); }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+        .terminal-title-text { color: #555; font-size: 0.85rem; }
+
+        .terminal-body { flex: 1; padding: 16px 20px; color: #4caf50; overflow-y: auto; text-align: left; line-height: 1.6; }
+        .terminal-body::-webkit-scrollbar { width: 6px; }
+        .terminal-body::-webkit-scrollbar-track { background: transparent; }
+        .terminal-body::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        /* Command Chips */
+        .cmd-chips {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; margin-bottom: 4px;
+        }
+        .cmd-chip {
+            background: #1a1a1a; border: 1px solid #333; color: #007aff;
+            padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;
+            cursor: pointer; transition: all 0.2s; font-family: 'Courier New', monospace;
+            user-select: none;
+        }
+        .cmd-chip:hover { background: #007aff; color: #fff; border-color: #007aff; transform: translateY(-1px); }
+
+        /* Output styles */
+        .out-section { color: #ccc; margin-bottom: 12px; }
+        .out-label { color: #007aff; font-weight: bold; display: inline-block; min-width: 80px; }
+        .out-value { color: #e0e0e0; }
+        .out-warn { color: #ff5f56; }
+        .out-success { color: #27c93f; }
+        .out-info { color: #4caf50; }
+        .out-table { border-left: 2px solid #2a2a2a; padding-left: 12px; margin: 6px 0; }
+        .out-table .row { display: flex; gap: 12px; margin: 3px 0; }
+        .out-table .key { color: #666; min-width: 130px; font-size: 0.88rem; }
+        .out-table .val { color: #ddd; font-size: 0.88rem; }
+
+        .terminal-input-area {
+            border-top: 1px solid #1e1e1e; background: #0c0c0c; border-radius: 0 0 10px 10px;
+        }
+        .terminal-input-line { display: flex; padding: 10px 20px; align-items: center; }
+        .prompt { color: #007aff; margin-right: 10px; white-space: nowrap; }
+        #terminal-input { background: transparent; border: none; color: #fff; flex: 1; font-family: 'Courier New', monospace; font-size: 0.95rem; outline: none; }
         .cmd { color: #fff; font-weight: bold; }
+        .cmd-echo { color: #555; }
 
         /* --- FOOTER CSS (wird für das Include benötigt) --- */
         .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; padding-bottom: 40px; }
@@ -285,18 +328,41 @@ layout: null
     <div id="terminal-overlay" class="terminal-overlay">
         <div class="terminal-window">
             <div class="terminal-header">
-                <span class="terminal-title">sandro@exemail:~</span>
-                <span class="close-btn" onclick="toggleTerminal()">✕</span>
+                <div class="terminal-dots">
+                    <div class="terminal-dot dot-red" onclick="toggleTerminal()" title="Schließen"></div>
+                    <div class="terminal-dot dot-yellow"></div>
+                    <div class="terminal-dot dot-green"></div>
+                </div>
+                <span class="terminal-title-text">sandro@sandroOS — bash</span>
+                <span style="width:52px;"></span>
             </div>
             <div class="terminal-body" id="terminal-output">
-                <div style="margin-bottom:10px;">
-                    Welcome to SandroOS v1.0 (Debian/Linux Kernel)<br>
-                    Tippe <span class="cmd">help</span> für eine Liste der Befehle.<br>
+                <div class="out-info" style="margin-bottom:4px;">
+                    ███████  █████  ███    ██ ██████  ██████   ██████  <br>
+                    ██      ██   ██ ████   ██ ██   ██ ██   ██ ██    ██ <br>
+                    ███████ ███████ ██ ██  ██ ██   ██ ██████  ██    ██ <br>
+                         ██ ██   ██ ██  ██ ██ ██   ██ ██   ██ ██    ██ <br>
+                    ███████ ██   ██ ██   ████ ██████  ██   ██  ██████  <br>
+                </div>
+                <div style="color:#555; margin-bottom:14px; font-size:0.8rem;">SandroOS v2.0 — Kernel 6.x.x-cachyos — Uptime: ∞</div>
+                <div class="out-section">
+                    Willkommen! Tippe einen Befehl oder klick einfach einen der Chips unten. 👇
+                </div>
+                <div class="cmd-chips" id="cmd-chips">
+                    <span class="cmd-chip" onclick="runCommand('help')">help</span>
+                    <span class="cmd-chip" onclick="runCommand('whoami')">whoami</span>
+                    <span class="cmd-chip" onclick="runCommand('skills')">skills</span>
+                    <span class="cmd-chip" onclick="runCommand('fetch')">fetch</span>
+                    <span class="cmd-chip" onclick="runCommand('contact')">contact</span>
+                    <span class="cmd-chip" onclick="runCommand('clear')">clear</span>
+                    <span class="cmd-chip" onclick="runCommand('exit')">exit</span>
                 </div>
             </div>
-            <div class="terminal-input-line">
-                <span class="prompt">guest@sandro:~$</span>
-                <input type="text" id="terminal-input" autocomplete="off" autofocus>
+            <div class="terminal-input-area">
+                <div class="terminal-input-line">
+                    <span class="prompt">guest@sandro:~$</span>
+                    <input type="text" id="terminal-input" autocomplete="off" placeholder="Befehl eingeben…">
+                </div>
             </div>
         </div>
     </div>
@@ -410,44 +476,137 @@ layout: null
             }
         }
 
-        terminalInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const command = this.value.toLowerCase().trim();
-                const outputLine = document.createElement('div');
-                outputLine.innerHTML = `<span class="prompt">guest@sandro:~$</span> <span class="cmd">${this.value}</span>`;
-                terminalOutput.appendChild(outputLine);
+        function appendOutput(html, color) {
+            const div = document.createElement('div');
+            div.className = 'out-section';
+            if (color) div.style.color = color;
+            div.innerHTML = html;
+            terminalOutput.appendChild(div);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
 
-                const responseLine = document.createElement('div');
-                responseLine.style.marginBottom = "10px";
-                responseLine.style.color = "#ccc";
+        function appendEcho(cmdText) {
+            const div = document.createElement('div');
+            div.innerHTML = `<span class="prompt">guest@sandro:~$</span> <span class="cmd">${cmdText}</span>`;
+            div.style.marginBottom = '6px';
+            terminalOutput.appendChild(div);
+        }
 
-                switch(command) {
-                    case 'help':
-                        responseLine.innerHTML = `Commands: <span class="cmd">whoami</span>, <span class="cmd">skills</span>, <span class="cmd">contact</span>, <span class="cmd">clear</span>, <span class="cmd">exit</span>`;
-                        break;
-                    case 'whoami':
-                        responseLine.innerHTML = "Sandro Exenberger.<br>Elektroniker, Netzwerktechniker (CCNA) & Schülervertreter.<br>Leidenschaftlicher Linux-User und Maker.";
-                        break;
-                    case 'skills':
-                        responseLine.innerHTML = "• Linux / Debian [Expert]<br>• Cisco CCNA [Certified]<br>• Python / Chatbots<br>• IoT & Electronics";
-                        break;
-                    case 'contact':
-                        responseLine.innerHTML = "E-Mail: sandro@exemail.at<br>Phone: +43 676 7406799<br>Loc: Schwoich, Tirol";
-                        break;
-                    case 'clear':
-                        terminalOutput.innerHTML = '';
-                        responseLine.innerHTML = '';
-                        break;
-                    case 'exit':
-                        toggleTerminal();
-                        break;
-                    default:
-                        responseLine.innerHTML = `Error: Command '${command}' not found.`;
-                        responseLine.style.color = "#ff5f56";
-                }
-                if(command !== 'clear') { terminalOutput.appendChild(responseLine); }
-                this.value = '';
+        const commands = {
+            help: () => `
+                <div style="margin-bottom:8px; color:#aaa;">Verfügbare Befehle:</div>
+                <div class="out-table">
+                    <div class="row"><span class="key" style="color:#007aff;">whoami</span><span class="val">Wer ist Sandro?</span></div>
+                    <div class="row"><span class="key" style="color:#007aff;">skills</span><span class="val">Technische Skills & Zertifikate</span></div>
+                    <div class="row"><span class="key" style="color:#007aff;">fetch</span><span class="val">System-Info (Hardware & OS)</span></div>
+                    <div class="row"><span class="key" style="color:#007aff;">contact</span><span class="val">Kontaktdaten</span></div>
+                    <div class="row"><span class="key" style="color:#007aff;">clear</span><span class="val">Terminal leeren</span></div>
+                    <div class="row"><span class="key" style="color:#007aff;">exit</span><span class="val">Terminal schließen</span></div>
+                </div>
+                <div style="margin-top:8px; color:#555; font-size:0.85rem;">Tipp: Klick einfach auf einen Chip oben ↑ um Befehle schnell auszuführen.</div>
+            `,
+            whoami: () => `
+                <div style="color:#27c93f; font-weight:bold; margin-bottom:6px;">Sandro Exenberger</div>
+                <div class="out-table">
+                    <div class="row"><span class="key">Rolle</span><span class="val">Elektroniker & Netzwerktechniker</span></div>
+                    <div class="row"><span class="key">Zertifikat</span><span class="val">Cisco CCNA ✓</span></div>
+                    <div class="row"><span class="key">Position</span><span class="val">Regionalvorstand Tiroler Unterland (Schülerunion)</span></div>
+                    <div class="row"><span class="key">Schule</span><span class="val">HTBLVA Anichstraße, Innsbruck</span></div>
+                    <div class="row"><span class="key">Interessen</span><span class="val">Linux, Maker-Kultur, IoT, Netzwerke</span></div>
+                    <div class="row"><span class="key">Wohnort</span><span class="val">Schwoich, Tirol 🏔️</span></div>
+                </div>
+            `,
+            skills: () => `
+                <div style="color:#aaa; margin-bottom:8px;">── Tech Stack ──────────────────────</div>
+                <div class="out-table">
+                    <div class="row"><span class="key">🐧 Linux/Debian</span><span class="val out-success">██████████████████░░  90%</span></div>
+                    <div class="row"><span class="key">🌐 Netzwerk (CCNA)</span><span class="val out-success">████████████████████  ZERTIFIZIERT</span></div>
+                    <div class="row"><span class="key">📡 IoT & Elektronik</span><span class="val" style="color:#007aff;">███████████████░░░░░  75%</span></div>
+                    <div class="row"><span class="key">🤖 Chatbot/Python</span><span class="val" style="color:#007aff;">████████████████░░░░  80%</span></div>
+                    <div class="row"><span class="key">🛠️ Maker/Hardware</span><span class="val" style="color:#ffbd2e;">█████████████░░░░░░░  70%</span></div>
+                </div>
+                <div style="color:#555; margin-top:8px; font-size:0.85rem;">Zertifikate: Cisco CCNA | HTL Anichstraße (laufend)</div>
+            `,
+            fetch: () => `
+                <div style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;">
+                    <div style="color:#007aff; font-size:2.2rem; line-height:1; font-family:monospace; white-space:pre; margin-top:4px;">
+ ██████╗
+██╔════╝
+██║
+██║
+╚██████╗
+ ╚═════╝</div>
+                    <div>
+                        <div style="color:#27c93f; font-weight:bold; margin-bottom:8px;">sandro@sandroOS</div>
+                        <div style="color:#333; margin-bottom:8px;">─────────────────────────────────</div>
+                        <div class="out-table">
+                            <div class="row"><span class="key">OS</span><span class="val">CachyOS (Arch) + Windows 11 <span style="color:#555;">[Dual-Boot]</span></span></div>
+                            <div class="row"><span class="key">Kernel</span><span class="val">Linux 6.x.x-cachyos (BORE/EEVDF)</span></div>
+                            <div class="row"><span class="key">CPU</span><span class="val">AMD Ryzen 7 9800X3D <span style="color:#ffbd2e;">⚡ 3D V-Cache</span></span></div>
+                            <div class="row"><span class="key">GPU</span><span class="val">ASUS TUF RTX 5070 OC <span style="color:#4caf50;">[Blackwell]</span></span></div>
+                            <div class="row"><span class="key">RAM</span><span class="val">32 GB Corsair DDR5</span></div>
+                            <div class="row"><span class="key">Storage</span><span class="val">2 TB SSD (NVMe)</span></div>
+                            <div class="row"><span class="key">Shell</span><span class="val">zsh + oh-my-zsh</span></div>
+                            <div class="row"><span class="key">Terminal</span><span class="val">SandroOS v2.0 😎</span></div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            contact: () => `
+                <div style="color:#aaa; margin-bottom:8px;">── Kontakt ──────────────────────────</div>
+                <div class="out-table">
+                    <div class="row"><span class="key">📧 E-Mail</span><span class="val"><a href="mailto:sandro@exemail.at" style="color:#007aff; text-decoration:none;">sandro@exemail.at</a></span></div>
+                    <div class="row"><span class="key">📱 Telefon</span><span class="val">+43 676 7406799</span></div>
+                    <div class="row"><span class="key">📍 Ort</span><span class="val">Schwoich, Tirol, Österreich</span></div>
+                </div>
+            `,
+            clear: () => null,
+            exit: () => null
+        };
+
+        function runCommand(cmd) {
+            const trimmed = cmd.toLowerCase().trim();
+            appendEcho(cmd);
+
+            if (trimmed === 'clear') {
+                terminalOutput.innerHTML = '';
+                // Re-add chips after clear
+                const chipsDiv = document.createElement('div');
+                chipsDiv.className = 'cmd-chips';
+                chipsDiv.id = 'cmd-chips';
+                chipsDiv.innerHTML = `
+                    <span class="cmd-chip" onclick="runCommand('help')">help</span>
+                    <span class="cmd-chip" onclick="runCommand('whoami')">whoami</span>
+                    <span class="cmd-chip" onclick="runCommand('skills')">skills</span>
+                    <span class="cmd-chip" onclick="runCommand('fetch')">fetch</span>
+                    <span class="cmd-chip" onclick="runCommand('contact')">contact</span>
+                    <span class="cmd-chip" onclick="runCommand('clear')">clear</span>
+                    <span class="cmd-chip" onclick="runCommand('exit')">exit</span>
+                `;
+                terminalOutput.appendChild(chipsDiv);
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                return;
+            }
+
+            if (trimmed === 'exit') {
+                toggleTerminal();
+                return;
+            }
+
+            if (commands[trimmed]) {
+                appendOutput(commands[trimmed]());
+            } else {
+                appendOutput(`<span class="out-warn">bash: ${cmd}: command not found</span><br><span style="color:#555;">Tippe <span class="cmd">help</span> für alle verfügbaren Befehle.</span>`);
+            }
+
+            terminalInput.value = '';
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        terminalInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                runCommand(this.value.trim());
+                this.value = '';
             }
         });
 
