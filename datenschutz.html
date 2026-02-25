@@ -7,34 +7,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datenschutz | Sandro Exenberger</title>
     <style>
+        /* --- DESIGN-TOKENS --- */
         :root {
             --accent: #007aff;
             --bg: #0f0f0f;
             --card-bg: rgba(26, 26, 26, 0.95);
         }
+
+        /* --- GRUNDLAYOUT --- */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--bg);
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 40px 20px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            line-height: 1.6;
+            min-height: 100vh; /* Sorgt dafür, dass die Seite immer mindestens den ganzen Bildschirm ausfüllt */
         }
-        .container { max-width: 800px; width: 100%; position: relative; z-index: 2; }
+
+        /* Container nimmt den restlichen Platz ein und drückt den Footer nach unten */
+        .container { 
+            max-width: 800px; 
+            width: 100%; 
+            padding: 40px 20px; 
+            flex: 1 0 auto; 
+        }
+
         .content-box {
-            margin-top: 20px; text-align: left; padding: 40px;
-            background: var(--card-bg); border-radius: 16px; border: 1px solid #222;
+            background: var(--card-bg); 
+            border-radius: 16px; 
+            border: 1px solid #222;
+            padding: 40px;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        h1 { color: var(--accent); font-size: 2rem; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        h2 { font-size: 1.2rem; color: #fff; margin-top: 30px; }
-        p, li { color: #ccc; }
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .back-nav { margin-bottom: 20px; }
-        .back-nav a { font-weight: bold; }
+
+        h1 { color: var(--accent); font-size: 2.2rem; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        h2 { font-size: 1.3rem; color: #fff; margin-top: 35px; margin-bottom: 10px; }
+        p, li { color: #ccc; line-height: 1.7; font-size: 0.95rem; }
+        
+        a { color: var(--accent); text-decoration: none; transition: 0.2s; }
+        a:hover { text-decoration: underline; color: #66b3ff; }
+        
+        .back-nav { margin-bottom: 25px; }
+        .back-nav a { font-weight: 600; font-size: 1.05rem; }
+        
+        /* --- FOOTER CSS --- */
+        .footer-container { 
+            padding: 30px 20px 40px 20px; 
+            border-top: 1px solid #222; 
+            width: 100%; 
+            text-align: center; 
+            flex-shrink: 0; 
+            background: var(--bg);
+        }
+        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
+        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
+        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
+        .social-icons a:hover .social-icon { transform: scale(1.25); }
+        .legal-links { font-size: 0.85rem; color: #444; margin-top: 20px; }
+        .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -62,16 +100,15 @@
             <h2>6. Ihre Rechte</h2>
             <p>Ihnen stehen grundsätzlich die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerruf und Widerspruch zu. Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt oder Ihre datenschutzrechtlichen Ansprüche sonst in einer Weise verletzt worden sind, können Sie sich bei der Aufsichtsbehörde beschweren. In Österreich ist dies die Datenschutzbehörde.</p>
 
-            <p style="margin-top: 30px; font-size: 0.9rem;">
+            <p style="margin-top: 40px; font-size: 0.95rem; border-top: 1px solid #333; padding-top: 20px;">
                 <strong>Verantwortlich für den Datenschutz:</strong><br>
                 Sandro Exenberger<br>
-                E-Mail: sandro@exemail.at
+                E-Mail: <a href="mailto:sandro@exemail.at">sandro@exemail.at</a>
             </p>
         </div>
-
-        <!-- ZENTRALER FOOTER -->
-        {% include footer.html %}
-        
     </div>
+
+    <!-- ZENTRALER FOOTER -->
+    {% include footer.html %}
 </body>
 </html>
