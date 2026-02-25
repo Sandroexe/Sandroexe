@@ -4,13 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }} | Sandro Exenberger</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        /* --- ZENTRALE DESIGN-TOKENS --- */
+        :root {
+            --accent: #007aff;
+            --bg: #050505;
+            --card-bg: rgba(26, 26, 26, 0.95);
+            --border: #222;
+        }
+        
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- HINTERGRUND-CANVAS --- */
+        #network-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* --- ZENTRALE LAYOUT-ELEMENTE --- */
+        main {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container { 
+            max-width: 1100px; 
+            width: 100%; 
+            margin: 0 auto; 
+            padding: 40px 20px;
+        }
+
+        /* --- GEMEINSAME KOMPONENTEN (VON VORHIN) --- */
+        .content-box, .spec-group, .summary-box, .project-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 30px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Der blaue Hover-Effekt für alle Boxen */
+        .content-box:hover, .spec-group:hover, .summary-box:hover, .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25);
+        }
+
+        h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 1.6rem; margin-bottom: 20px; color: #fff; }
+        p { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
+
+        /* SCROLL-REVEAL ANIMATION */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0056b3; }
+    </style>
 </head>
 <body>
-    <!-- Hier wird der Inhalt der jeweiligen Seite eingefügt -->
-    {{ content }}
 
-    <!-- Hier wird der zentrale Footer automatisch geladen -->
+    <!-- Zentraler Hintergrund (Nodes) -->
+    <canvas id="network-canvas"></canvas>
+
+    <main>
+        {{ content }}
+    </main>
+
+    <!-- Zentraler Footer -->
     {% include footer.html %}
+
+    <script>
+        // --- PARTICLE NETWORK LOGIC ---
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
+                    if (dist < 120) {
+                        ctx.strokeStyle = `rgba(0, 122, 255, ${1 - dist / 120})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // --- SCROLL REVEAL LOGIC ---
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add("active");
+                }
+            });
+        }
+
+        window.addEventListener("scroll", reveal);
+        
+        // Initialisierung
+        init();
+        animate();
+        reveal();
+    </script>
 </body>
 </html>
