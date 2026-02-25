@@ -1,36 +1,26 @@
-# =============================================
-# SANDRO EXENBERGER — JEKYLL CONFIGURATION
-# =============================================
-
 title: "Sandro Exenberger"
-tagline: "Elektroniker · Netzwerktechniker · Maker"
-description: "Portfolio von Sandro Exenberger — CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schülerunion Österreich."
+tagline: "Elektroniker & Netzwerktechniker & Maker"
+description: "Portfolio von Sandro Exenberger - CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schuelerunion Oesterreich."
 url: "https://exemail.at"
 baseurl: ""
 
 author:
   name: "Sandro Exenberger"
   email: "sandro@exemail.at"
-  location: "Schwoich, Tirol, Österreich"
+  location: "Schwoich, Tirol, Oesterreich"
   github: "Sandroexe"
   linkedin: "sandro-exenberger-1a5486315"
   instagram: "sandro_exe_2008"
 
-# Build settings
 markdown: kramdown
-theme: null
 plugins: []
 
-# Exclude from build
 exclude:
   - README.md
-  - "*.sh"
   - .gitignore
 
-# Permalink style
 permalink: pretty
 
-# Default front matter
 defaults:
   - scope:
       path: ""
