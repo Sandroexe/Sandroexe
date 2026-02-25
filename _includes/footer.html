@@ -18,12 +18,19 @@
         </a>
     </div>
 
+    <!-- NEU: SCHNELLE NAVIGATION -->
+    <div style="font-size: 0.95rem; margin-top: 25px; margin-bottom: 10px;">
+        <a href="index.html" style="color: #888; margin: 0 10px; text-decoration: none; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='#007aff'" onmouseout="this.style.color='#888'">Startseite</a> &bull;
+        <a href="projects.html" style="color: #888; margin: 0 10px; text-decoration: none; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='#007aff'" onmouseout="this.style.color='#888'">Projekte</a> &bull;
+        <a href="lab.html" style="color: #888; margin: 0 10px; text-decoration: none; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='#007aff'" onmouseout="this.style.color='#888'">Lab / Setup</a> &bull;
+        <a href="links.html" style="color: #888; margin: 0 10px; text-decoration: none; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='#007aff'" onmouseout="this.style.color='#888'">Links</a>
+    </div>
+
     <!-- RECHTLICHES & JAHR -->
-    <div class="legal-links">
+    <div class="legal-links" style="margin-top: 10px;">
         <a href="impressum.html">Impressum</a> &bull; 
         <a href="datenschutz.html">Datenschutz</a> &bull; 
-        <!-- Kleiner Jekyll-Trick: Das Jahr aktualisiert sich hierdurch beim Veröffentlichen automatisch! -->
-        <span>{{ 'now' | date: "%Y" }}</span>
+        <span style="color: #444; margin-left: 10px;">{{ 'now' | date: "%Y" }}</span>
     </div>
 
     <!-- DAS KOPIER-SCRIPT FÜR DIE E-MAIL (Muss im Footer sein, damit es überall funktioniert) -->
