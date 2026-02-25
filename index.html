@@ -1,29 +1,19 @@
----
----
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandro Exenberger | Portfolio</title>
-    <!-- Open Graph für Social Media Previews -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Sandro Exenberger | Elektroniker & Netzwerktechniker">
     <meta property="og:description" content="Portfolio von Sandro Exenberger: CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schülerunion.">
     <link rel="icon" type="image/x-icon" href="favicon.ico"> 
 
     <style>
-        /* --- DESIGN-TOKENS --- */
-        :root {
-            --accent: #007aff;
-            --bg: #0f0f0f;
-            --card-bg: rgba(26, 26, 26, 0.95);
-            --text-dim: #aaa;
-            --hacker-green: #00ff00;
-        }
-
+        /* --- GRUNDDESIGN & SCROLLBAR --- */
         body {
-            background-color: var(--bg);
+            background-color: #0f0f0f;
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
@@ -35,25 +25,26 @@
             scroll-behavior: smooth;
         }
 
-        /* --- CUSTOM SCROLLBAR --- */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { background: #007aff; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0056b3; }
 
         .container { max-width: 900px; width: 100%; text-align: center; position: relative; z-index: 2; }
 
-        /* --- HINTERGRUND ANIMATION --- */
+        /* NETZWERK HINTERGRUND */
         #network-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; opacity: 0.4; pointer-events: none;
         }
 
-        /* --- NAME & GLITCH EFFEKT --- */
+        /* GLITCH EFFEKT NAME */
         h1 { 
             font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; letter-spacing: -1px; 
             position: relative; display: inline-block; cursor: default;
         }
-        h1:hover { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; color: var(--accent); }
+        h1:hover { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; color: #007aff; }
         @keyframes glitch {
             0% { transform: translate(0) }
             20% { transform: translate(-2px, 2px) }
@@ -63,146 +54,151 @@
             100% { transform: translate(0) }
         }
         
+        /* TYPEWRITER STYLING */
         .subtitle { 
-            color: var(--accent); font-size: 1.3rem; margin-bottom: 2rem; font-weight: 600; 
+            color: #007aff; font-size: 1.3rem; margin-bottom: 3rem; font-weight: 600; 
             text-transform: uppercase; letter-spacing: 1px; min-height: 1.5em;
         }
         .cursor { display: inline-block; width: 2px; background-color: #fff; animation: blink 1s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* --- NAVIGATION --- */
-        .subpage-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
-        .nav-btn {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid #333; color: #fff;
-            padding: 10px 25px; border-radius: 30px; text-decoration: none; font-weight: 600;
-            font-size: 0.9rem; transition: 0.3s;
-        }
-        .nav-btn:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3); }
+        /* SCROLL ANIMATION (REVEAL) */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* --- CONTENT BOXES --- */
+        /* BOX-DESIGN (Standard) */
         .content-box {
             margin-top: 40px; text-align: left; padding: 30px;
-            background: var(--card-bg); border-radius: 16px; border: 1px solid #222;
+            background: rgba(26, 26, 26, 0.95); border-radius: 16px; border: 1px solid #222;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3); backdrop-filter: blur(5px);
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        .content-box:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25); }
-        .content-box h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 1.6rem; margin-bottom: 20px; color: #fff; }
+        .content-box:hover {
+            transform: translateY(-5px); border-color: #007aff;
+            box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25);
+        }
+        .content-box h2 { border-left: 4px solid #007aff; padding-left: 15px; font-size: 1.6rem; margin-bottom: 20px; color: #fff; }
+        .content-box p { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
 
-        /* --- HARDWARE STATS --- */
-        .hw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 15px; }
-        .hw-stat { background: #0c0c0c; padding: 15px; border-radius: 8px; border: 1px solid #333; }
-        .hw-label { color: #666; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 5px; font-family: monospace; }
-        .hw-value { color: #fff; font-size: 0.95rem; font-weight: bold; }
-        .hw-bar { height: 4px; background: #222; margin-top: 8px; border-radius: 2px; overflow: hidden; }
-        .hw-progress { height: 100%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-
-        /* --- SKILL BARS --- */
+        /* SKILL BARS */
         .skill-item { margin-bottom: 15px; }
         .skill-info { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.95rem; color: #ddd; }
         .progress-bg { background: #333; border-radius: 10px; height: 8px; width: 100%; overflow: hidden; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #00c6ff); border-radius: 10px; width: 0%; transition: width 1.5s ease-in-out; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #007aff, #00c6ff); border-radius: 10px; width: 0%; transition: width 1.5s ease-in-out; }
 
-        /* --- TIMELINE --- */
+        /* --- TIMELINE DESIGN --- */
         .cv-grid { display: flex; gap: 40px; margin-top: 40px; text-align: left; }
         .cv-column { flex: 1; position: relative; }
-        .cv-column h2 { font-size: 1.5rem; color: #fff; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .cv-column::before { content: ''; position: absolute; top: 60px; bottom: 0; left: 9px; width: 2px; background: #333; }
         
-        .cv-item { margin-bottom: 40px; position: relative; padding-left: 35px; transition: transform 0.3s ease; }
-        .cv-item::before { content: ''; position: absolute; left: 0; top: 5px; width: 16px; height: 16px; border-radius: 50%; background: #111; border: 3px solid var(--accent); z-index: 2; transition: 0.3s; }
-        .cv-item:hover { transform: translateX(5px); }
-        .cv-item:hover::before { background: var(--accent); box-shadow: 0 0 15px var(--accent); }
-        
-        .cv-date { color: var(--accent); font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .cv-title { font-weight: 700; font-size: 1.2rem; display: block; color: #fff; margin-bottom: 5px; }
-        .cv-org { color: #888; font-size: 0.95rem; display: block; margin-bottom: 8px; font-weight: 600; }
-        .cv-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+        /* Überschrift der Spalte */
+        .cv-column h2 { 
+            font-size: 1.5rem; color: #fff; margin-bottom: 30px; 
+            border-bottom: 2px solid #333; padding-bottom: 10px; 
+        }
 
-        /* --- TERMINAL --- */
-        .terminal-toggle { position: fixed; bottom: 20px; right: 20px; background: #1a1a1a; border: 1px solid #333; color: var(--accent); padding: 12px 18px; border-radius: 30px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: monospace; font-weight: bold; z-index: 1000; transition: 0.3s; }
-        .terminal-toggle:hover { background: var(--accent); color: white; transform: translateY(-3px); }
-        .terminal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 2000; }
-        .terminal-window { width: 90%; max-width: 700px; height: 500px; background: #0c0c0c; border-radius: 8px; border: 1px solid #333; display: flex; flex-direction: column; font-family: 'Courier New', monospace; }
-        .terminal-header { background: #1f1f1f; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; color: #ccc; }
+        /* Die vertikale Linie */
+        .cv-column::before {
+            content: ''; position: absolute; top: 60px; bottom: 0; left: 9px; 
+            width: 2px; background: #333;
+        }
+
+        .cv-item {
+            margin-bottom: 40px; position: relative; padding-left: 35px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Der Punkt auf der Zeitachse */
+        .cv-item::before {
+            content: ''; position: absolute; left: 0; top: 5px;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #111; border: 3px solid #007aff;
+            transition: all 0.3s ease; z-index: 2;
+        }
+
+        /* Hover Effekt für Timeline Items */
+        .cv-item:hover { transform: translateX(5px); }
+        .cv-item:hover::before { background: #007aff; box-shadow: 0 0 15px #007aff; }
+
+        .cv-date { color: #007aff; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .cv-title { font-weight: 700; font-size: 1.2rem; display: block; color: #fff; margin-bottom: 3px; }
+        .cv-org { color: #aaa; font-size: 1rem; display: block; font-weight: 600; margin-bottom: 5px; }
+        .cv-desc { color: #888; font-size: 0.9rem; line-height: 1.5; }
+
+        @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
+
+
+        /* --- TERMINAL STYLES --- */
+        .terminal-toggle {
+            position: fixed; bottom: 20px; right: 20px;
+            background: #1a1a1a; border: 1px solid #333; color: #007aff;
+            padding: 12px 18px; border-radius: 30px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px;
+            font-family: 'Courier New', monospace; font-weight: bold; transition: 0.3s; z-index: 1000;
+        }
+        .terminal-toggle:hover { background: #007aff; color: white; transform: translateY(-3px); }
+        .terminal-toggle svg { width: 20px; fill: currentColor; }
+
+        .terminal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; transition: opacity 0.3s;
+        }
+        .terminal-overlay.open { display: flex; opacity: 1; }
+        .terminal-window {
+            width: 90%; max-width: 700px; height: 500px; background: #0c0c0c; border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #333; display: flex; flex-direction: column;
+            font-family: 'Courier New', monospace; font-size: 1rem;
+        }
+        .terminal-header { background: #1f1f1f; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; color: #ccc; font-size: 0.9rem; }
+        .close-btn { cursor: pointer; color: #ff5f56; font-weight: bold; }
         .terminal-body { flex: 1; padding: 20px; color: #4caf50; overflow-y: auto; text-align: left; }
         .terminal-input-line { display: flex; padding: 10px 20px; background: #0c0c0c; }
-        .prompt { color: var(--accent); margin-right: 10px; }
-        #terminal-input { background: transparent; border: none; color: #fff; flex: 1; outline: none; font-family: inherit; font-size: 1rem; }
+        .prompt { color: #007aff; margin-right: 10px; }
+        #terminal-input { background: transparent; border: none; color: #fff; flex: 1; font-family: 'Courier New', monospace; font-size: 1rem; outline: none; }
         .cmd { color: #fff; font-weight: bold; }
 
-        /* --- FOOTER CSS (wird für das Include benötigt) --- */
-        .footer-container { margin-top: 80px; padding: 30px 0 40px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; }
+        /* --- FOOTER --- */
+        .footer-container { margin-top: 80px; padding-top: 30px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; padding-bottom: 40px; }
         .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
         .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
-        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
+        
+        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: #007aff; } .icon-phone { fill: #4caf50; }
         .social-icons a:hover .social-icon { transform: scale(1.25); }
-        .legal-links { font-size: 0.85rem; color: #444; margin-top: 20px; }
+        .legal-links { font-size: 0.85rem; color: #444; }
         .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
-
-        @media (max-width: 768px) { .cv-grid { flex-direction: column; } .subpage-nav { gap: 10px; } }
+        .legal-links a:hover { color: #aaa; text-decoration: underline; }
     </style>
 </head>
 <body>
 
+    <!-- 1. NETZWERK HINTERGRUND -->
     <canvas id="network-canvas"></canvas>
 
     <div class="container">
-        <h1>Sandro Exenberger</h1>
+        <!-- 2. NAME MIT GLITCH EFFEKT -->
+        <h1 title="Sandro Exenberger">Sandro Exenberger</h1>
         
+        <!-- 3. TYPEWRITER ANIMATION -->
         <div class="subtitle">
             Ich bin <span id="typewriter"></span><span class="cursor">&nbsp;</span>
         </div>
-
-        <div class="subpage-nav">
-            <a href="projects.html" class="nav-btn">📁 Projekte</a>
-            <a href="lab.html" class="nav-btn">🔬 Lab / Setup</a>
-            <a href="links.html" class="nav-btn">🔗 Links</a>
-        </div>
         
+        <!-- 4. ÜBER MICH (AUS LINKEDIN) -->
         <div class="content-box reveal">
             <h2>Über mich</h2>
             <p>
-                Ich bin angehender Techniker mit dem Schwerpunkt Elektronik und Technische Informatik an der HTBLVA Anichstraße in Innsbruck. 
-                Mein technisches Fundament festige ich durch meine CCNA-Zertifizierung sowie fundierte Kenntnisse in Linux-Systemen und IoT-Grundlagen.
+                Als Regionalvorstand für das Tiroler Unterland bei der Schülerunion Österreich setze ich mich aktiv für die Anliegen von Schüler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktlösung ein. Parallel dazu vertrete ich als Schülervertreter an der HTBLVA Anichstraße die Interessen von etwa 1600 Schüler:innen im Schulgemeinschaftsausschuss.
             </p>
             <p>
-                Parallel zu meiner technischen Ausbildung engagiere ich mich als Regionalvorstand Tiroler Unterland bei der Schülerunion Österreich 
-                und leite den "HTL-Incubator", wo ich Projekte an der Schnittstelle von Hardware und Software vorantreibe.
+                Neben meiner organisatorischen Tätigkeit leite ich den "HTL-Incubator", einen Open Maker Space, in dem ich Mitschüler bei der Nutzung moderner Technologien unterstütze. Mein technisches Wissen vertiefe ich durch meine Ausbildung in Elektronik und Technischer Informatik sowie durch meine CCNA-Zertifizierung. Mein Ziel ist es, innovative Projekte an der Schnittstelle von Hardware, Software und Mechanik voranzutreiben.
             </p>
         </div>
 
-        <!-- PC SETUP HARDWARE CARD -->
-        <div class="content-box reveal">
-            <h2>System Configuration</h2>
-            <div class="hw-grid">
-                <div class="hw-stat">
-                    <div class="hw-label">Processor</div>
-                    <div class="hw-value">Ryzen 7 9800X3D</div>
-                    <div class="hw-bar"><div class="hw-progress" style="width: 100%;"></div></div>
-                </div>
-                <div class="hw-stat">
-                    <div class="hw-label">Graphics</div>
-                    <div class="hw-value">RTX 5070 Asus TUF OC</div>
-                    <div class="hw-bar"><div class="hw-progress" style="width: 100%;"></div></div>
-                </div>
-                <div class="hw-stat">
-                    <div class="hw-label">Memory</div>
-                    <div class="hw-value">32GB DDR5 RAM</div>
-                    <div class="hw-bar"><div class="hw-progress" style="width: 45%;"></div></div>
-                </div>
-                <div class="hw-stat">
-                    <div class="hw-label">Environment</div>
-                    <div class="hw-value">CachyOS / Windows 11</div>
-                    <div style="margin-top: 8px; font-size: 0.75rem; color: #4caf50;">● Multi-Boot Active</div>
-                </div>
-            </div>
-        </div>
-
+        <!-- 5. TECH STACK -->
         <div class="content-box reveal">
             <h2>Tech Stack</h2>
             <div class="skill-item">
-                <div class="skill-info"><span>🐧 Linux / CachyOS</span><span>Fortgeschritten</span></div>
+                <div class="skill-info"><span>🐧 Linux / Debian</span><span>Fortgeschritten</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="85%"></div></div>
             </div>
             <div class="skill-item">
@@ -210,16 +206,16 @@
                 <div class="progress-bg"><div class="progress-bar" data-width="90%"></div></div>
             </div>
             <div class="skill-item">
-                <div class="skill-info"><span>📡 IoT & Mikrocontroller</span><span>Erfahren</span></div>
+                <div class="skill-info"><span>📡 IoT & Elektronik</span><span>Erfahren</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="75%"></div></div>
             </div>
             <div class="skill-item">
-                <div class="skill-info"><span>🖨️ 3D-Druck / Maker Space</span><span>Experte</span></div>
-                <div class="progress-bg"><div class="progress-bar" data-width="95%"></div></div>
+                <div class="skill-info"><span>🤖 Chatbot-Entwicklung</span><span>Fortgeschritten</span></div>
+                <div class="progress-bg"><div class="progress-bar" data-width="80%"></div></div>
             </div>
         </div>
 
-        <!-- TIMELINE MIT VOLKSSCHULE -->
+        <!-- 6. LEBENSLAUF (TIMELINE DESIGN) -->
         <div class="cv-grid reveal">
             <div class="cv-column">
                 <h2>Schullaufbahn</h2>
@@ -227,159 +223,253 @@
                     <span class="cv-date">Seit 09/2022</span>
                     <span class="cv-title">Elektronik & Techn. Informatik</span>
                     <span class="cv-org">HTBLVA Anichstraße, Innsbruck</span>
-                    <div class="cv-desc">Fokus auf Netzwerktechnik (Cisco CCNA), Schaltungsentwurf und Mikrocontroller-Programmierung (C/C++). Aktive Mitarbeit an technischen Innovationsprojekten.</div>
+                    <div class="cv-desc">Ausbildung zum Elektroniker / Netzwerktechniker. Fokus auf Hardware, Software und Mechanik.</div>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">2018 – 2022</span>
                     <span class="cv-title">Mittelschule 2 Kufstein</span>
-                    <span class="cv-org">Schwerpunkt: Technik & Informatik</span>
-                    <div class="cv-desc">Erste Erfahrungen in der IT-Infrastruktur und grundlegender Programmierung. Abschluss mit ausgezeichnetem Erfolg.</div>
+                    <span class="cv-org">Allgemeinbildung</span>
+                    <div class="cv-desc">Erfolgreicher Abschluss der Unterstufe mit dem Fokus auf eine fundierte Allgemeinbildung als Basis für die weitere Schullaufbahn.</div>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">2014 – 2018</span>
                     <span class="cv-title">Volksschule Schwoich</span>
                     <span class="cv-org">Primarausbildung</span>
-                    <div class="cv-desc">Grundschulausbildung in meiner Heimatgemeinde Schwoich. Erster Kontakt mit grundlegenden IT-Themen im Rahmen des Unterrichts.</div>
+                    <div class="cv-desc">Vierjährige Grundschulausbildung in meiner Heimatgemeinde Schwoich.</div>
                 </div>
             </div>
 
             <div class="cv-column">
                 <h2>Beruf & Engagement</h2>
                 <div class="cv-item">
-                    <span class="cv-date">Seit 10/2025</span>
-                    <span class="cv-title">Regionalvorstand Unterland</span>
+                    <span class="cv-date">Okt 2025 – Heute</span>
+                    <span class="cv-title">Regionalvorstand Tiroler Unterland</span>
                     <span class="cv-org">Schülerunion Österreich</span>
-                    <div class="cv-desc">Vertretung der Schülerinteressen im Tiroler Unterland. Organisation von Bildungsveranstaltungen und Vernetzung der Schülervertreter in der Region.</div>
+                    <div class="cv-desc">Einsatz für Schüleranliegen, Kommunikation und Konfliktlösung.</div>
                 </div>
                 <div class="cv-item">
-                    <span class="cv-date">Seit 06/2025</span>
+                    <span class="cv-date">Okt 2025 – Heute</span>
+                    <span class="cv-title">Gewählte Schülervertretung</span>
+                    <span class="cv-org">HTBLVA Anichstraße</span>
+                    <div class="cv-desc">Interessenvertretung von ca. 1600 Schüler:innen im Schulgemeinschaftsausschuss (SGA).</div>
+                </div>
+                <div class="cv-item">
+                    <span class="cv-date">Jun 2025 – Heute</span>
                     <span class="cv-title">Leitung HTL-Incubator</span>
-                    <span class="cv-org">Open Maker Space</span>
-                    <div class="cv-desc">Verantwortlich für den Betrieb des schulinternen Maker-Spaces. Wartung von 3D-Druckern und Lasercuttern sowie technische Beratung bei Schülerprojekten.</div>
+                    <span class="cv-org">HTBLVA Anichstraße</span>
+                    <div class="cv-desc">Leitung des Open Maker Space, Unterstützung bei modernen Technologien.</div>
                 </div>
                 <div class="cv-item">
-                    <span class="cv-date">Sommer 2024 & 2025</span>
-                    <span class="cv-title">Praktikum Netzwerktechnik</span>
-                    <span class="cv-org">Stadtwerke Wörgl (WörglWeb)</span>
-                    <div class="cv-desc">Praktische Arbeit an der Glasfaser-Infrastruktur. Einblick in ISP-Betrieb, IP-Management und Fehlerbehebung in großen Netzwerken.</div>
+                    <span class="cv-date">Jul 2024 – Aug 2024</span>
+                    <span class="cv-title">Praktikum WörglWeb</span>
+                    <span class="cv-org">Stadtwerke Wörgl GmbH</span>
+                    <div class="cv-desc">Installation/Wartung Netzwerkinfrastruktur, Außendienst, Fehlerbehebung beim Kunden, Vorkonfiguration von Hardware.</div>
                 </div>
             </div>
         </div>
         
-        <!-- HIER WIRD NUN DEIN ZENTRALER FOOTER GELADEN -->
-        {% include footer.html %}
-        
+        <!-- 7. FOOTER -->
+        <div class="footer-container reveal">
+            <div class="social-icons">
+                <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" title="LinkedIn">
+                    <svg class="social-icon icon-linkedin" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://instagram.com/sandro_exe_2008" target="_blank" title="Instagram">
+                    <svg class="social-icon icon-instagram" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.36-.2 6.78-2.618 6.98-6.98.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.2-4.361-2.617-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://github.com/Sandroexe" target="_blank" title="GitHub">
+                    <svg class="social-icon icon-github" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+                <a href="mailto:sandro@exemail.at" title="E-Mail">
+                    <svg class="social-icon icon-mail" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </a>
+                <a href="tel:+436767406799" title="Anrufen">
+                    <svg class="social-icon icon-phone" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                </a>
+            </div>
+            <div class="legal-links">
+                <a href="impressum.html">Impressum</a> &bull; 
+                <a href="datenschutz.html">Datenschutz</a>
+            </div>
+        </div>
     </div>
 
     <!-- TERMINAL FEATURE -->
     <div class="terminal-toggle" onclick="toggleTerminal()" title="Terminal öffnen">
-        <svg viewBox="0 0 24 24"><path d="M7.5 17l-1.41-1.41L9.67 12 6.09 8.41 7.5 7l5 5-5 5zM18 17h-6v-2h6v2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM0 0h24v24H0z" fill="none"/><path d="M12 10l-2-2-6 6 1.41 1.41L12 8.83l7.59 7.59L21 15z" fill="none"/><path d="M7.5 17l-1.41-1.41L9.67 12 6.09 8.41 7.5 7l5 5-5 5zM18 17h-6v-2h6v2z"/></svg>
         <span>_CMD</span>
     </div>
 
     <div id="terminal-overlay" class="terminal-overlay">
         <div class="terminal-window">
-            <div class="terminal-header"><span>sandro@CachyOS:~</span><span class="close-btn" onclick="toggleTerminal()">✕</span></div>
-            <div class="terminal-body" id="terminal-output">
-                <div>Welcome to SandroOS v1.3 (CachyOS Kernel)<br>Befehle: <span class="cmd">fetch</span>, <span class="cmd">lab</span>, <span class="cmd">projects</span>, <span class="cmd">links</span></div>
+            <div class="terminal-header">
+                <span class="terminal-title">sandro@exemail:~</span>
+                <span class="close-btn" onclick="toggleTerminal()">✕</span>
             </div>
-            <div class="terminal-input-line"><span class="prompt">guest@sandro:~$</span><input type="text" id="terminal-input" autocomplete="off" autofocus></div>
+            <div class="terminal-body" id="terminal-output">
+                <div style="margin-bottom:10px;">
+                    Welcome to SandroOS v1.0 (Debian/Linux Kernel)<br>
+                    Tippe <span class="cmd">help</span> für eine Liste der Befehle.<br>
+                </div>
+            </div>
+            <div class="terminal-input-line">
+                <span class="prompt">guest@sandro:~$</span>
+                <input type="text" id="terminal-input" autocomplete="off" autofocus>
+            </div>
         </div>
     </div>
 
+    <!-- SCRIPTS -->
     <script>
-        // 1. TYPEWRITER EFFECT
+        // 1. TYPEWRITER ANIMATION
         const textElement = document.getElementById('typewriter');
-        const phrases = ["Elektroniker", "Netzwerktechniker", "Linux-User", "Schülervertreter", "Maker"];
-        let phraseIndex = 0, charIndex = 0, isDeleting = false;
+        const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter", "Maker"];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
 
         function type() {
             const currentPhrase = phrases[phraseIndex];
-            textElement.textContent = currentPhrase.substring(0, isDeleting ? charIndex - 1 : charIndex + 1);
-            charIndex = isDeleting ? charIndex - 1 : charIndex + 1;
-            let speed = isDeleting ? 50 : 100;
-            if (!isDeleting && charIndex === currentPhrase.length) { speed = 2000; isDeleting = true; } 
-            else if (isDeleting && charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; speed = 500; }
-            setTimeout(type, speed);
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            let typeSpeed = isDeleting ? 50 : 100;
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000; isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500;
+            }
+            setTimeout(type, typeSpeed);
         }
 
         // 2. SCROLL REVEAL
         function reveal() {
-            document.querySelectorAll(".reveal").forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add("active");
-            });
-        }
-        window.addEventListener("scroll", reveal);
-        setTimeout(() => { document.querySelectorAll('.progress-bar').forEach(b => b.style.width = b.getAttribute('data-width')); }, 500);
-
-        // 3. CANVAS BACKGROUND
-        const canvas = document.getElementById('network-canvas'), ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        class Particle {
-            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.vx = (Math.random()-0.5)*0.5; this.vy = (Math.random()-0.5)*0.5; }
-            update() { this.x += this.vx; this.y += this.vy; if(this.x<0||this.x>canvas.width) this.vx*=-1; if(this.y<0||this.y>canvas.height) this.vy*=-1; }
-        }
-        for(let i=0; i<80; i++) particles.push(new Particle());
-        function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            particles.forEach(p => {
-                p.update(); ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
-                particles.forEach(p2 => {
-                    let d = Math.sqrt((p.x-p2.x)**2 + (p.y-p2.y)**2);
-                    if(d<120) { ctx.strokeStyle = `rgba(0,122,255,${1-d/120})`; ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p2.x,p2.y); ctx.stroke(); }
-                });
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // 4. TERMINAL LOGIC
-        const terminalOverlay = document.getElementById('terminal-overlay'), terminalInput = document.getElementById('terminal-input'), terminalOutput = document.getElementById('terminal-output');
-        function toggleTerminal() { terminalOverlay.style.display = (terminalOverlay.style.display === 'flex') ? 'none' : 'flex'; terminalInput.focus(); }
-        
-        terminalInput.addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-                const cmd = terminalInput.value.toLowerCase().trim();
-                const out = document.createElement('div');
-                out.innerHTML = `<span class="prompt">guest@sandro:~$</span> <span class="cmd">${terminalInput.value}</span>`;
-                terminalOutput.appendChild(out);
-                const res = document.createElement('div');
-                res.style.marginBottom = "10px";
-
-                switch(cmd) {
-                    case 'help': res.innerHTML = "Commands: <span class='cmd'>fetch</span>, <span class='cmd'>lab</span>, <span class='cmd'>projects</span>, <span class='cmd'>links</span>, <span class='cmd'>clear</span>, <span class='cmd'>exit</span>"; break;
-                    case 'fetch':
-                    case 'neofetch':
-                    case 'fastfetch':
-                        res.innerHTML = `
-                        <div style="display:flex; gap:15px; font-size:0.8rem; line-height:1.2;">
-                            <div style="color:#007aff; font-weight:bold; white-space:pre;"> ___  <br>/ __\\ <br>\\____\\ </div>
-                            <div>
-                                <span style="color:#007aff;">sandro</span>@<span style="color:#007aff;">CachyOS</span><br>---<br>
-                                <span style="color:#007aff;">CPU:</span> Ryzen 7 9800X3D<br>
-                                <span style="color:#007aff;">GPU:</span> RTX 5070 Asus TUF OC<br>
-                                <span style="color:#007aff;">MEM:</span> 32GB DDR5<br>
-                                <span style="color:#007aff;">OS:</span> CachyOS / Win11
-                            </div>
-                        </div>`; break;
-                    case 'lab': window.location.href = 'lab.html'; break;
-                    case 'projects': window.location.href = 'projects.html'; break;
-                    case 'links': window.location.href = 'links.html'; break;
-                    case 'clear': terminalOutput.innerHTML = ''; res.innerHTML = ''; break;
-                    case 'exit': toggleTerminal(); break;
-                    default: res.innerHTML = "Command not found. Try 'help'.";
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
                 }
-                terminalOutput.appendChild(res); terminalInput.value = ''; terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+        }
+
+        // 3. SKILL BARS
+        setTimeout(() => {
+            const bars = document.querySelectorAll('.progress-bar');
+            bars.forEach(bar => { bar.style.width = bar.getAttribute('data-width'); });
+        }, 500);
+
+        // 4. NETWORK PARTICLES
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        function initParticles() { particles = []; for (let i = 0; i < 80; i++) { particles.push(new Particle()); } }
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(); particles[i].draw();
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 120) {
+                        ctx.strokeStyle = `rgba(0, 122, 255, ${1 - distance / 120})`;
+                        ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles(); animateParticles();
+
+        // 5. TERMINAL LOGIC
+        const terminalOverlay = document.getElementById('terminal-overlay');
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+
+        function toggleTerminal() {
+            if (terminalOverlay.classList.contains('open')) {
+                terminalOverlay.classList.remove('open');
+                setTimeout(() => terminalOverlay.style.display = 'none', 300);
+            } else {
+                terminalOverlay.style.display = 'flex';
+                setTimeout(() => {
+                    terminalOverlay.classList.add('open');
+                    terminalInput.focus();
+                }, 10);
+            }
+        }
+
+        terminalInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value.toLowerCase().trim();
+                const outputLine = document.createElement('div');
+                outputLine.innerHTML = `<span class="prompt">guest@sandro:~$</span> <span class="cmd">${this.value}</span>`;
+                terminalOutput.appendChild(outputLine);
+
+                const responseLine = document.createElement('div');
+                responseLine.style.marginBottom = "10px";
+                responseLine.style.color = "#ccc";
+
+                switch(command) {
+                    case 'help':
+                        responseLine.innerHTML = `Commands: <span class="cmd">whoami</span>, <span class="cmd">skills</span>, <span class="cmd">contact</span>, <span class="cmd">clear</span>, <span class="cmd">exit</span>`;
+                        break;
+                    case 'whoami':
+                        responseLine.innerHTML = "Sandro Exenberger.<br>Elektroniker, Netzwerktechniker (CCNA) & Schülervertreter.<br>Leidenschaftlicher Linux-User und Maker.";
+                        break;
+                    case 'skills':
+                        responseLine.innerHTML = "• Linux / Debian [Expert]<br>• Cisco CCNA [Certified]<br>• Python / Chatbots<br>• IoT & Electronics";
+                        break;
+                    case 'contact':
+                        responseLine.innerHTML = "E-Mail: sandro@exemail.at<br>Phone: +43 676 7406799<br>Loc: Schwoich, Tirol";
+                        break;
+                    case 'clear':
+                        terminalOutput.innerHTML = '';
+                        responseLine.innerHTML = '';
+                        break;
+                    case 'exit':
+                        toggleTerminal();
+                        break;
+                    default:
+                        responseLine.innerHTML = `Error: Command '${command}' not found.`;
+                        responseLine.style.color = "#ff5f56";
+                }
+                if(command !== 'clear') { terminalOutput.appendChild(responseLine); }
+                this.value = '';
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
             }
         });
 
-        // INIT Utils
-        document.addEventListener('DOMContentLoaded', type);
-        reveal();
-
-        // 5. EASTER EGG (SANDRO MODE)
+        // 6. EASTER EGG (SANDRO MODE)
         let keySequence = ''; const secretCode = 'sandro';
         document.addEventListener('keydown', (e) => {
             keySequence += e.key.toLowerCase();
@@ -389,13 +479,19 @@
                 document.documentElement.style.setProperty('--accent', hackerGreen);
                 document.querySelectorAll('.subtitle, h2').forEach(el => { el.style.color = hackerGreen; el.style.borderColor = hackerGreen; });
                 document.querySelectorAll('.content-box, .cv-column, .terminal-window').forEach(el => { el.style.borderColor = hackerGreen; el.style.boxShadow = `0 0 15px ${hackerGreen}`; });
-                document.querySelectorAll('.progress-bar, .terminal-toggle, .nav-btn, .hw-progress').forEach(el => { el.style.background = hackerGreen; el.style.boxShadow = `0 0 10px ${hackerGreen}`; el.style.color = 'black'; });
+                document.querySelectorAll('.progress-bar, .terminal-toggle').forEach(el => { el.style.background = hackerGreen; el.style.boxShadow = `0 0 10px ${hackerGreen}`; el.style.color = 'black'; });
                 document.querySelectorAll('.terminal-body, .cmd').forEach(el => { el.style.color = hackerGreen; });
                 document.querySelectorAll('.social-icon').forEach(icon => { icon.style.fill = hackerGreen; });
                 document.querySelectorAll('.cv-item::before').forEach(dot => { dot.style.border = `3px solid ${hackerGreen}`; });
                 keySequence = '';
+                alert("🔓 SYSTEM UNLOCKED: Welcome, Sandro!");
             }
         });
+
+        // INIT
+        document.addEventListener('DOMContentLoaded', type);
+        window.addEventListener("scroll", reveal);
+        reveal();
     </script>
 </body>
 </html>
