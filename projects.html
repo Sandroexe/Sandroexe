@@ -1,102 +1,151 @@
 ---
+layout: default
+title: Projekte
 ---
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projekte | Sandro Exenberger</title>
-    <style>
-        :root {
-            --accent: #007aff;
-            --bg: #050505;
-        }
-        
-        body { 
-            background: var(--bg); 
-            color: #fff; 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
 
-        .container { max-width: 1100px; width: 100%; margin: 0 auto; padding: 40px 20px; flex: 1; }
-        
-        /* --- REPARIERTER HEADER (STYLE WIE LAB.HTML) --- */
-        .header { text-align: center; margin-bottom: 60px; }
-        .header h1 { font-size: 2.5rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 10px; font-family: monospace; }
-        .header a { color: #555; text-decoration: none; font-size: 0.9rem; transition: 0.3s; font-family: monospace; }
-        .header a:hover { color: var(--accent); }
+<style>
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+        margin-top: 10px;
+    }
 
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-        
-        /* --- PROJEKT BOXEN MIT BLAUEM HOVER --- */
-        .project-card { 
-            background: #111; 
-            border-radius: 16px; 
-            overflow: hidden; 
-            border: 1px solid #222; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        
-        .project-card:hover { 
-            border-color: var(--accent); 
-            transform: translateY(-5px); 
-            box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25); 
-        }
+    .project-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        display: flex;
+        flex-direction: column;
+    }
 
-        .project-img { width: 100%; height: 200px; background: #1a1a1a; display: flex; align-items: center; justify-content: center; color: #444; font-weight: bold; font-family: monospace; }
-        .project-info { padding: 25px; }
-        .project-info h3 { margin: 0 0 10px 0; color: var(--accent); font-family: monospace; }
-        .project-info p { color: #aaa; font-size: 0.95rem; line-height: 1.6; }
+    .project-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-6px);
+        box-shadow: 0 16px 40px var(--accent-glow);
+    }
 
-        /* --- FOOTER CSS FIX --- */
-        .footer-container { margin-top: 80px; padding: 40px 0; border-top: 1px solid #222; width: 100%; text-align: center; }
-        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
-        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
-        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
-        .social-icons a:hover .social-icon { transform: scale(1.25); }
-        .legal-links { font-size: 0.9rem; color: #444; margin-top: 20px; }
-        .legal-links a { color: #666; margin: 0 15px; text-decoration: none; transition: 0.2s; }
-        .legal-links a:hover { color: var(--accent); }
+    .project-img {
+        width: 100%; height: 180px;
+        background: #0d0d0d;
+        display: flex; align-items: center; justify-content: center;
+        color: #2a2a2a; font-weight: bold; font-family: 'Courier New', monospace;
+        font-size: 0.85rem; letter-spacing: 2px;
+        border-bottom: 1px solid var(--border);
+        position: relative; overflow: hidden;
+    }
 
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.8rem; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>[PROJECT_ARCHIVE]</h1>
-            <a href="index.html">← TERMINATE_SESSION (BACK TO HOME)</a>
-        </div>
+    .project-img::before {
+        content: '';
+        position: absolute; inset: 0;
+        background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,122,255,0.02) 2px, rgba(0,122,255,0.02) 4px);
+    }
 
-        <div class="project-grid">
-            <div class="project-card">
-                <div class="project-img">[FILE_IMAGE_01]</div>
-                <div class="project-info">
-                    <h3> - - - </h3>
-                    <p> - - - </p>
-                </div>
-            </div>
+    .project-img .proj-icon { font-size: 2.5rem; z-index: 1; }
 
-            <div class="project-card">
-                <div class="project-img">[FILE_IMAGE_02]</div>
-                <div class="project-info">
-                    <h3> - - - </h3>
-                    <p> - - - </p>
-                </div>
-            </div>
-        </div>
+    .project-info { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .project-info h3 { margin: 0 0 10px 0; color: var(--accent); font-family: 'Courier New', monospace; font-size: 1.05rem; }
+    .project-info p { color: #888; font-size: 0.92rem; line-height: 1.65; margin: 0 0 16px; flex: 1; }
+
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+    .tag {
+        background: rgba(0,122,255,0.1); color: var(--accent);
+        padding: 3px 10px; border-radius: 4px; font-size: 0.75rem;
+        border: 1px solid rgba(0,122,255,0.2); font-family: 'Courier New', monospace;
+    }
+
+    .project-link {
+        display: inline-block; margin-top: 14px; padding: 8px 16px;
+        background: transparent; border: 1px solid var(--border);
+        color: var(--muted); border-radius: 6px; text-decoration: none;
+        font-size: 0.82rem; font-family: 'Courier New', monospace;
+        transition: all 0.2s ease;
+    }
+    .project-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,122,255,0.06); }
+
+    .wip-banner {
+        background: rgba(255,189,46,0.08);
+        border: 1px solid rgba(255,189,46,0.2);
+        border-radius: 12px; padding: 20px 24px;
+        margin-bottom: 28px;
+        display: flex; align-items: center; gap: 12px;
+        color: #ffbd2e; font-family: 'Courier New', monospace; font-size: 0.88rem;
+    }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <h1>[PROJECT_ARCHIVE]</h1>
+        <a href="index.html" class="back-link">← TERMINATE_SESSION</a>
     </div>
 
-    <!-- ZENTRALER FOOTER -->
-    {% include footer.html %}
-</body>
-</html>
+    <div class="wip-banner reveal">
+        <span style="font-size:1.3rem;">🚧</span>
+        <span>Diese Seite wird laufend erweitert. Aktuelle Projekte kommen bald hinzu!</span>
+    </div>
+
+    <div class="project-grid">
+
+        <div class="project-card reveal">
+            <div class="project-img"><span class="proj-icon">🤖</span></div>
+            <div class="project-info">
+                <h3>HTL-Chatbot</h3>
+                <p>Ein KI-gestützter Chatbot für den HTL-Incubator, der Schüler:innen bei Fragen zu Technologien, Projekten und dem Maker Space unterstützt.</p>
+                <div class="project-tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">NLP</span>
+                    <span class="tag">HTL-Incubator</span>
+                </div>
+                <a href="#" class="project-link">[IN ENTWICKLUNG]</a>
+            </div>
+        </div>
+
+        <div class="project-card reveal">
+            <div class="project-img"><span class="proj-icon">🌐</span></div>
+            <div class="project-info">
+                <h3>exemail.at — Portfolio</h3>
+                <p>Diese Website! Aufgebaut mit Jekyll & GitHub Pages. Particle-Network-Background, interaktives Terminal, Timeline-CV und responsives Design.</p>
+                <div class="project-tags">
+                    <span class="tag">HTML/CSS</span>
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">Jekyll</span>
+                    <span class="tag">GitHub Pages</span>
+                </div>
+                <a href="https://github.com/Sandroexe" target="_blank" rel="noopener" class="project-link">[github.com/Sandroexe]</a>
+            </div>
+        </div>
+
+        <div class="project-card reveal">
+            <div class="project-img"><span class="proj-icon">🔌</span></div>
+            <div class="project-info">
+                <h3>Netzwerk-Praktikum @ WörglWeb</h3>
+                <p>Installation und Wartung von Glasfaser- und Kupfer-Netzwerkinfrastruktur bei den Stadtwerken Wörgl. Außendienst, Fehlerbehebung und Hardware-Konfiguration.</p>
+                <div class="project-tags">
+                    <span class="tag">CCNA</span>
+                    <span class="tag">Cisco</span>
+                    <span class="tag">Fiber</span>
+                    <span class="tag">Außendienst</span>
+                </div>
+                <a href="#" class="project-link">[Jul – Aug 2024]</a>
+            </div>
+        </div>
+
+        <div class="project-card reveal">
+            <div class="project-img" style="color:#1a1a1a;"><span class="proj-icon">➕</span></div>
+            <div class="project-info">
+                <h3>Nächstes Projekt</h3>
+                <p>Schreib mir, wenn du Ideen hast oder zusammenarbeiten möchtest. Ich freue mich immer über neue Herausforderungen an der Schnittstelle von Hardware, Software und Netzwerken.</p>
+                <div class="project-tags">
+                    <span class="tag">IoT</span>
+                    <span class="tag">Linux</span>
+                    <span class="tag">Networking</span>
+                </div>
+                <a href="mailto:sandro@exemail.at" class="project-link">[sandro@exemail.at]</a>
+            </div>
+        </div>
+
+    </div>
+</div>

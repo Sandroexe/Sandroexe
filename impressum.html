@@ -1,86 +1,46 @@
 ---
+layout: default
+title: Impressum
 ---
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impressum | Sandro Exenberger</title>
-    <style>
-        :root {
-            --accent: #007aff;
-            --bg: #0f0f0f;
-            --card-bg: rgba(26, 26, 26, 0.95);
-        }
-        body {
-            background-color: var(--bg);
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 40px 20px 0 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        .container { max-width: 800px; width: 100%; position: relative; z-index: 2; flex: 1; }
-        .content-box {
-            margin-top: 20px; text-align: left; padding: 40px;
-            background: var(--card-bg); border-radius: 16px; border: 1px solid #222;
-            margin-bottom: 40px;
-        }
-        h1 { color: var(--accent); font-size: 2rem; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        h2 { font-size: 1.2rem; color: #fff; margin-top: 30px; }
-        p { color: #ccc; }
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .back-nav { margin-bottom: 20px; }
-        .back-nav a { font-weight: bold; }
-        
-        /* --- FOOTER CSS --- */
-        .footer-container { margin-top: auto; padding: 30px 0 40px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; }
-        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
-        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
-        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
-        .social-icons a:hover .social-icon { transform: scale(1.25); }
-        .legal-links { font-size: 0.85rem; color: #444; margin-top: 20px; }
-        .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="back-nav"><a href="index.html">← Zurück zur Startseite</a></div>
-        
-        <div class="content-box">
-            <h1>Impressum</h1>
-            <p>Informationspflicht laut § 5 E-Commerce Gesetz, § 14 Unternehmensgesetzbuch, § 63 Gewerbeordnung und Offenlegungspflicht laut § 25 Mediengesetz.</p>
-            
-            <h2>Betreiber der Webseite</h2>
-            <p>
-                <strong>Sandro Exenberger</strong><br>
-                6334 Schwoich<br>
-                Österreich
-            </p>
 
-            <h2>Kontakt</h2>
-            <p>
-                Telefon: <a href="tel:+436767406799">+43 676 7406799</a><br>
-                E-Mail: <a href="mailto:sandro@exemail.at">sandro@exemail.at</a>
-            </p>
+<style>
+    .legal-box {
+        background: var(--card-bg);
+        border-radius: 16px; border: 1px solid var(--border);
+        padding: 40px; max-width: 800px; margin: 0 auto;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .legal-box h1 { color: var(--accent); font-size: 2rem; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+    .legal-box h2 { font-size: 1.15rem; color: #ddd; margin-top: 28px; margin-bottom: 8px; }
+    .legal-box p { color: #888; line-height: 1.75; margin: 0 0 0.5em; font-size: 0.95rem; }
+    .legal-box a { color: var(--accent); text-decoration: none; }
+    .legal-box a:hover { text-decoration: underline; }
+</style>
 
-            <h2>Zweck der Webseite</h2>
-            <p>Persönliches Portfolio, Bereitstellung von Informationen über IT- und Elektronik-Projekte sowie Kontaktaufnahme.</p>
-
-            <h2>Haftung für Inhalte dieser Webseite</h2>
-            <p>Wir entwickeln die Inhalte dieser Webseite ständig weiter und bemühen uns, korrekte und aktuelle Informationen bereitzustellen. Leider können wir keine Haftung für die Korrektheit aller Inhalte auf dieser Webseite übernehmen, speziell für jene, die seitens Dritter bereitgestellt wurden. Sollten Ihnen problematische oder rechtswidrige Inhalte auffallen, bitten wir Sie, uns umgehend zu kontaktieren.</p>
-
-            <h2>Urheberrechtshinweis</h2>
-            <p>Alle Inhalte dieser Webseite (Bilder, Fotos, Texte, Videos) unterliegen dem Urheberrecht. Falls notwendig, werden wir die unerlaubte Nutzung von Teilen der Inhalte unserer Seite rechtlich verfolgen.</p>
-        </div>
+<div class="container">
+    <div style="max-width:800px;margin:0 auto 20px;">
+        <a href="index.html" style="color:var(--muted);text-decoration:none;font-family:'Courier New',monospace;font-size:0.85rem;transition:color 0.2s;" onmouseover="this.style.color='#007aff'" onmouseout="this.style.color=''">← Zurück zur Startseite</a>
     </div>
+    <div class="legal-box reveal">
+        <h1>Impressum</h1>
+        <p>Informationspflicht laut § 5 E-Commerce Gesetz, § 14 Unternehmensgesetzbuch, § 63 Gewerbeordnung und Offenlegungspflicht laut § 25 Mediengesetz.</p>
 
-    <!-- ZENTRALER FOOTER -->
-    {% include footer.html %}
-</body>
-</html>
+        <h2>Betreiber der Webseite</h2>
+        <p><strong>Sandro Exenberger</strong><br>6334 Schwoich<br>Österreich</p>
+
+        <h2>Kontakt</h2>
+        <p>
+            Telefon: <a href="tel:+436767406799">+43 676 7406799</a><br>
+            E-Mail: <a href="mailto:sandro@exemail.at">sandro@exemail.at</a>
+        </p>
+
+        <h2>Zweck der Webseite</h2>
+        <p>Persönliches Portfolio, Bereitstellung von Informationen über IT- und Elektronik-Projekte sowie Kontaktaufnahme.</p>
+
+        <h2>Haftung für Inhalte</h2>
+        <p>Wir bemühen uns, korrekte und aktuelle Informationen bereitzustellen. Für die Korrektheit aller Inhalte kann keine Haftung übernommen werden. Sollten Ihnen problematische oder rechtswidrige Inhalte auffallen, bitten wir Sie, uns umgehend zu kontaktieren.</p>
+
+        <h2>Urheberrechtshinweis</h2>
+        <p>Alle Inhalte dieser Webseite unterliegen dem Urheberrecht. Die unerlaubte Nutzung wird rechtlich verfolgt.</p>
+    </div>
+</div>
