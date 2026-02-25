@@ -34,7 +34,7 @@
         .header a { color: #555; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
         .header a:hover { color: var(--accent); }
 
-        /* --- INTERAKTIVES SETUP AREA --- */
+        /* --- INTERAKTIVES SETUP AREA (REPARIERT) --- */
         .setup-visualizer {
             position: relative;
             width: 100%;
@@ -42,32 +42,32 @@
             margin: 0 auto 100px auto;
             border-radius: 20px;
             box-shadow: 0 0 50px rgba(0, 122, 255, 0.2);
-            perspective: 1200px;
+            perspective: 1500px;
         }
 
         .setup-image-wrapper {
             position: relative;
             width: 100%;
             border-radius: 20px;
-            overflow: visible; /* Wichtig für Labels, die über den Rand ragen */
+            overflow: visible; /* Wichtig für Labels */
             transition: transform 0.1s ease-out;
             transform-style: preserve-3d;
         }
 
         .main-img {
             width: 100%;
-            height: auto;
+            height: auto; /* Behält Seitenverhältnis bei */
             display: block;
             border-radius: 20px;
             border: 1px solid #222;
-            filter: brightness(1.0); /* Dein Foto ist schon gut belichtet */
+            box-shadow: inset 0 0 20px rgba(0,0,0,1);
         }
 
-        /* --- HOTSPOTS & LINES --- */
+        /* --- HOTSPOTS (Positionen auf dein Foto optimiert) --- */
         .hotspot {
             position: absolute;
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             z-index: 100;
             cursor: pointer;
@@ -94,25 +94,25 @@
             transform-origin: left center;
             z-index: 50;
             filter: blur(1px);
-            opacity: 0.7;
+            opacity: 0.8;
         }
 
         .hw-label {
             position: absolute;
-            background: rgba(15, 15, 15, 0.9);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
             border-radius: 12px;
             padding: 15px;
             width: 220px;
             border: 1px solid #333;
             z-index: 110;
             transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
             pointer-events: none;
         }
 
-        .hw-label h3 { margin: 0 0 5px 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-        .hw-label p { margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.4; }
+        .hw-label h3 { margin: 0 0 5px 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .hw-label p { margin: 0; font-size: 0.9rem; color: #bbb; line-height: 1.4; }
         .highlight-val { font-weight: bold; color: #fff; }
 
         /* --- SPEC GROUPS --- */
@@ -129,7 +129,29 @@
             .setup-visualizer { margin-bottom: 40px; }
         }
 
-        .footer-container { margin-top: 60px; }
+        /* --- REPARIERTER FOOTER BEREICH --- */
+        .footer-container { 
+            margin-top: 80px; 
+            padding: 40px 0; 
+            border-top: 1px solid #222; 
+            width: 100%; 
+            text-align: center; 
+            position: relative; 
+            z-index: 2; 
+        }
+        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
+        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
+        
+        .icon-linkedin { fill: #0077b5; } 
+        .icon-instagram { fill: #E4405F; } 
+        .icon-github { fill: #ffffff; } 
+        .icon-mail { fill: var(--accent); } 
+        .icon-phone { fill: #4caf50; }
+        
+        .social-icons a:hover .social-icon { transform: scale(1.25); }
+        .legal-links { font-size: 0.9rem; color: #444; margin-top: 20px; }
+        .legal-links a { color: #666; margin: 0 15px; text-decoration: none; transition: 0.2s; }
+        .legal-links a:hover { color: var(--accent); }
     </style>
 </head>
 <body>
@@ -142,36 +164,36 @@
         <!-- VISUALIZER SEKTION -->
         <div class="setup-visualizer" id="visualizer">
             <div class="setup-image-wrapper" id="wrapper">
-                <!-- Dein hochgeladenes Foto -->
+                <!-- Dein Foto vom PC -->
                 <img src="pc-setup.jpg" alt="Sandro's Workstation" class="main-img">
 
-                <!-- CPU (Hotspot auf dem AIO Block) -->
+                <!-- CPU (Hotspot auf dem AIO Block mittig-links) -->
                 <div class="hotspot" style="top: 34%; left: 32%; background: var(--cpu-color); box-shadow: 0 0 15px var(--cpu-color);"></div>
-                <div class="connector-line" style="top: 34%; left: 32%; width: 140px; transform: rotate(195deg); background: var(--cpu-color); box-shadow: 0 0 10px var(--cpu-color);"></div>
-                <div class="hw-label" style="top: 10%; left: -15%;">
+                <div class="connector-line" style="top: 34%; left: 32%; width: 150px; transform: rotate(195deg); background: var(--cpu-color); box-shadow: 0 0 10px var(--cpu-color);"></div>
+                <div class="hw-label" style="top: 5%; left: -18%;">
                     <h3 style="color: var(--cpu-color);">Processor (CPU)</h3>
                     <p>AMD Ryzen 7 <span class="highlight-val">9800X3D</span><br>Gekühlt durch Corsair iCUE Elite LCD.</p>
                 </div>
 
-                <!-- GPU (Hotspot auf der RTX Karte) -->
-                <div class="hotspot" style="top: 64%; left: 45%; background: var(--gpu-color); box-shadow: 0 0 15px var(--gpu-color);"></div>
-                <div class="connector-line" style="top: 64%; left: 45%; width: 160px; transform: rotate(15deg); background: var(--gpu-color); box-shadow: 0 0 10px var(--gpu-color);"></div>
-                <div class="hw-label" style="top: 72%; left: 65%;">
+                <!-- GPU (Hotspot auf dem TUF Gaming Logo der Karte) -->
+                <div class="hotspot" style="top: 66%; left: 48%; background: var(--gpu-color); box-shadow: 0 0 15px var(--gpu-color);"></div>
+                <div class="connector-line" style="top: 66%; left: 48%; width: 160px; transform: rotate(15deg); background: var(--gpu-color); box-shadow: 0 0 10px var(--gpu-color);"></div>
+                <div class="hw-label" style="top: 75%; left: 66%;">
                     <h3 style="color: var(--gpu-color);">Graphics (GPU)</h3>
-                    <p>NVIDIA RTX <span class="highlight-val">5070 Asus TUF OC</span><br>Massive Kühlung & DLSS 4 Support.</p>
+                    <p>NVIDIA RTX <span class="highlight-val">5070 Asus TUF OC</span><br>Leistungsstarke 4K Performance.</p>
                 </div>
 
-                <!-- RAM (Hotspot auf den RAM Riegeln) -->
-                <div class="hotspot" style="top: 28%; left: 48%; background: var(--ram-color); box-shadow: 0 0 15px var(--ram-color);"></div>
-                <div class="connector-line" style="top: 28%; left: 48%; width: 120px; transform: rotate(-35deg); background: var(--ram-color); box-shadow: 0 0 10px var(--ram-color);"></div>
-                <div class="hw-label" style="top: 0%; left: 60%;">
+                <!-- RAM (Hotspot auf den vertikalen Riegeln) -->
+                <div class="hotspot" style="top: 28%; left: 48.5%; background: var(--ram-color); box-shadow: 0 0 15px var(--ram-color);"></div>
+                <div class="connector-line" style="top: 28%; left: 48.5%; width: 130px; transform: rotate(-35deg); background: var(--ram-color); box-shadow: 0 0 10px var(--ram-color);"></div>
+                <div class="hw-label" style="top: -5%; left: 62%;">
                     <h3 style="color: var(--ram-color);">Memory (RAM)</h3>
-                    <p><span class="highlight-val">32GB DDR5 @ 6000MHz</span><br>Corsair Vengeance RGB (Dual Channel).</p>
+                    <p><span class="highlight-val">32GB DDR5 @ 6000MHz</span><br>Corsair Vengeance RGB (Dual Kit).</p>
                 </div>
             </div>
         </div>
 
-        <!-- DETAILLIERTE SPECS -->
+        <!-- DETAILLIERTE SPECS (RESTORIERT) -->
         <div class="spec-group">
             <span class="spec-title">> Main Hardware Components</span>
             <div class="spec-item"><span class="spec-label">CPU</span><span>AMD Ryzen 7 9800X3D</span></div>
@@ -187,11 +209,6 @@
             <div class="spec-item"><span class="spec-label">Shell</span><span>ZSH / Oh-My-Zsh</span></div>
         </div>
 
-        <div class="spec-group">
-            <span class="spec-title">> Networking Lab Status</span>
-            <p style="color: #666; font-size: 0.9rem;">Hier folgt bald eine Übersicht über mein Homelab (Cisco GNS3 / Physisches Lab).</p>
-        </div>
-
         <div style="background: #111; padding: 30px; border-radius: 16px; border: 1px solid #222; margin-top: 20px;">
             <h2 style="color: var(--accent); margin-top: 0; font-family: monospace;">System Summary</h2>
             <p style="color: #888; line-height: 1.6;">Diese Workstation ist auf maximale Performance unter Linux ausgelegt. Durch die Nutzung des CachyOS Kernels werden Latenzen minimiert, was besonders bei der Virtualisierung von Netzwerken und der Entwicklung von komplexen Chatbot-Systemen von Vorteil ist.</p>
@@ -205,14 +222,14 @@
         const visualizer = document.getElementById('visualizer');
         const wrapper = document.getElementById('wrapper');
 
-        // 3D-Tilt Effekt (Reagiert auf Mausbewegung)
+        // 3D-Tilt Effekt
         visualizer.addEventListener('mousemove', (e) => {
             const rect = visualizer.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-            const xRotation = ((y / rect.height) - 0.5) * -8; 
-            const yRotation = ((x / rect.width) - 0.5) * 8;
+            const xRotation = ((y / rect.height) - 0.5) * -10; 
+            const yRotation = ((x / rect.width) - 0.5) * 10;
             
             wrapper.style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
         });
