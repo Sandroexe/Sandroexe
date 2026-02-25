@@ -6,8 +6,13 @@
     <title>{{ page.title }} | Sandro Exenberger</title>
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ page.title }} | Sandro Exenberger">
-    <meta property="og:description" content="Portfolio von Sandro Exenberger — CCNA, Linux-Enthusiast & Maker aus Tirol.">
+    <meta property="og:description" content="Portfolio von Sandro Exenberger - CCNA, Linux-Enthusiast & Maker aus Tirol.">
+    <meta property="og:image" content="https://exemail.at/profile.jpg">
+    <meta property="og:url" content="https://exemail.at">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://exemail.at/profile.jpg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <style>
         /* --- DESIGN TOKENS --- */
         :root {
@@ -206,16 +211,7 @@
     <canvas id="network-canvas"></canvas>
 
     <!-- TOP NAVIGATION -->
-    <nav class="top-nav">
-        <a href="/index.html" class="nav-logo">sandro<span>.exe</span></a>
-        <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-        <div class="nav-links">
-            <a href="/index.html" class="nav-link">~/home</a>
-            <a href="/projects.html" class="nav-link">~/projects</a>
-            <a href="/lab.html" class="nav-link">~/lab</a>
-            <a href="/links.html" class="nav-link">~/links</a>
-        </div>
-    </nav>
+    {% include nav.html %}
 
     <main>
         {{ content }}
