@@ -17,16 +17,18 @@
             color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 40px 20px;
+            padding: 40px 20px 0 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             line-height: 1.6;
+            min-height: 100vh;
         }
-        .container { max-width: 800px; width: 100%; position: relative; z-index: 2; }
+        .container { max-width: 800px; width: 100%; position: relative; z-index: 2; flex: 1; }
         .content-box {
             margin-top: 20px; text-align: left; padding: 40px;
             background: var(--card-bg); border-radius: 16px; border: 1px solid #222;
+            margin-bottom: 40px;
         }
         h1 { color: var(--accent); font-size: 2rem; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
         h2 { font-size: 1.2rem; color: #fff; margin-top: 30px; }
@@ -35,6 +37,15 @@
         a:hover { text-decoration: underline; }
         .back-nav { margin-bottom: 20px; }
         .back-nav a { font-weight: bold; }
+        
+        /* --- FOOTER CSS --- */
+        .footer-container { margin-top: auto; padding: 30px 0 40px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; }
+        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
+        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
+        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
+        .social-icons a:hover .social-icon { transform: scale(1.25); }
+        .legal-links { font-size: 0.85rem; color: #444; margin-top: 20px; }
+        .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -48,7 +59,7 @@
             <h2>Betreiber der Webseite</h2>
             <p>
                 <strong>Sandro Exenberger</strong><br>
-                [Deine Straße / Hausnummer] <br> <!-- Hier eventuell ergänzen -->
+                [Deine Straße / Hausnummer] <br> <!-- Hier eventuell deine Straße ergänzen -->
                 6322 Schwoich<br>
                 Österreich
             </p>
@@ -68,10 +79,9 @@
             <h2>Urheberrechtshinweis</h2>
             <p>Alle Inhalte dieser Webseite (Bilder, Fotos, Texte, Videos) unterliegen dem Urheberrecht. Falls notwendig, werden wir die unerlaubte Nutzung von Teilen der Inhalte unserer Seite rechtlich verfolgen.</p>
         </div>
-
-        <!-- ZENTRALER FOOTER -->
-        {% include footer.html %}
-        
     </div>
+
+    <!-- ZENTRALER FOOTER -->
+    {% include footer.html %}
 </body>
 </html>
