@@ -7,7 +7,8 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Sandro Exenberger | Elektroniker & Netzwerktechniker">
     <meta property="og:description" content="Portfolio von Sandro Exenberger: CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schülerunion.">
-    
+    <link rel="icon" type="image/x-icon" href="favicon.ico"> 
+
     <style>
         /* --- GRUNDDESIGN & SCROLLBAR --- */
         body {
@@ -32,23 +33,16 @@
 
         /* NETZWERK HINTERGRUND */
         #network-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1; /* Hinter dem Inhalt */
-            opacity: 0.4; /* Dezent */
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; opacity: 0.4; pointer-events: none;
         }
 
-        /* GLITCH EFFEKT FÜR DEN NAMEN */
+        /* GLITCH EFFEKT NAME */
         h1 { 
             font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; letter-spacing: -1px; 
             position: relative; display: inline-block;
         }
-        h1:hover {
-            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
-            color: #007aff;
-        }
+        h1:hover { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; color: #007aff; }
         @keyframes glitch {
             0% { transform: translate(0) }
             20% { transform: translate(-2px, 2px) }
@@ -60,117 +54,99 @@
         
         /* TYPEWRITER STYLING */
         .subtitle { 
-            color: #007aff; 
-            font-size: 1.3rem; 
-            margin-bottom: 3rem; 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            min-height: 1.5em;
+            color: #007aff; font-size: 1.3rem; margin-bottom: 3rem; font-weight: 600; 
+            text-transform: uppercase; letter-spacing: 1px; min-height: 1.5em;
         }
-        .cursor {
-            display: inline-block;
-            width: 2px;
-            background-color: #fff;
-            animation: blink 1s step-end infinite;
-        }
+        .cursor { display: inline-block; width: 2px; background-color: #fff; animation: blink 1s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
         /* SCROLL ANIMATION (REVEAL) */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* BOX-DESIGN */
-        .content-box, .cv-column {
-            margin-top: 40px;
-            text-align: left;
-            padding: 30px;
-            background: rgba(26, 26, 26, 0.95); /* Leicht transparent für Hintergrund */
-            border-radius: 16px;
-            border: 1px solid #222;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            backdrop-filter: blur(5px);
+        /* BOX-DESIGN (Standard) */
+        .content-box {
+            margin-top: 40px; text-align: left; padding: 30px;
+            background: rgba(26, 26, 26, 0.95); border-radius: 16px; border: 1px solid #222;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); backdrop-filter: blur(5px);
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-
-        /* NEON GLOW HOVER EFFEKT */
-        .content-box:hover, .cv-column:hover {
-            transform: translateY(-5px);
-            border-color: #007aff;
+        .content-box:hover {
+            transform: translateY(-5px); border-color: #007aff;
             box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25);
         }
-        
-        .content-box h2, .cv-column h2 { 
-            border-left: 4px solid #007aff; 
-            padding-left: 15px; 
-            font-size: 1.6rem; 
-            margin-bottom: 20px; 
-            color: #fff;
-        }
-        
+        .content-box h2 { border-left: 4px solid #007aff; padding-left: 15px; font-size: 1.6rem; margin-bottom: 20px; color: #fff; }
         .content-box p { color: #ccc; line-height: 1.8; font-size: 1.05rem; }
 
         /* SKILL BARS */
         .skill-item { margin-bottom: 15px; }
         .skill-info { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.95rem; color: #ddd; }
         .progress-bg { background: #333; border-radius: 10px; height: 8px; width: 100%; overflow: hidden; }
-        .progress-bar { 
-            height: 100%; 
-            background: linear-gradient(90deg, #007aff, #00c6ff); 
-            border-radius: 10px; 
-            width: 0%; 
-            transition: width 1.5s ease-in-out; 
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #007aff, #00c6ff); border-radius: 10px; width: 0%; transition: width 1.5s ease-in-out; }
+
+        /* --- TIMELINE DESIGN (Behalten) --- */
+        .cv-grid { display: flex; gap: 40px; margin-top: 40px; text-align: left; }
+        .cv-column { flex: 1; position: relative; }
+        
+        /* Überschrift der Spalte */
+        .cv-column h2 { 
+            font-size: 1.5rem; color: #fff; margin-bottom: 30px; 
+            border-bottom: 2px solid #333; padding-bottom: 10px; 
         }
 
-        /* LEBENSLAUF GRID */
-        .cv-grid { display: flex; gap: 30px; margin-top: 40px; text-align: left; }
-        .cv-column { flex: 1; }
-        .cv-column h2 { font-size: 1.4rem; border-left: none; border-bottom: 1px solid #333; padding-bottom: 10px; padding-left: 0; }
+        /* Die vertikale Linie */
+        .cv-column::before {
+            content: ''; position: absolute; top: 60px; bottom: 0; left: 9px; 
+            width: 2px; background: #333;
+        }
 
-        .cv-item { margin-bottom: 25px; position: relative; padding-left: 15px; border-left: 2px solid #333; }
-        .cv-date { color: #007aff; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 5px; }
-        .cv-title { font-weight: 600; font-size: 1.1rem; display: block; color: #fff; }
-        .cv-org { color: #888; font-size: 0.95rem; display: block; }
+        .cv-item {
+            margin-bottom: 40px; position: relative; padding-left: 35px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Der Punkt auf der Zeitachse */
+        .cv-item::before {
+            content: ''; position: absolute; left: 0; top: 5px;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #111; border: 3px solid #007aff;
+            transition: all 0.3s ease; z-index: 2;
+        }
+
+        /* Hover Effekt für Timeline Items */
+        .cv-item:hover { transform: translateX(5px); }
+        .cv-item:hover::before { background: #007aff; box-shadow: 0 0 15px #007aff; }
+
+        .cv-date { color: #007aff; font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .cv-title { font-weight: 700; font-size: 1.2rem; display: block; color: #fff; margin-bottom: 3px; }
+        .cv-org { color: #aaa; font-size: 1rem; display: block; }
 
         @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
 
-        /* --- TERMINAL STYLES --- */
+
+        /* --- TERMINAL STYLES (Wieder Rechts) --- */
         .terminal-toggle {
             position: fixed; bottom: 20px; right: 20px;
             background: #1a1a1a; border: 1px solid #333; color: #007aff;
             padding: 12px 18px; border-radius: 30px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            display: flex; align-items: center; gap: 8px;
-            font-family: 'Courier New', monospace; font-weight: bold;
-            transition: 0.3s; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px;
+            font-family: 'Courier New', monospace; font-weight: bold; transition: 0.3s; z-index: 1000;
         }
         .terminal-toggle:hover { background: #007aff; color: white; transform: translateY(-3px); }
         .terminal-toggle svg { width: 20px; fill: currentColor; }
 
         .terminal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center;
             z-index: 2000; opacity: 0; transition: opacity 0.3s;
         }
         .terminal-overlay.open { display: flex; opacity: 1; }
-
         .terminal-window {
-            width: 90%; max-width: 700px; height: 500px;
-            background: #0c0c0c; border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #333;
-            display: flex; flex-direction: column;
+            width: 90%; max-width: 700px; height: 500px; background: #0c0c0c; border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #333; display: flex; flex-direction: column;
             font-family: 'Courier New', monospace; font-size: 1rem;
         }
-        .terminal-header {
-            background: #1f1f1f; padding: 10px 15px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #333; color: #ccc; font-size: 0.9rem;
-        }
+        .terminal-header { background: #1f1f1f; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; color: #ccc; font-size: 0.9rem; }
         .close-btn { cursor: pointer; color: #ff5f56; font-weight: bold; }
         .terminal-body { flex: 1; padding: 20px; color: #4caf50; overflow-y: auto; text-align: left; }
         .terminal-input-line { display: flex; padding: 10px 20px; background: #0c0c0c; }
@@ -275,7 +251,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="footer-container reveal">
             <div class="social-icons">
                 <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" title="LinkedIn">
@@ -283,22 +259,22 @@
                 </a>
                 <a href="https://instagram.com/sandro_exe_2008" target="_blank" title="Instagram">
                     <svg class="social-icon icon-instagram" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.36-.2 6.78-2.618 6.98-6.98.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.2-4.361-2.617-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                </a>
-                <a href="https://github.com/Sandroexe" target="_blank" title="GitHub">
-                    <svg class="social-icon icon-github" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                </a>
-                <a href="mailto:sandro@exemail.at" title="E-Mail">
-                    <svg class="social-icon icon-mail" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                </a>
-                <a href="tel:+436767406799" title="Anrufen">
-                    <svg class="social-icon icon-phone" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                </a>
-            </div>
-            <div class="legal-links">
-                <a href="impressum.html">Impressum</a> &bull; 
-                <a href="datenschutz.html">Datenschutz</a>
-            </div>
+            </a>
+            <a href="https://github.com/Sandroexe" target="_blank" title="GitHub">
+                <svg class="social-icon icon-github" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="mailto:sandro@exemail.at" title="E-Mail">
+                <svg class="social-icon icon-mail" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+            <a href="tel:+436767406799" title="Anrufen">
+                <svg class="social-icon icon-phone" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </a>
         </div>
+        <div class="legal-links">
+            <a href="impressum.html">Impressum</a> &bull; 
+            <a href="datenschutz.html">Datenschutz</a>
+        </div>
+    </div>
     </div>
 
     <div class="terminal-toggle" onclick="toggleTerminal()" title="Terminal öffnen">
@@ -328,7 +304,7 @@
     <script>
         // 1. TYPEWRITER
         const textElement = document.getElementById('typewriter');
-        const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter"];
+        const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter", "Maker"];
         let phraseIndex = 0; let charIndex = 0; let isDeleting = false;
 
         function type() {
@@ -385,33 +361,24 @@
                 ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < 80; i++) { particles.push(new Particle()); }
-        }
-
+        function initParticles() { particles = []; for (let i = 0; i < 80; i++) { particles.push(new Particle()); } }
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
+                particles[i].update(); particles[i].draw();
                 for (let j = i; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < 120) {
                         ctx.strokeStyle = `rgba(0, 122, 255, ${1 - distance / 120})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                        ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
                     }
                 }
             }
             requestAnimationFrame(animateParticles);
         }
-
-        initParticles();
-        animateParticles();
+        initParticles(); animateParticles();
 
         // 5. TERMINAL LOGIC
         const terminalOverlay = document.getElementById('terminal-overlay');
@@ -420,24 +387,19 @@
 
         function toggleTerminal() {
             if (terminalOverlay.classList.contains('open')) {
-                terminalOverlay.classList.remove('open');
-                setTimeout(() => terminalOverlay.style.display = 'none', 300);
+                terminalOverlay.classList.remove('open'); setTimeout(() => terminalOverlay.style.display = 'none', 300);
             } else {
-                terminalOverlay.style.display = 'flex';
-                setTimeout(() => { terminalOverlay.classList.add('open'); terminalInput.focus(); }, 10);
+                terminalOverlay.style.display = 'flex'; setTimeout(() => { terminalOverlay.classList.add('open'); terminalInput.focus(); }, 10);
             }
         }
-
         terminalInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const command = this.value.toLowerCase().trim();
                 const outputLine = document.createElement('div');
                 outputLine.innerHTML = `<span class="prompt">guest@sandro:~$</span> <span class="cmd">${this.value}</span>`;
                 terminalOutput.appendChild(outputLine);
-
                 const responseLine = document.createElement('div');
-                responseLine.style.marginBottom = "10px";
-                responseLine.style.color = "#ccc";
+                responseLine.style.marginBottom = "10px"; responseLine.style.color = "#ccc";
 
                 switch(command) {
                     case 'help': responseLine.innerHTML = `Commands: <span class="cmd">whoami</span>, <span class="cmd">skills</span>, <span class="cmd">projects</span>, <span class="cmd">contact</span>, <span class="cmd">clear</span>, <span class="cmd">exit</span>`; break;
@@ -450,73 +412,33 @@
                     default: responseLine.innerHTML = `Error: Command '${command}' not found.`; responseLine.style.color = "#ff5f56";
                 }
                 if(command !== 'clear') { terminalOutput.appendChild(responseLine); }
-                this.value = '';
-                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                this.value = ''; terminalOutput.scrollTop = terminalOutput.scrollHeight;
             }
         });
 
-        // INIT ALL
+        // 6. EASTER EGG (SANDRO MODE)
+        let keySequence = ''; const secretCode = 'sandro';
+        document.addEventListener('keydown', (e) => {
+            keySequence += e.key.toLowerCase();
+            if (keySequence.length > 20) { keySequence = keySequence.slice(-10); }
+            if (keySequence.includes(secretCode)) {
+                alert("🔓 SYSTEM UNLOCKED: Welcome, Sandro!");
+                const hackerGreen = '#00ff00';
+                document.documentElement.style.setProperty('--accent', hackerGreen);
+                document.querySelectorAll('.subtitle, h2').forEach(el => { el.style.color = hackerGreen; el.style.borderColor = hackerGreen; });
+                document.querySelectorAll('.content-box, .cv-column, .terminal-window').forEach(el => { el.style.borderColor = hackerGreen; el.style.boxShadow = `0 0 15px ${hackerGreen}`; });
+                document.querySelectorAll('.progress-bar, .terminal-toggle').forEach(el => { el.style.background = hackerGreen; el.style.boxShadow = `0 0 10px ${hackerGreen}`; el.style.color = 'black'; });
+                document.querySelectorAll('.terminal-body, .cmd').forEach(el => { el.style.color = hackerGreen; });
+                document.querySelectorAll('.social-icon').forEach(icon => { icon.style.fill = hackerGreen; });
+                document.querySelectorAll('.cv-item::before').forEach(dot => { dot.style.border = `3px solid ${hackerGreen}`; });
+                keySequence = '';
+            }
+        });
+
+        // INIT
         document.addEventListener('DOMContentLoaded', type);
         window.addEventListener("scroll", reveal);
         reveal();
     </script>
-
-<script>
-        let keySequence = '';
-        const secretCode = 'sandro';
-
-        document.addEventListener('keydown', (e) => {
-            // Speichere den Tastendruck (Kleinbuchstaben)
-            keySequence += e.key.toLowerCase();
-
-            // Halte den Speicher klein, damit er nicht vollläuft
-            if (keySequence.length > 20) {
-                keySequence = keySequence.slice(-10);
-            }
-
-            // Prüfe, ob "sandro" getippt wurde
-            if (keySequence.includes(secretCode)) {
-                
-                // 1. Visuelles Feedback
-                alert("🔓 SYSTEM UNLOCKED: Welcome, Sandro!");
-
-                // 2. Ändere die Hauptfarben auf Neon-Grün
-                const hackerGreen = '#00ff00';
-
-                // Texte und Linien ändern
-                document.querySelectorAll('.subtitle, h2').forEach(el => {
-                    el.style.color = hackerGreen;
-                    el.style.borderColor = hackerGreen;
-                });
-
-                // Rahmen der Boxen ändern
-                document.querySelectorAll('.content-box, .cv-column, .terminal-window').forEach(el => {
-                    el.style.borderColor = hackerGreen;
-                    el.style.boxShadow = `0 0 15px ${hackerGreen}`;
-                });
-
-                // Balken und Buttons ändern
-                document.querySelectorAll('.progress-bar, .terminal-toggle').forEach(el => {
-                    el.style.background = hackerGreen;
-                    el.style.boxShadow = `0 0 10px ${hackerGreen}`;
-                    el.style.color = 'black'; // Damit man Text auf Grün lesen kann
-                });
-
-                // Terminal Text ändern
-                document.querySelectorAll('.terminal-body, .cmd').forEach(el => {
-                    el.style.color = hackerGreen;
-                });
-
-                // Icons einfärben
-                document.querySelectorAll('.social-icon').forEach(icon => {
-                    icon.style.fill = hackerGreen;
-                });
-
-                // Reset Sequence
-                keySequence = '';
-            }
-        });
-    </script>
-    
 </body>
 </html>
