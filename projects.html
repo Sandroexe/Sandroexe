@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,20 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projekte | Sandro Exenberger</title>
     <style>
-        body { background: #0f0f0f; color: #fff; font-family: sans-serif; padding: 40px; }
-        .container { max-width: 1000px; margin: auto; }
+        :root {
+            --accent: #007aff;
+            --bg: #0f0f0f;
+        }
+        body { background: var(--bg); color: #fff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px 20px 0 20px; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        .container { max-width: 1000px; width: 100%; margin: 0 auto; flex: 1; }
         .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
         .project-card { 
             background: #161616; border-radius: 16px; overflow: hidden; border: 1px solid #222; 
             transition: 0.3s; cursor: pointer;
         }
-        .project-card:hover { border-color: #007aff; transform: translateY(-5px); }
-        .project-img { width: 100%; height: 200px; background: #222; display: flex; align-items: center; justify-content: center; color: #444; }
+        .project-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(0, 122, 255, 0.25); }
+        .project-img { width: 100%; height: 200px; background: #222; display: flex; align-items: center; justify-content: center; color: #444; font-weight: bold; }
         .project-info { padding: 25px; }
-        .project-info h3 { margin: 0 0 10px 0; color: #007aff; }
+        .project-info h3 { margin: 0 0 10px 0; color: var(--accent); }
         .project-info p { color: #aaa; font-size: 0.95rem; line-height: 1.6; }
         .back-nav { margin-bottom: 20px; }
-        .back-nav a { color: #007aff; text-decoration: none; font-weight: bold; }
+        .back-nav a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        
+        /* --- FOOTER CSS --- */
+        .footer-container { margin-top: 60px; padding: 30px 0 40px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; }
+        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
+        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
+        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
+        .social-icons a:hover .social-icon { transform: scale(1.25); }
+        .legal-links { font-size: 0.85rem; color: #444; margin-top: 20px; }
+        .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -28,6 +43,7 @@
         <p style="color: #666;">Dokumentation meiner Arbeiten im Bereich Elektronik, Netzwerk und 3D-Druck.</p>
 
         <div class="project-grid">
+            <!-- Beispiel Projekt 1 -->
             <div class="project-card">
                 <div class="project-img">[BILD KOMMT BALD]</div>
                 <div class="project-info">
@@ -36,6 +52,7 @@
                 </div>
             </div>
 
+            <!-- Beispiel Projekt 2 -->
             <div class="project-card">
                 <div class="project-img">[BILD KOMMT BALD]</div>
                 <div class="project-info">
@@ -45,5 +62,8 @@
             </div>
         </div>
     </div>
+
+    <!-- ZENTRALER FOOTER -->
+    {% include footer.html %}
 </body>
 </html>
