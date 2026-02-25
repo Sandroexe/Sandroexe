@@ -59,7 +59,7 @@
             display: block;
             border-radius: 20px;
             border: 1px solid #222;
-            filter: brightness(0.8);
+            filter: brightness(0.9);
         }
 
         /* --- HOTSPOTS & LINES --- */
@@ -113,7 +113,7 @@
         .hw-label p { margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.4; }
         .highlight-val { font-weight: bold; color: #fff; }
 
-        /* --- SPEC GROUPS (VORHERIGER CONTENT) --- */
+        /* --- SPEC GROUPS --- */
         .spec-group { background: #111; padding: 25px; border-radius: 12px; border: 1px solid #222; margin-bottom: 20px; }
         .spec-title { color: var(--accent); font-weight: bold; margin-bottom: 15px; display: block; font-family: monospace; }
         .spec-item { display: flex; justify-content: space-between; border-bottom: 1px solid #1a1a1a; padding: 8px 0; }
@@ -140,35 +140,35 @@
         <!-- VISUALIZER SEKTION -->
         <div class="setup-visualizer" id="visualizer">
             <div class="setup-image-wrapper" id="wrapper">
-                <img src="pc-setup.jpg" alt="Sandro's Workstation" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1587202372634-32705e3bf49c?q=80&w=2000'">
+                <img src="pc-setup.jpg" alt="Sandro's Workstation" class="main-img">
 
-                <!-- CPU -->
-                <div class="hotspot" style="top: 32%; left: 33%; background: var(--cpu-color); box-shadow: 0 0 15px var(--cpu-color);"></div>
-                <div class="connector-line" style="top: 33%; left: 33%; width: 120px; transform: rotate(200deg); background: var(--cpu-color); box-shadow: 0 0 10px var(--cpu-color);"></div>
+                <!-- CPU (Hotspot auf dem Kühlerblock) -->
+                <div class="hotspot" style="top: 35%; left: 32%; background: var(--cpu-color); box-shadow: 0 0 15px var(--cpu-color);"></div>
+                <div class="connector-line" style="top: 36%; left: 32%; width: 100px; transform: rotate(190deg); background: var(--cpu-color); box-shadow: 0 0 10px var(--cpu-color);"></div>
                 <div class="hw-label" style="top: 15%; left: -10%;">
                     <h3 style="color: var(--cpu-color);">Processor (CPU)</h3>
                     <p>AMD Ryzen 7 <span class="highlight-val">9800X3D</span><br>8 Cores / 16 Threads, Zen 4 Architektur.</p>
                 </div>
 
-                <!-- GPU -->
-                <div class="hotspot" style="top: 65%; left: 45%; background: var(--gpu-color); box-shadow: 0 0 15px var(--gpu-color);"></div>
-                <div class="connector-line" style="top: 66%; left: 45%; width: 150px; transform: rotate(30deg); background: var(--gpu-color); box-shadow: 0 0 10px var(--gpu-color);"></div>
-                <div class="hw-label" style="top: 75%; left: 60%;">
+                <!-- GPU (Hotspot auf der Grafikkarte) -->
+                <div class="hotspot" style="top: 65%; left: 40%; background: var(--gpu-color); box-shadow: 0 0 15px var(--gpu-color);"></div>
+                <div class="connector-line" style="top: 66%; left: 40%; width: 180px; transform: rotate(20deg); background: var(--gpu-color); box-shadow: 0 0 10px var(--gpu-color);"></div>
+                <div class="hw-label" style="top: 75%; left: 62%;">
                     <h3 style="color: var(--gpu-color);">Graphics (GPU)</h3>
                     <p>NVIDIA RTX <span class="highlight-val">5070 Asus TUF OC</span><br>Optimiert für KI und Workstation-Tasks.</p>
                 </div>
 
-                <!-- RAM -->
-                <div class="hotspot" style="top: 28%; left: 47%; background: var(--ram-color); box-shadow: 0 0 15px var(--ram-color);"></div>
-                <div class="connector-line" style="top: 29%; left: 47%; width: 100px; transform: rotate(-45deg); background: var(--ram-color); box-shadow: 0 0 10px var(--ram-color);"></div>
-                <div class="hw-label" style="top: 5%; left: 55%;">
+                <!-- RAM (Hotspot auf den beleuchteten Riegeln) -->
+                <div class="hotspot" style="top: 34%; left: 48%; background: var(--ram-color); box-shadow: 0 0 15px var(--ram-color);"></div>
+                <div class="connector-line" style="top: 35%; left: 48%; width: 120px; transform: rotate(-45deg); background: var(--ram-color); box-shadow: 0 0 10px var(--ram-color);"></div>
+                <div class="hw-label" style="top: 5%; left: 58%;">
                     <h3 style="color: var(--ram-color);">Memory (RAM)</h3>
-                    <p><span class="highlight-val">32GB DDR5 @ 6000MHz</span><br>Ultra-low Latency Konfiguration.</p>
+                    <p><span class="highlight-val">32GB DDR5 @ 6000MHz</span><br>Corsair Vengeance RGB Konfiguration.</p>
                 </div>
             </div>
         </div>
 
-        <!-- DETAILLIERTE SPECS (RESTORIERTER CONTENT) -->
+        <!-- DETAILLIERTE SPECS -->
         <div class="spec-group">
             <span class="spec-title">> Main Hardware Components</span>
             <div class="spec-item"><span class="spec-label">CPU</span><span>AMD Ryzen 7 9800X3D</span></div>
