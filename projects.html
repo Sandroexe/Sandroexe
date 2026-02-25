@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekte | Sandro Exenberger</title>
+    <style>
+        body { background: #0f0f0f; color: #fff; font-family: sans-serif; padding: 40px; }
+        .container { max-width: 1000px; margin: auto; }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .project-card { 
+            background: #161616; border-radius: 16px; overflow: hidden; border: 1px solid #222; 
+            transition: 0.3s; cursor: pointer;
+        }
+        .project-card:hover { border-color: #007aff; transform: translateY(-5px); }
+        .project-img { width: 100%; height: 200px; background: #222; display: flex; align-items: center; justify-content: center; color: #444; }
+        .project-info { padding: 25px; }
+        .project-info h3 { margin: 0 0 10px 0; color: #007aff; }
+        .project-info p { color: #aaa; font-size: 0.95rem; line-height: 1.6; }
+        .back-nav { margin-bottom: 20px; }
+        .back-nav a { color: #007aff; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-nav"><a href="index.html">← Zurück</a></div>
+        <h1>Technische Projekte</h1>
+        <p style="color: #666;">Dokumentation meiner Arbeiten im Bereich Elektronik, Netzwerk und 3D-Druck.</p>
 
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-img">[BILD KOMMT BALD]</div>
+                <div class="project-info">
+                    <h3>HTL-Incubator</h3>
+                    <p>Leitung des Maker-Spaces. Optimierung von Workflows und Wartung von High-End 3D-Druckern.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img">[BILD KOMMT BALD]</div>
+                <div class="project-info">
+                    <h3>Cisco Lab Setup</h3>
+                    <p>Konfiguration eines physischen Racks für CCNA-Szenarien inkl. VLAN-Segregation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
