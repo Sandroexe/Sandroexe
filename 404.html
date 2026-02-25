@@ -3,290 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | Sandro Exenberger</title>
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="{{ page.title }} | Sandro Exenberger">
-    <meta property="og:description" content="Portfolio von Sandro Exenberger - CCNA, Linux-Enthusiast & Maker aus Tirol.">
-    <meta property="og:image" content="https://exemail.at/profile.jpg">
-    <meta property="og:url" content="https://exemail.at">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:image" content="https://exemail.at/profile.jpg">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <title>404 - System Failure</title>
     <style>
-        /* --- DESIGN TOKENS --- */
-        :root {
-            --accent: #007aff;
-            --accent-glow: rgba(0, 122, 255, 0.25);
-            --bg: #050505;
-            --card-bg: rgba(18, 18, 18, 0.96);
-            --border: #1e1e1e;
-            --text: #e0e0e0;
-            --muted: #666;
-        }
-
-        * { box-sizing: border-box; }
-
+        /* --- TERMINAL STYLE --- */
         body {
-            background: var(--bg);
-            color: #fff;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #050505;
+            color: #ccc;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            overflow: hidden;
+            text-align: left;
+            /* Der rote Atem-Effekt */
+            animation: red-breath 4s ease-in-out infinite;
         }
 
-        /* --- HINTERGRUND CANVAS --- */
-        #network-canvas {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1; opacity: 0.35; pointer-events: none;
+        /* DIE ATEM-ANIMATION (Rot pulsierender Rand) */
+        @keyframes red-breath {
+            0% { box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.2); }
+            50% { box-shadow: inset 0 0 150px rgba(255, 0, 0, 0.7); }
+            100% { box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.2); }
         }
 
-        /* --- TOP NAVIGATION --- */
-        .top-nav {
-            position: fixed; top: 0; left: 0; right: 0;
-            z-index: 100;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 24px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .terminal-container {
+            max-width: 650px;
+            width: 90%;
+            z-index: 2; /* Über dem Schatten liegen */
         }
 
-        .nav-logo {
-            font-family: 'Courier New', monospace;
-            font-weight: 700;
-            color: var(--accent);
+        /* Der große 404 Header */
+        h1 {
+            font-size: 5rem;
+            margin: 0 0 10px 0;
+            color: #ff5f56; /* Fehler-Rot */
+            text-shadow: 0 0 20px rgba(255, 95, 86, 0.8);
+            letter-spacing: -2px;
+            min-height: 1.2em;
+        }
+
+        /* Die Log-Zeilen */
+        .log-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #007aff; /* Sandro-Blau */
+            margin-bottom: 5px;
+            display: block;
+            font-weight: 500;
+        }
+
+        /* Blinkender Cursor */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background-color: #007aff;
+            vertical-align: bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Der Button (am Anfang unsichtbar) */
+        .btn-container {
+            margin-top: 50px;
+            opacity: 0; /* Versteckt bis Animation fertig */
+            transition: opacity 1.5s ease-in;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: 2px solid #ff5f56; /* Roter Rahmen passend zum Alarm */
+            background: rgba(255, 95, 86, 0.1);
+            color: #ff5f56;
             text-decoration: none;
-            font-size: 1rem;
-            letter-spacing: 1px;
-        }
-
-        .nav-logo span { color: #fff; }
-
-        .nav-links {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-family: 'Courier New', monospace;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--accent);
-            background: rgba(0, 122, 255, 0.08);
-        }
-
-        .nav-mobile-toggle {
-            display: none;
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        @media (max-width: 640px) {
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 56px; left: 0; right: 0; background: rgba(5,5,5,0.98); border-bottom: 1px solid var(--border); padding: 12px; gap: 4px; }
-            .nav-links.open { display: flex; }
-            .nav-mobile-toggle { display: block; }
-            .nav-link { padding: 10px 14px; }
-        }
-
-        /* --- LAYOUT --- */
-        main {
-            position: relative;
-            z-index: 2;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 56px;
-        }
-
-        .container {
-            max-width: 1100px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* --- SHARED COMPONENTS --- */
-        .content-box, .spec-group, .summary-box, .project-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            padding: 30px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .content-box:hover, .spec-group:hover, .summary-box:hover, .project-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 12px 40px var(--accent-glow);
-        }
-
-        h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 1.5rem; margin-bottom: 20px; color: #fff; margin-top: 0; }
-        p { color: var(--text); line-height: 1.8; font-size: 1.05rem; }
-        a { color: var(--accent); }
-
-        /* SCROLL REVEAL */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #0056b3; }
-
-        /* PAGE HEADER (shared across sub-pages) */
-        .page-header {
-            text-align: center;
-            padding: 50px 20px 40px;
-        }
-        .page-header h1 {
-            font-size: 2.4rem;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--accent);
-            margin-bottom: 8px;
-            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 10px rgba(255, 95, 86, 0.2);
         }
-        .page-header .back-link {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-family: 'Courier New', monospace;
-            transition: color 0.2s;
-        }
-        .page-header .back-link:hover { color: var(--accent); }
 
-        /* FOOTER */
-        .footer-container {
-            margin-top: 60px; padding: 40px 20px;
-            border-top: 1px solid var(--border);
-            width: 100%; text-align: center;
-            position: relative; z-index: 2;
+        .btn:hover {
+            background: #ff5f56;
+            color: white;
+            box-shadow: 0 0 30px #ff5f56;
         }
-        .social-icons { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; flex-wrap: wrap; }
-        .social-icon { width: 30px; height: 30px; transition: transform 0.3s ease, filter 0.3s ease; }
-        .icon-linkedin { fill: #0077b5; }
-        .icon-instagram { fill: #E4405F; }
-        .icon-github { fill: #ffffff; }
-        .icon-mail { fill: var(--accent); }
-        .icon-phone { fill: #4caf50; }
-        .social-icons a:hover .social-icon { transform: scale(1.3); filter: drop-shadow(0 0 8px currentColor); }
-        .legal-links { font-size: 0.85rem; color: #444; margin-top: 16px; }
-        .legal-links a { color: var(--muted); margin: 0 10px; text-decoration: none; transition: color 0.2s; }
-        .legal-links a:hover { color: #aaa; }
-        .footer-nav { margin: 16px 0 8px; font-size: 0.9rem; }
-        .footer-nav a { color: var(--muted); margin: 0 10px; text-decoration: none; font-weight: 600; transition: color 0.2s; }
-        .footer-nav a:hover { color: var(--accent); }
+        
+        /* Scanline Effekt (Optionaler Monitor-Look) */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            z-index: 1;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <canvas id="network-canvas"></canvas>
+    <div class="scanlines"></div>
 
-    <!-- TOP NAVIGATION -->
-    <nav class="top-nav">
-        <a href="/index.html" class="nav-logo">sandro<span>.exe</span></a>
-        <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-        <div class="nav-links">
-            <a href="/index.html" class="nav-link">~/home</a>
-            <a href="/projects.html" class="nav-link">~/projects</a>
-            <a href="/certificates.html" class="nav-link">~/certs</a>
-            <a href="/lab.html" class="nav-link">~/lab</a>
-            <a href="/links.html" class="nav-link">~/links</a>
+    <div class="terminal-container">
+        <h1 id="error-title"></h1>
+        
+        <div id="console-output"></div>
+        
+        <span class="cursor"></span>
+
+        <div class="btn-container" id="home-btn">
+            <a href="index.html" class="btn">Emergency Reboot (Home)</a>
         </div>
-    </nav>
-
-    <main>
-        {{ content }}
-    </main>
-
-    {% include footer.html %}
+    </div>
 
     <script>
-        // PARTICLE NETWORK
-        const canvas = document.getElementById('network-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 1.5 + 0.5;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
+        // TEXT KONFIGURATION
+        const titleText = "ERROR 404";
+        const logLines = [
+            "> SYSTEM ALERT: Critical failure detected.",
+            "> Analyzing network path to 'exemail.at'...",
+            "> ERROR: Target resource unreachable.",
+            "> DIAGNOSTIC: Page does not exist or was moved.",
+            "> INITIATING FAILSAFE PROTOCOL..."
+        ];
+
+        const titleElement = document.getElementById('error-title');
+        const outputElement = document.getElementById('console-output');
+        const btnElement = document.getElementById('home-btn');
+
+        // VERZÖGERUNGS-FUNKTION (Sleep)
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
-        function initParticles() { particles = []; for (let i = 0; i < 75; i++) particles.push(new Particle()); }
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach((p, i) => {
-                p.update(); p.draw();
-                for (let j = i + 1; j < particles.length; j++) {
-                    const d = Math.hypot(p.x - particles[j].x, p.y - particles[j].y);
-                    if (d < 120) {
-                        ctx.strokeStyle = `rgba(0,122,255,${1 - d/120})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
-                    }
+
+        // TYPEWRITER FUNKTION
+        async function typeWriter() {
+            
+            // 1. Titel tippen (Error 404)
+            for (let i = 0; i < titleText.length; i++) {
+                titleElement.textContent += titleText.charAt(i);
+                await sleep(200); // Langsam und dramatisch
+            }
+
+            await sleep(800); // Kurz warten
+
+            // 2. Log-Zeilen tippen
+            for (let line of logLines) {
+                const p = document.createElement('div');
+                p.classList.add('log-text');
+                
+                // Färbe die Zeile rot wenn "ERROR" oder "ALERT" vorkommt
+                if(line.includes("ERROR") || line.includes("ALERT") || line.includes("FAILSAFE")) {
+                    p.style.color = "#ff5f56";
                 }
-            });
-            requestAnimationFrame(animateParticles);
-        }
-        initParticles(); animateParticles();
+                
+                outputElement.appendChild(p); 
 
-        // SCROLL REVEAL
-        function reveal() {
-            document.querySelectorAll('.reveal').forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
-            });
-        }
-        window.addEventListener('scroll', reveal);
-        reveal();
+                for (let i = 0; i < line.length; i++) {
+                    p.textContent += line.charAt(i);
+                    await sleep(Math.random() * 20 + 20); // Schnelles Tippen
+                }
+                await sleep(400); // Pause zwischen Zeilen
+            }
 
-        // ACTIVE NAV LINK
-        const path = window.location.pathname.split('/').pop() || 'index.html';
-        document.querySelectorAll('.nav-link').forEach(a => {
-            if (a.getAttribute('href').includes(path)) a.classList.add('active');
-        });
+            // 3. Button einblenden
+            await sleep(600);
+            btnElement.style.opacity = 1;
+        }
+
+        // START
+        document.addEventListener('DOMContentLoaded', typeWriter);
     </script>
+
 </body>
 </html>
