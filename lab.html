@@ -9,36 +9,168 @@
     <style>
         :root {
             --accent: #007aff;
-            --bg: #0f0f0f;
+            --gpu-color: #76b900; /* NVIDIA Green */
+            --cpu-color: #ed1c24; /* AMD Red */
+            --ram-color: #ff00ff; /* Corsair Pink/RGB */
+            --bg: #050505;
         }
-        body { background: var(--bg); color: #fff; font-family: monospace; padding: 40px 20px 0 20px; line-height: 1.6; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
-        .container { max-width: 800px; width: 100%; margin: 0 auto; flex: 1; }
-        .header { color: var(--accent); border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 40px; }
+        
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1100px; width: 100%; margin: 0 auto; padding: 40px 20px; flex: 1; }
+        
+        .header { text-align: center; margin-bottom: 60px; }
+        .header h1 { font-size: 2.5rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 10px; font-family: monospace; }
+        .header a { color: #555; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .header a:hover { color: var(--accent); }
+
+        /* --- INTERAKTIVES SETUP AREA --- */
+        .setup-visualizer {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 100px auto;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 122, 255, 0.2);
+            perspective: 1000px;
+        }
+
+        .setup-image-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .main-img {
+            width: 100%;
+            display: block;
+            border-radius: 20px;
+            border: 1px solid #222;
+            filter: brightness(0.8);
+        }
+
+        /* --- HOTSPOTS & LINES --- */
+        .hotspot {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            z-index: 100;
+            cursor: pointer;
+        }
+
+        .hotspot::after {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border-radius: 50%;
+            border: 2px solid inherit;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        .connector-line {
+            position: absolute;
+            height: 2px;
+            transform-origin: left center;
+            z-index: 50;
+            filter: blur(1px);
+            opacity: 0.7;
+        }
+
+        .hw-label {
+            position: absolute;
+            background: rgba(15, 15, 15, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            width: 220px;
+            border: 1px solid #333;
+            z-index: 110;
+            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hw-label:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .hw-label h3 { margin: 0 0 5px 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .hw-label p { margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.4; }
+        .highlight-val { font-weight: bold; color: #fff; }
+
+        /* --- SPEC GROUPS (VORHERIGER CONTENT) --- */
         .spec-group { background: #111; padding: 25px; border-radius: 12px; border: 1px solid #222; margin-bottom: 20px; }
-        .spec-title { color: var(--accent); font-weight: bold; margin-bottom: 15px; display: block; }
+        .spec-title { color: var(--accent); font-weight: bold; margin-bottom: 15px; display: block; font-family: monospace; }
         .spec-item { display: flex; justify-content: space-between; border-bottom: 1px solid #1a1a1a; padding: 8px 0; }
         .spec-label { color: #666; }
         .tag { background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
-        
-        /* --- FOOTER CSS --- */
-        .footer-container { margin-top: 60px; padding: 30px 0 40px; border-top: 1px solid #222; width: 100%; text-align: center; position: relative; z-index: 2; }
-        .social-icons { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
-        .social-icon { width: 32px; height: 32px; transition: transform 0.3s ease; }
-        .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
-        .social-icons a:hover .social-icon { transform: scale(1.25); }
-        .legal-links { font-size: 0.85rem; color: #444; margin-top: 20px; }
-        .legal-links a { color: #666; margin: 0 10px; text-decoration: none; }
+
+        /* --- RESPONSIVE FIX --- */
+        @media (max-width: 900px) {
+            .hw-label { position: relative; width: 100%; top: auto !important; left: auto !important; margin-bottom: 20px; }
+            .connector-line, .hotspot { display: none; }
+            .setup-visualizer { margin-bottom: 40px; }
+        }
+
+        .footer-container { margin-top: 60px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>[SYS_INFO] Main Workstation & Lab</h1>
-            <a href="index.html" style="color: #555; text-decoration: none;">← Exit to Home</a>
+            <h1>[NODE_LAB_INFO]</h1>
+            <a href="index.html">← TERMINATE_SESSION (BACK TO HOME)</a>
         </div>
 
+        <!-- VISUALIZER SEKTION -->
+        <div class="setup-visualizer" id="visualizer">
+            <div class="setup-image-wrapper" id="wrapper">
+                <img src="pc-setup.jpg" alt="Sandro's Workstation" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1587202372634-32705e3bf49c?q=80&w=2000'">
+
+                <!-- CPU -->
+                <div class="hotspot" style="top: 32%; left: 33%; background: var(--cpu-color); box-shadow: 0 0 15px var(--cpu-color);"></div>
+                <div class="connector-line" style="top: 33%; left: 33%; width: 120px; transform: rotate(200deg); background: var(--cpu-color); box-shadow: 0 0 10px var(--cpu-color);"></div>
+                <div class="hw-label" style="top: 15%; left: -10%;">
+                    <h3 style="color: var(--cpu-color);">Processor (CPU)</h3>
+                    <p>AMD Ryzen 7 <span class="highlight-val">9800X3D</span><br>8 Cores / 16 Threads, Zen 4 Architektur.</p>
+                </div>
+
+                <!-- GPU -->
+                <div class="hotspot" style="top: 65%; left: 45%; background: var(--gpu-color); box-shadow: 0 0 15px var(--gpu-color);"></div>
+                <div class="connector-line" style="top: 66%; left: 45%; width: 150px; transform: rotate(30deg); background: var(--gpu-color); box-shadow: 0 0 10px var(--gpu-color);"></div>
+                <div class="hw-label" style="top: 75%; left: 60%;">
+                    <h3 style="color: var(--gpu-color);">Graphics (GPU)</h3>
+                    <p>NVIDIA RTX <span class="highlight-val">5070 Asus TUF OC</span><br>Optimiert für KI und Workstation-Tasks.</p>
+                </div>
+
+                <!-- RAM -->
+                <div class="hotspot" style="top: 28%; left: 47%; background: var(--ram-color); box-shadow: 0 0 15px var(--ram-color);"></div>
+                <div class="connector-line" style="top: 29%; left: 47%; width: 100px; transform: rotate(-45deg); background: var(--ram-color); box-shadow: 0 0 10px var(--ram-color);"></div>
+                <div class="hw-label" style="top: 5%; left: 55%;">
+                    <h3 style="color: var(--ram-color);">Memory (RAM)</h3>
+                    <p><span class="highlight-val">32GB DDR5 @ 6000MHz</span><br>Ultra-low Latency Konfiguration.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAILLIERTE SPECS (RESTORIERTER CONTENT) -->
         <div class="spec-group">
-            <span class="spec-title">> Main Hardware</span>
+            <span class="spec-title">> Main Hardware Components</span>
             <div class="spec-item"><span class="spec-label">CPU</span><span>AMD Ryzen 7 9800X3D</span></div>
             <div class="spec-item"><span class="spec-label">GPU</span><span>NVIDIA RTX 5070 Asus TUF OC</span></div>
             <div class="spec-item"><span class="spec-label">RAM</span><span>32GB DDR5 @ 6000MHz</span></div>
@@ -46,19 +178,49 @@
         </div>
 
         <div class="spec-group">
-            <span class="spec-title">> Software & OS</span>
+            <span class="spec-title">> Software & OS Environment</span>
             <div class="spec-item"><span class="spec-label">Primary OS</span><span class="tag">CachyOS (Arch-based)</span></div>
             <div class="spec-item"><span class="spec-label">Secondary OS</span><span>Windows 11 Pro</span></div>
             <div class="spec-item"><span class="spec-label">Shell</span><span>ZSH / Oh-My-Zsh</span></div>
         </div>
 
         <div class="spec-group">
-            <span class="spec-title">> Networking Lab</span>
-            <p style="color: #666; font-size: 0.9rem;">Hier folgt bald eine Übersicht über mein Homelab</p>
+            <span class="spec-title">> Networking Lab Status</span>
+            <p style="color: #666; font-size: 0.9rem;">Hier folgt bald eine Übersicht über mein Homelab (Cisco GNS3 / Physisches Lab).</p>
+        </div>
+
+        <div style="background: #111; padding: 30px; border-radius: 16px; border: 1px solid #222; margin-top: 20px;">
+            <h2 style="color: var(--accent); margin-top: 0; font-family: monospace;">System Summary</h2>
+            <p style="color: #888; line-height: 1.6;">Diese Workstation ist auf maximale Performance unter Linux ausgelegt. Durch die Nutzung des CachyOS Kernels werden Latenzen minimiert, was besonders bei der Virtualisierung von Netzwerken und der Entwicklung von komplexen Chatbot-Systemen von Vorteil ist.</p>
         </div>
     </div>
 
     <!-- ZENTRALER FOOTER -->
     {% include footer.html %}
+
+    <script>
+        const visualizer = document.getElementById('visualizer');
+        const wrapper = document.getElementById('wrapper');
+
+        visualizer.addEventListener('mousemove', (e) => {
+            const rect = visualizer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const xRotation = ((y / rect.height) - 0.5) * -10; 
+            const yRotation = ((x / rect.width) - 0.5) * 10;
+            
+            wrapper.style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+        });
+
+        visualizer.addEventListener('mouseleave', () => {
+            wrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            wrapper.style.transition = 'transform 0.5s ease-out';
+        });
+
+        visualizer.addEventListener('mouseenter', () => {
+            wrapper.style.transition = 'transform 0.1s ease-out';
+        });
+    </script>
 </body>
 </html>
