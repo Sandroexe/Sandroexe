@@ -1,96 +1,307 @@
 ---
-permalink: /404.html
+layout: default
+title: Zertifikate
 ---
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 — System Failure | exemail.at</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: #050505;
-            color: #ccc;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            height: 100vh; overflow: hidden;
-            animation: red-breath 4s ease-in-out infinite;
-        }
-        @keyframes red-breath {
-            0%   { box-shadow: inset 0 0 30px rgba(255,0,0,0.15); }
-            50%  { box-shadow: inset 0 0 120px rgba(255,0,0,0.55); }
-            100% { box-shadow: inset 0 0 30px rgba(255,0,0,0.15); }
-        }
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
-            z-index: 1; pointer-events: none;
-        }
-        .terminal-container { max-width: 640px; width: 90%; z-index: 2; }
-        h1 {
-            font-size: 5rem; margin: 0 0 12px;
-            color: #ff5f56;
-            text-shadow: 0 0 25px rgba(255,95,86,0.7);
-            letter-spacing: -2px; min-height: 1.2em;
-        }
-        .log-text { font-size: 1rem; line-height: 1.6; color: #007aff; margin-bottom: 4px; display: block; }
-        .cursor { display: inline-block; width: 10px; height: 1.1em; background: #007aff; vertical-align: bottom; animation: blink 1s step-end infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        .btn-container { margin-top: 48px; opacity: 0; transition: opacity 1.2s ease-in; }
-        .btn {
-            padding: 13px 26px; border: 1px solid #ff5f56;
-            background: rgba(255,95,86,0.08); color: #ff5f56;
-            text-decoration: none; border-radius: 6px;
-            font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;
-            transition: 0.25s; display: inline-block;
-            box-shadow: 0 0 12px rgba(255,95,86,0.15);
-        }
-        .btn:hover { background: #ff5f56; color: white; box-shadow: 0 0 30px #ff5f56; }
-        .home-link { margin-top: 18px; display: block; font-size: 0.8rem; color: #333; text-decoration: none; transition: color 0.2s; }
-        .home-link:hover { color: #007aff; }
-    </style>
-</head>
-<body>
-    <div class="scanlines"></div>
-    <div class="terminal-container">
-        <h1 id="error-title"></h1>
-        <div id="console-output"></div>
-        <span class="cursor"></span>
-        <div class="btn-container" id="home-btn">
-            <a href="index.html" class="btn">⚡ EMERGENCY REBOOT</a>
-            <a href="index.html" class="home-link">→ Zurück zur Startseite</a>
+
+<style>
+    /* ── CERT GRID ── */
+    .cert-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 22px;
+        margin-top: 10px;
+    }
+
+    /* ── CERT CARD ── */
+    .cert-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        position: relative;
+    }
+    .cert-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--cert-color, var(--accent));
+        box-shadow: 0 14px 40px rgba(0,0,0,0.5), 0 0 0 1px var(--cert-color, var(--accent));
+    }
+
+    /* Farbiger Balken oben */
+    .cert-card-header {
+        height: 6px;
+        background: var(--cert-color, var(--accent));
+        flex-shrink: 0;
+    }
+
+    .cert-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+    /* Issuer Badge + Icon */
+    .cert-issuer-row {
+        display: flex; align-items: center; gap: 12px;
+    }
+    .cert-issuer-icon {
+        width: 44px; height: 44px; border-radius: 10px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.4rem; flex-shrink: 0;
+    }
+    .cert-issuer-name { color: var(--muted); font-size: 0.8rem; font-family: 'Courier New', monospace; letter-spacing: 0.5px; }
+    .cert-issuer-sub { color: #333; font-size: 0.75rem; margin-top: 2px; }
+
+    .cert-title {
+        font-weight: 700; font-size: 1.05rem; color: #fff;
+        line-height: 1.35;
+    }
+
+    .cert-meta {
+        display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px;
+    }
+    .cert-meta-item {
+        font-size: 0.75rem; color: #555;
+        font-family: 'Courier New', monospace;
+        display: flex; align-items: center; gap: 4px;
+    }
+    .cert-meta-item::before { content: '//'; color: #2a2a2a; }
+
+    .cert-desc {
+        color: #777; font-size: 0.88rem;
+        line-height: 1.6; flex: 1;
+    }
+
+    .cert-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .cert-tag {
+        background: rgba(0,122,255,0.08);
+        color: var(--cert-color, var(--accent));
+        border: 1px solid rgba(0,122,255,0.15);
+        padding: 2px 9px; border-radius: 4px;
+        font-size: 0.72rem; font-family: 'Courier New', monospace;
+    }
+
+    .cert-footer {
+        padding: 14px 24px;
+        border-top: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 10px;
+    }
+
+    .cert-status {
+        display: flex; align-items: center; gap: 6px;
+        font-size: 0.78rem; font-family: 'Courier New', monospace;
+    }
+    .cert-status-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: #27c93f;
+        box-shadow: 0 0 6px #27c93f;
+        animation: pulse-dot 2s infinite;
+    }
+    .cert-status-dot.inactive { background: #555; box-shadow: none; animation: none; }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .cert-status-text { color: #555; }
+
+    .cert-link {
+        display: inline-flex; align-items: center; gap: 5px;
+        color: var(--cert-color, var(--accent));
+        text-decoration: none;
+        font-size: 0.78rem; font-family: 'Courier New', monospace;
+        padding: 5px 12px; border-radius: 5px;
+        border: 1px solid var(--cert-color, var(--accent));
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .cert-link:hover {
+        background: var(--cert-color, var(--accent));
+        color: #fff;
+    }
+
+    /* ── COMING SOON CARD ── */
+    .cert-card.placeholder {
+        border-style: dashed;
+        opacity: 0.45;
+    }
+    .cert-card.placeholder .cert-card-header { background: #1e1e1e; }
+    .cert-card.placeholder:hover { transform: none; box-shadow: none; border-color: var(--border); opacity: 0.6; }
+
+    /* ── SECTION DIVIDER ── */
+    .cert-section-title {
+        font-family: 'Courier New', monospace;
+        font-size: 0.8rem; color: var(--muted);
+        letter-spacing: 2px; text-transform: uppercase;
+        margin: 36px 0 16px;
+        display: flex; align-items: center; gap: 12px;
+    }
+    .cert-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── SUMMARY BAR ── */
+    .cert-summary {
+        display: flex; gap: 20px; flex-wrap: wrap;
+        margin-bottom: 32px;
+    }
+    .cert-summary-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 20px;
+        flex: 1; min-width: 120px;
+        text-align: center;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+    .cert-summary-item:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .cert-summary-num { font-size: 1.8rem; font-weight: 700; color: var(--accent); font-family: 'Courier New', monospace; display: block; }
+    .cert-summary-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; display: block; }
+
+    /* ── HOW TO ADD NOTE ── */
+    .add-cert-hint {
+        background: rgba(0,122,255,0.04);
+        border: 1px dashed rgba(0,122,255,0.2);
+        border-radius: 12px; padding: 20px 24px;
+        margin-top: 28px;
+        color: #444; font-family: 'Courier New', monospace; font-size: 0.82rem;
+        line-height: 1.7;
+    }
+    .add-cert-hint strong { color: var(--accent); }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <h1>[CERT_ARCHIVE]</h1>
+        <a href="index.html" class="back-link">← TERMINATE_SESSION</a>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="cert-summary reveal">
+        <div class="cert-summary-item">
+            <span class="cert-summary-num">1</span>
+            <span class="cert-summary-label">Zertifikat</span>
+        </div>
+        <div class="cert-summary-item">
+            <span class="cert-summary-num">1</span>
+            <span class="cert-summary-label">Kurs</span>
+        </div>
+        <div class="cert-summary-item">
+            <span class="cert-summary-num">100%</span>
+            <span class="cert-summary-label">Aktiv / Gültig</span>
         </div>
     </div>
-    <script>
-        const titleEl = document.getElementById('error-title');
-        const outputEl = document.getElementById('console-output');
-        const btnEl = document.getElementById('home-btn');
-        const titleText = "ERROR 404";
-        const lines = [
-            { text: "> SYSTEM ALERT: Critical failure detected.", error: true },
-            { text: "> Analyzing path to 'exemail.at'...", error: false },
-            { text: "> STATUS: Target resource not found.", error: true },
-            { text: "> DIAGNOSTIC: Page was moved or never existed.", error: false },
-            { text: "> INITIATING FAILSAFE PROTOCOL...", error: true }
-        ];
-        const sleep = ms => new Promise(r => setTimeout(r, ms));
-        async function typeWriter() {
-            for (let c of titleText) { titleEl.textContent += c; await sleep(180); }
-            await sleep(700);
-            for (let line of lines) {
-                const p = document.createElement('div');
-                p.className = 'log-text';
-                if (line.error) p.style.color = '#ff5f56';
-                outputEl.appendChild(p);
-                for (let c of line.text) { p.textContent += c; await sleep(Math.random() * 18 + 18); }
-                await sleep(380);
-            }
-            await sleep(500);
-            btnEl.style.opacity = 1;
-        }
-        document.addEventListener('DOMContentLoaded', typeWriter);
-    </script>
-</body>
-</html>
+
+    <!-- ─── NETWORKING ─── -->
+    <div class="cert-section-title reveal">Networking & Security</div>
+    <div class="cert-grid">
+
+        <!-- CCNA -->
+        <div class="cert-card reveal" style="--cert-color: #049fd9;">
+            <div class="cert-card-header"></div>
+            <div class="cert-card-body">
+                <div class="cert-issuer-row">
+                    <div class="cert-issuer-icon">🔵</div>
+                    <div>
+                        <div class="cert-issuer-name">Cisco Systems</div>
+                        <div class="cert-issuer-sub">Networking Academy</div>
+                    </div>
+                </div>
+                <div class="cert-title">Cisco Certified Network Associate (CCNA)</div>
+                <div class="cert-meta">
+                    <span class="cert-meta-item">2024</span>
+                    <span class="cert-meta-item">Gültig 3 Jahre</span>
+                </div>
+                <div class="cert-desc">
+                    Fundierte Kenntnisse in Netzwerktopologien, Routing & Switching, IP-Adressierung, VLANs, STP, OSPF, ACLs und grundlegender Netzwerksicherheit.
+                </div>
+                <div class="cert-tags">
+                    <span class="cert-tag">Routing</span>
+                    <span class="cert-tag">Switching</span>
+                    <span class="cert-tag">OSPF</span>
+                    <span class="cert-tag">VLANs</span>
+                    <span class="cert-tag">ACLs</span>
+                </div>
+            </div>
+            <div class="cert-footer">
+                <div class="cert-status">
+                    <div class="cert-status-dot"></div>
+                    <span class="cert-status-text">Aktiv</span>
+                </div>
+                <!-- LinkedIn Verify-Link einfügen sobald vorhanden: -->
+                <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" rel="noopener" class="cert-link">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    LinkedIn
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ─── COURSES ─── -->
+    <div class="cert-section-title reveal">Kurse & Schulungen</div>
+    <div class="cert-grid">
+
+        <!-- PLACEHOLDER: Hier kannst du weitere Kurse einfügen -->
+        <!-- BEISPIEL: LinkedIn Learning Kurs -->
+        <!--
+        <div class="cert-card reveal" style="--cert-color: #0a66c2;">
+            <div class="cert-card-header"></div>
+            <div class="cert-card-body">
+                <div class="cert-issuer-row">
+                    <div class="cert-issuer-icon">💼</div>
+                    <div>
+                        <div class="cert-issuer-name">LinkedIn Learning</div>
+                    </div>
+                </div>
+                <div class="cert-title">Name des Kurses</div>
+                <div class="cert-meta">
+                    <span class="cert-meta-item">2024</span>
+                    <span class="cert-meta-item">X Stunden</span>
+                </div>
+                <div class="cert-desc">Kurzbeschreibung des Kursinhalts.</div>
+                <div class="cert-tags">
+                    <span class="cert-tag">Tag1</span>
+                </div>
+            </div>
+            <div class="cert-footer">
+                <div class="cert-status">
+                    <div class="cert-status-dot"></div>
+                    <span class="cert-status-text">Abgeschlossen</span>
+                </div>
+                <a href="DEIN_LINKEDIN_ZERTIFIKAT_LINK" target="_blank" rel="noopener" class="cert-link">Verifizieren ↗</a>
+            </div>
+        </div>
+        -->
+
+        <!-- Coming soon placeholder -->
+        <div class="cert-card placeholder reveal">
+            <div class="cert-card-header"></div>
+            <div class="cert-card-body">
+                <div class="cert-issuer-row">
+                    <div class="cert-issuer-icon">⏳</div>
+                    <div>
+                        <div class="cert-issuer-name">Demnächst</div>
+                    </div>
+                </div>
+                <div class="cert-title">Weitere Kurse folgen</div>
+                <div class="cert-desc">Kurse und Schulungen werden hier laufend ergänzt.</div>
+            </div>
+            <div class="cert-footer">
+                <div class="cert-status">
+                    <div class="cert-status-dot inactive"></div>
+                    <span class="cert-status-text">In Planung</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- HOW TO ADD -->
+    <div class="add-cert-hint reveal">
+        <strong>// So fügst du ein neues Zertifikat hinzu:</strong><br>
+        Kopiere einen <code>&lt;div class="cert-card"&gt;</code> Block und passe folgende Felder an:<br>
+        &nbsp;&nbsp;→ <strong>--cert-color</strong>: Akzentfarbe der Karte (z.B. <code>#0a66c2</code> für LinkedIn)<br>
+        &nbsp;&nbsp;→ <strong>cert-issuer-name</strong>: Ausstellende Organisation<br>
+        &nbsp;&nbsp;→ <strong>cert-title</strong>: Name des Zertifikats<br>
+        &nbsp;&nbsp;→ <strong>cert-link href</strong>: Direktlink zur LinkedIn-Verifizierung<br>
+        &nbsp;&nbsp;→ <strong>cert-summary-num</strong>: Zahlen oben anpassen
+    </div>
+</div>
