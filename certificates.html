@@ -1,0 +1,96 @@
+---
+permalink: /404.html
+---
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — System Failure | exemail.at</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #050505;
+            color: #ccc;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            height: 100vh; overflow: hidden;
+            animation: red-breath 4s ease-in-out infinite;
+        }
+        @keyframes red-breath {
+            0%   { box-shadow: inset 0 0 30px rgba(255,0,0,0.15); }
+            50%  { box-shadow: inset 0 0 120px rgba(255,0,0,0.55); }
+            100% { box-shadow: inset 0 0 30px rgba(255,0,0,0.15); }
+        }
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+            z-index: 1; pointer-events: none;
+        }
+        .terminal-container { max-width: 640px; width: 90%; z-index: 2; }
+        h1 {
+            font-size: 5rem; margin: 0 0 12px;
+            color: #ff5f56;
+            text-shadow: 0 0 25px rgba(255,95,86,0.7);
+            letter-spacing: -2px; min-height: 1.2em;
+        }
+        .log-text { font-size: 1rem; line-height: 1.6; color: #007aff; margin-bottom: 4px; display: block; }
+        .cursor { display: inline-block; width: 10px; height: 1.1em; background: #007aff; vertical-align: bottom; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .btn-container { margin-top: 48px; opacity: 0; transition: opacity 1.2s ease-in; }
+        .btn {
+            padding: 13px 26px; border: 1px solid #ff5f56;
+            background: rgba(255,95,86,0.08); color: #ff5f56;
+            text-decoration: none; border-radius: 6px;
+            font-weight: bold; letter-spacing: 2px; font-size: 0.85rem;
+            transition: 0.25s; display: inline-block;
+            box-shadow: 0 0 12px rgba(255,95,86,0.15);
+        }
+        .btn:hover { background: #ff5f56; color: white; box-shadow: 0 0 30px #ff5f56; }
+        .home-link { margin-top: 18px; display: block; font-size: 0.8rem; color: #333; text-decoration: none; transition: color 0.2s; }
+        .home-link:hover { color: #007aff; }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="terminal-container">
+        <h1 id="error-title"></h1>
+        <div id="console-output"></div>
+        <span class="cursor"></span>
+        <div class="btn-container" id="home-btn">
+            <a href="index.html" class="btn">⚡ EMERGENCY REBOOT</a>
+            <a href="index.html" class="home-link">→ Zurück zur Startseite</a>
+        </div>
+    </div>
+    <script>
+        const titleEl = document.getElementById('error-title');
+        const outputEl = document.getElementById('console-output');
+        const btnEl = document.getElementById('home-btn');
+        const titleText = "ERROR 404";
+        const lines = [
+            { text: "> SYSTEM ALERT: Critical failure detected.", error: true },
+            { text: "> Analyzing path to 'exemail.at'...", error: false },
+            { text: "> STATUS: Target resource not found.", error: true },
+            { text: "> DIAGNOSTIC: Page was moved or never existed.", error: false },
+            { text: "> INITIATING FAILSAFE PROTOCOL...", error: true }
+        ];
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        async function typeWriter() {
+            for (let c of titleText) { titleEl.textContent += c; await sleep(180); }
+            await sleep(700);
+            for (let line of lines) {
+                const p = document.createElement('div');
+                p.className = 'log-text';
+                if (line.error) p.style.color = '#ff5f56';
+                outputEl.appendChild(p);
+                for (let c of line.text) { p.textContent += c; await sleep(Math.random() * 18 + 18); }
+                await sleep(380);
+            }
+            await sleep(500);
+            btnEl.style.opacity = 1;
+        }
+        document.addEventListener('DOMContentLoaded', typeWriter);
+    </script>
+</body>
+</html>
