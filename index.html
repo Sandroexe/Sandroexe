@@ -102,11 +102,10 @@ layout: null
 
         /* CTA */
         .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 20px 0 40px; }
-        .cta-btn { text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.85rem; padding: 10px 20px; border-radius: 8px; transition: all 0.25s ease; font-weight: 600; }
-        .cta-primary { background: var(--accent); color: #fff; }
-        .cta-primary:hover { background: #0066dd; box-shadow: 0 6px 20px var(--accent-glow); transform: translateY(-2px); }
-        .cta-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-        .cta-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .cta-btn { text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.85rem; padding: 10px 20px; border-radius: 8px; transition: all 0.25s ease; font-weight: 600; background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+        .cta-btn:hover { background: var(--accent); color: #fff; box-shadow: 0 6px 20px var(--accent-glow); transform: translateY(-2px); }
+        .cta-primary { }
+        .cta-secondary { }
 
         /* REVEAL */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
