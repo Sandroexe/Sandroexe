@@ -146,6 +146,17 @@ layout: null
         .cv-desc { color: #666; font-size: 0.88rem; line-height: 1.5; }
         @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
 
+
+        /* LANG TOGGLE */
+        .lang-toggle { display: flex; align-items: center; gap: 0; background: rgba(0,122,255,0.08); border: 1px solid rgba(0,122,255,0.2); border-radius: 20px; padding: 3px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 0.75rem; transition: all 0.2s; user-select: none; margin-left: 8px; }
+        .lang-toggle:hover { border-color: var(--accent); }
+        .lang-opt { padding: 2px 8px; border-radius: 12px; transition: all 0.2s; color: var(--muted); }
+        .lang-opt.active { background: var(--accent); color: #fff; }
+
+        /* SCROLL TO TOP */
+        .scroll-top-btn { position: fixed; bottom: 90px; right: 24px; width: 40px; height: 40px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--accent); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; opacity: 0; pointer-events: none; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+        .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+        .scroll-top-btn:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 8px 20px var(--accent-glow); }
         /* FOOTER */
         .footer-container { margin-top: 60px; padding: 40px 20px; border-top: 1px solid var(--border); width: 100%; text-align: center; position: relative; z-index: 2; }
         .social-icons { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -219,14 +230,14 @@ layout: null
 
         <!-- UEBER MICH -->
         <div class="content-box reveal">
-            <h2>&#220;ber mich</h2>
-            <p>Als Regionalvorstand f&#252;r das Tiroler Unterland bei der Sch&#252;lerunion &#214;sterreich setze ich mich aktiv f&#252;r die Anliegen von Sch&#252;ler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktl&#246;sung ein. Parallel dazu vertrete ich als Sch&#252;lervertreter an der HTBLVA Anichstra&#223;e die Interessen von etwa 1600 Sch&#252;ler:innen im Schulgemeinschaftsausschuss.</p>
+            <h2 data-de="&#220;ber mich" data-en="About me">&#220;ber mich</h2>
+            <p data-de="Als Regionalvorstand f&#252;r das Tiroler Unterland bei der Sch&#252;lerunion &#214;sterreich setze ich mich aktiv f&#252;r die Anliegen von Sch&#252;ler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktl&#246;sung ein. Parallel dazu vertrete ich als Sch&#252;lervertreter an der HTBLVA Anichstra&#223;e die Interessen von etwa 1600 Sch&#252;ler:innen im Schulgemeinschaftsausschuss." data-en="As Regional Chairman for the Tyrolean Unterland at the Student Union Austria, I actively advocate for students and bring my skills in communication and conflict resolution. In parallel, I represent approximately 1600 students at HTBLVA Anichstra&#223;e in the school community committee.">Als Regionalvorstand f&#252;r das Tiroler Unterland bei der Sch&#252;lerunion &#214;sterreich setze ich mich aktiv f&#252;r die Anliegen von Sch&#252;ler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktl&#246;sung ein. Parallel dazu vertrete ich als Sch&#252;lervertreter an der HTBLVA Anichstra&#223;e die Interessen von etwa 1600 Sch&#252;ler:innen im Schulgemeinschaftsausschuss.</p>
             <p>Neben meiner organisatorischen T&#228;tigkeit leite ich den "HTL-Incubator", einen Open Maker Space, in dem ich Mitsch&#252;ler bei der Nutzung moderner Technologien unterst&#252;tze. Mein technisches Wissen vertiefe ich durch meine Ausbildung in Elektronik und Technischer Informatik sowie durch meine CCNA-Zertifizierung.</p>
         </div>
 
         <!-- TECH STACK -->
         <div class="content-box reveal">
-            <h2>Tech Stack</h2>
+            <h2 data-de="Tech Stack" data-en="Tech Stack">Tech Stack</h2>
             <div class="skill-item">
                 <div class="skill-info"><span>&#127999; Linux / Debian &amp; CachyOS</span><span class="skill-badge">Fortgeschritten</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="88%"></div></div>
@@ -446,6 +457,36 @@ layout: null
             }
         });
 
+
+        // LANG TOGGLE
+        (function() {
+            var currentLang = localStorage.getItem('lang') || 'de';
+            applyLang(currentLang);
+
+            function applyLang(lang) {
+                currentLang = lang;
+                localStorage.setItem('lang', lang);
+                var de = document.getElementById('lang-de');
+                var en = document.getElementById('lang-en');
+                if(de) de.classList.toggle('active', lang === 'de');
+                if(en) en.classList.toggle('active', lang === 'en');
+                document.documentElement.lang = lang === 'en' ? 'en' : 'de';
+                document.querySelectorAll('[data-de]').forEach(function(el) {
+                    el.innerHTML = lang === 'en' ? (el.dataset.en || el.dataset.de) : el.dataset.de;
+                });
+            }
+            window.toggleLang = function() { applyLang(currentLang === 'de' ? 'en' : 'de'); };
+            window.getCurrentLang = function() { return currentLang; };
+            document.addEventListener('DOMContentLoaded', function() { applyLang(currentLang); });
+
+            // SCROLL TO TOP
+            var btn = document.getElementById('scroll-top-btn');
+            if(btn) {
+                window.addEventListener('scroll', function() {
+                    btn.classList.toggle('visible', window.scrollY > 300);
+                });
+            }
+        })();
         document.addEventListener('DOMContentLoaded', type);
         window.addEventListener('scroll', reveal);
         reveal();
