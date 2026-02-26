@@ -173,7 +173,7 @@ layout: null
             font-family: 'Courier New', monospace;
         }
         .city-canvas-wrap {
-            width: 100%; height: 340px; border-radius: 12px;
+            width: 100%; height: 420px; border-radius: 12px;
             border: 1px solid var(--border); overflow: hidden;
             background: #050510; position: relative; cursor: grab;
         }
@@ -570,50 +570,311 @@ layout: null
             const USERNAME = 'Sandroexe';
             const canvas   = document.getElementById('city-canvas');
             if (!canvas) return;
-            const wrap     = canvas.parentElement;
-            const tooltip  = document.getElementById('city-tooltip');
+            const wrap    = canvas.parentElement;
+            const tooltip = document.getElementById('city-tooltip');
+            const ctx     = canvas.getContext('2d');
 
-            // Resize canvas to match wrapper
-            function resizeCity() {
+            // ── Resize ──
+            function resize() {
                 canvas.width  = wrap.clientWidth;
                 canvas.height = wrap.clientHeight;
             }
-            resizeCity();
-            window.addEventListener('resize', () => { resizeCity(); drawCity(); });
-
-            const ctx = canvas.getContext('2d');
+            resize();
+            window.addEventListener('resize', () => { resize(); });
 
             // ── State ──
-            let rotX = 0.72;   // ~40° top-down
-            let rotY = 0.52;
-            let zoom = 1;
-            let isDragging = false, lastMX = 0, lastMY = 0;
-            let mouseX = -1, mouseY = -1;
-            let contributions = [];   // flat array of {date, count, level, week, day}
-            let totalContribs = 0, maxStreak = 0, activeDays = 0;
+            let angleY   = 0.52;          // horizontal rotation (radians)
+            let zoom     = 1.0;
+            let panX     = 0, panY = 0;   // canvas-space pan offset
+            let drag     = false;
+            let lastMX   = 0, lastMY = 0;
+            let mouseX   = -999, mouseY  = -999;
+            let hoveredCell = null;
+            let contributions = [];
 
-            // ── Seeded RNG for consistent fallback ──
-            function seeded(s) {
-                return function() { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+            // ── Seeded RNG ──
+            let _seed = 0xABCD1234;
+            function rand() {
+                _seed = (_seed * 1664525 + 1013904223) & 0xffffffff;
+                return (_seed >>> 0) / 0xffffffff;
             }
-            const rng = seeded(0xC0DE1234);
 
-            // ── Generate or use real data ──
+            // ── TRUE isometric projection (fixed angle, no tilt bugs) ──
+            // ISO: X axis goes right-down, Y axis goes left-down, Z axis goes straight up
+            const ISO_ANGLE = Math.PI / 6;   // 30°
+            const COS30 = Math.cos(ISO_ANGLE);
+            const SIN30 = Math.sin(ISO_ANGLE);
+
+            function project(gx, gy, gz) {
+                // Rotate grid around Y axis by angleY
+                const rx = gx * Math.cos(angleY) - gy * Math.sin(angleY);
+                const ry = gx * Math.sin(angleY) + gy * Math.cos(angleY);
+
+                // True isometric: x maps to diagonal, z goes up
+                const TILE = 22 * zoom;
+                const sx = rx * TILE * COS30;
+                const sy = ry * TILE * SIN30 - gz * TILE * 0.85;
+
+                return {
+                    x: canvas.width  / 2 + sx + panX,
+                    y: canvas.height * 0.55 + sy + panY
+                };
+            }
+
+            // ── Colors — bright, clearly visible ──
+            const LEVEL_COLORS = [
+                null,
+                // L1 — dim steel blue
+                { top:'#1a3a5c', right:'#0f2540', left:'#0a1e34', glow:null },
+                // L2 — medium blue
+                { top:'#1e5fa0', right:'#134878', left:'#0e3860', glow:null },
+                // L3 — bright blue
+                { top:'#2d8aff', right:'#1a60cc', left:'#1450a8', glow:'rgba(45,138,255,0.3)' },
+                // L4 — full accent / tallest
+                { top:'#5eb0ff', right:'#007aff', left:'#0055cc', glow:'rgba(0,122,255,0.6)' },
+            ];
+
+            const FLOOR_FILL   = '#0b0b18';
+            const FLOOR_STROKE = '#1a1a30';
+            const GAP          = 0.08;   // gap between tiles
+
+            // ── Draw a single tile + building ──
+            function drawTile(gx, gy, level, isHovered) {
+                const S = 1 - GAP;
+                const h2 = S / 2;
+
+                // 4 base corners
+                const tl = project(gx - h2, gy - h2, 0);
+                const tr = project(gx + h2, gy - h2, 0);
+                const br = project(gx + h2, gy + h2, 0);
+                const bl = project(gx - h2, gy + h2, 0);
+
+                // ── Floor tile ──
+                ctx.beginPath();
+                ctx.moveTo(tl.x, tl.y);
+                ctx.lineTo(tr.x, tr.y);
+                ctx.lineTo(br.x, br.y);
+                ctx.lineTo(bl.x, bl.y);
+                ctx.closePath();
+                ctx.fillStyle   = isHovered ? '#1a1a2e' : FLOOR_FILL;
+                ctx.fill();
+                ctx.strokeStyle = FLOOR_STROKE;
+                ctx.lineWidth   = 0.8;
+                ctx.stroke();
+
+                if (level === 0) return null;
+
+                const col = LEVEL_COLORS[level];
+
+                // Building height: levels 1–4 map to increasingly tall towers
+                const HEIGHT = [0, 1.2, 2.4, 4.0, 6.0][level];
+
+                // Top corners
+                const ttl = project(gx - h2, gy - h2, HEIGHT);
+                const ttr = project(gx + h2, gy - h2, HEIGHT);
+                const tbr = project(gx + h2, gy + h2, HEIGHT);
+                const tbl = project(gx - h2, gy + h2, HEIGHT);
+
+                // ── Glow effect under tall buildings ──
+                if (col.glow && zoom > 0.6) {
+                    ctx.save();
+                    ctx.shadowColor = col.glow;
+                    ctx.shadowBlur  = isHovered ? 28 : 14;
+                }
+
+                // ── RIGHT face (front-right) ──
+                ctx.beginPath();
+                ctx.moveTo(tr.x, tr.y);
+                ctx.lineTo(br.x, br.y);
+                ctx.lineTo(tbr.x, tbr.y);
+                ctx.lineTo(ttr.x, ttr.y);
+                ctx.closePath();
+                ctx.fillStyle = col.right;
+                ctx.fill();
+                if (isHovered) {
+                    ctx.strokeStyle = '#5eb0ff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+
+                // ── LEFT face (front-left) ──
+                ctx.beginPath();
+                ctx.moveTo(bl.x, bl.y);
+                ctx.lineTo(br.x, br.y);
+                ctx.lineTo(tbr.x, tbr.y);
+                ctx.lineTo(tbl.x, tbl.y);
+                ctx.closePath();
+                ctx.fillStyle = col.left;
+                ctx.fill();
+                if (isHovered) {
+                    ctx.strokeStyle = '#5eb0ff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+
+                // ── TOP face ──
+                ctx.beginPath();
+                ctx.moveTo(ttl.x, ttl.y);
+                ctx.lineTo(ttr.x, ttr.y);
+                ctx.lineTo(tbr.x, tbr.y);
+                ctx.lineTo(tbl.x, tbl.y);
+                ctx.closePath();
+                ctx.fillStyle = col.top;
+                ctx.fill();
+                if (isHovered) {
+                    ctx.strokeStyle = '#a0d8ff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                if (col.glow) ctx.restore();
+
+                // ── Windows on taller buildings ──
+                if (level >= 3) {
+                    // right face windows
+                    const midRX = (tr.x + br.x + tbr.x + ttr.x) / 4;
+                    const midRY = (tr.y + br.y + tbr.y + ttr.y) / 4;
+                    ctx.fillStyle = 'rgba(180,220,255,0.35)';
+                    for (let i = 0; i < level; i++) {
+                        const t = (i + 1) / (level + 1);
+                        const wx = tr.x + (ttr.x - tr.x) * t + (br.x - tr.x) * 0.45;
+                        const wy = tr.y + (ttr.y - tr.y) * t + (br.y - tr.y) * 0.45;
+                        ctx.fillRect(wx - 1.5, wy - 1.5, 3, 3);
+                    }
+                }
+
+                // Return center-top for hover detection
+                return {
+                    cx: (ttl.x + ttr.x + tbr.x + tbl.x) / 4,
+                    cy: (ttl.y + ttr.y + tbr.y + tbl.y) / 4
+                };
+            }
+
+            // ── Main render ──
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Background
+                const bg = ctx.createRadialGradient(
+                    canvas.width/2, canvas.height/2, 0,
+                    canvas.width/2, canvas.height/2, canvas.width * 0.8
+                );
+                bg.addColorStop(0, '#08081a');
+                bg.addColorStop(1, '#020208');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                if (!contributions.length) return;
+
+                const WEEKS = 26, DAYS = 7;
+                const offX  = -(WEEKS - 1) / 2;
+                const offY  = -(DAYS  - 1) / 2;
+
+                // Build list with projected Y for painter-sort (back → front)
+                const list = contributions.map(c => {
+                    const gx = c.week + offX;
+                    const gy = c.day  + offY;
+                    const p  = project(gx, gy, 0);
+                    return { ...c, gx, gy, sortKey: p.y };
+                });
+                list.sort((a, b) => a.sortKey - b.sortKey);
+
+                // Find hovered cell
+                let newHover  = null;
+                let bestDist  = 40;
+
+                list.forEach(item => {
+                    const isHovered = hoveredCell && hoveredCell.date === item.date;
+                    const center = drawTile(item.gx, item.gy, item.level, isHovered);
+
+                    if (center) {
+                        const dist = Math.hypot(center.cx - mouseX, center.cy - mouseY);
+                        if (dist < bestDist) { bestDist = dist; newHover = item; }
+                    }
+                });
+
+                hoveredCell = newHover;
+
+                // Tooltip
+                if (hoveredCell && mouseX > -900) {
+                    const d   = new Date(hoveredCell.date);
+                    const lbl = d.toLocaleDateString('de-AT', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+                    tooltip.innerHTML      = `<strong>${hoveredCell.count} Commit${hoveredCell.count !== 1 ? 's' : ''}</strong><br>${lbl}`;
+                    tooltip.style.display  = 'block';
+                    canvas.style.cursor    = 'pointer';
+                } else {
+                    tooltip.style.display = 'none';
+                    canvas.style.cursor   = drag ? 'grabbing' : 'grab';
+                }
+
+                // Slow auto-rotation when idle
+                if (!drag) angleY += 0.0012;
+
+                requestAnimationFrame(draw);
+            }
+
+            // ── Controls ──
+            canvas.addEventListener('mousedown', e => {
+                drag = true; lastMX = e.clientX; lastMY = e.clientY;
+            });
+            window.addEventListener('mouseup', () => drag = false);
+            canvas.addEventListener('mouseleave', () => {
+                mouseX = -999; mouseY = -999; tooltip.style.display = 'none';
+            });
+            canvas.addEventListener('mousemove', e => {
+                const r = canvas.getBoundingClientRect();
+                mouseX = e.clientX - r.left;
+                mouseY = e.clientY - r.top;
+                if (drag) {
+                    angleY += (e.clientX - lastMX) * 0.01;
+                    panX   += (e.clientX - lastMX) * 0.3;
+                    panY   += (e.clientY - lastMY) * 0.3;
+                    lastMX  = e.clientX; lastMY = e.clientY;
+                }
+            });
+            canvas.addEventListener('wheel', e => {
+                e.preventDefault();
+                zoom *= e.deltaY > 0 ? 0.93 : 1.07;
+                zoom  = Math.max(0.3, Math.min(3.0, zoom));
+            }, { passive: false });
+
+            // Touch
+            let t0x = 0, t0y = 0, tDist = 0;
+            canvas.addEventListener('touchstart', e => {
+                if (e.touches.length === 1) { t0x = e.touches[0].clientX; t0y = e.touches[0].clientY; drag = true; }
+                if (e.touches.length === 2) tDist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+                e.preventDefault();
+            }, { passive:false });
+            canvas.addEventListener('touchend',   () => drag = false, { passive:false });
+            canvas.addEventListener('touchmove', e => {
+                if (e.touches.length === 1) {
+                    angleY += (e.touches[0].clientX - t0x) * 0.01;
+                    t0x = e.touches[0].clientX; t0y = e.touches[0].clientY;
+                }
+                if (e.touches.length === 2) {
+                    const d2 = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+                    zoom *= d2 / tDist; zoom = Math.max(0.3, Math.min(3.0, zoom)); tDist = d2;
+                }
+                e.preventDefault();
+            }, { passive:false });
+
+            // ── Data ──
             function makeData(map) {
                 const result = [];
-                const today = new Date();
-                const WEEKS = 26;
-                const startDate = new Date(today);
-                startDate.setDate(today.getDate() - today.getDay() - WEEKS * 7);
+                const today  = new Date();
+                const WEEKS  = 26;
+                const start  = new Date(today);
+                start.setDate(today.getDate() - today.getDay() - WEEKS * 7);
 
                 for (let w = 0; w <= WEEKS; w++) {
                     for (let d = 0; d < 7; d++) {
-                        const dt = new Date(startDate);
-                        dt.setDate(startDate.getDate() + w * 7 + d);
+                        const dt = new Date(start);
+                        dt.setDate(start.getDate() + w * 7 + d);
                         if (dt > today) continue;
-                        const key = dt.toISOString().split('T')[0];
-                        const count = (map && map[key] != null) ? map[key] :
-                            (rng() > 0.68 ? Math.floor(rng() * 10) + 1 : 0);
+                        const key   = dt.toISOString().split('T')[0];
+                        const count = (map && map[key] != null)
+                            ? map[key]
+                            : (rand() > 0.62 ? Math.floor(rand() * 11) + 1 : 0);
                         const level = count === 0 ? 0 : count <= 2 ? 1 : count <= 5 ? 2 : count <= 9 ? 3 : 4;
                         result.push({ date: key, count, level, week: w, day: d });
                     }
@@ -622,248 +883,18 @@ layout: null
             }
 
             function computeStats(data) {
-                totalContribs = data.reduce((s, c) => s + c.count, 0);
-                activeDays    = data.filter(c => c.count > 0).length;
-                // streak
+                const total  = data.reduce((s, c) => s + c.count, 0);
+                const active = data.filter(c => c.count > 0).length;
                 const sorted = data.slice().sort((a,b) => a.date.localeCompare(b.date));
                 let cur = 0, best = 0;
-                for (const c of sorted) { c.count > 0 ? (cur++, best = Math.max(best, cur)) : (cur = 0); }
-                maxStreak = best;
-                const avg = totalContribs > 0 ? (totalContribs / data.length).toFixed(1) : '0.0';
-                document.getElementById('cs-total').textContent  = totalContribs;
-                document.getElementById('cs-streak').textContent = maxStreak;
-                document.getElementById('cs-days').textContent   = activeDays;
+                sorted.forEach(c => c.count > 0 ? (cur++, best = Math.max(best, cur)) : (cur = 0));
+                const avg = total > 0 ? (total / data.length).toFixed(1) : '0.0';
+                document.getElementById('cs-total').textContent  = total;
+                document.getElementById('cs-streak').textContent = best;
+                document.getElementById('cs-days').textContent   = active;
                 document.getElementById('cs-avg').textContent    = avg;
             }
 
-            // ── Isometric projection ──
-            function isoProject(wx, wy, wz) {
-                const cx = canvas.width  / 2;
-                const cy = canvas.height / 2;
-                const TILE = 18 * zoom;
-
-                // rotate Y
-                const rx = wx * Math.cos(rotY) - wy * Math.sin(rotY);
-                const ryl = wx * Math.sin(rotY) + wy * Math.cos(rotY);
-                // rotate X
-                const ry2 = ryl * Math.cos(rotX) - wz * Math.sin(rotX);
-                const rz2 = ryl * Math.sin(rotX) + wz * Math.cos(rotX);
-
-                return {
-                    sx: cx + rx * TILE,
-                    sy: cy - ry2 * TILE * 0.55 - rz2 * TILE * 0.9
-                };
-            }
-
-            // ── Building colors by level ──
-            const COLORS = [
-                null, // level 0 — no building
-                { top: '#0a1628', side1: '#071020', side2: '#060e1c' },  // level 1 — very dim
-                { top: '#0d3060', side1: '#0a2248', side2: '#081c3c' },  // level 2
-                { top: '#1a5ab8', side1: '#124290', side2: '#0e3572' },  // level 3
-                { top: '#007aff', side1: '#0056cc', side2: '#0044aa' },  // level 4 — bright blue
-            ];
-            const FLOOR_COLOR  = '#0a0a14';
-            const FLOOR_BORDER = '#111120';
-            const GRID_COLOR   = 'rgba(0,100,255,0.08)';
-
-            // ── Draw one isometric building ──
-            function drawBuilding(wx, wy, height, colors, isHovered) {
-                if (height <= 0) return null;
-                const S = 0.9;  // tile size fraction
-                const h = height * 2.2 * zoom;
-
-                // 4 base corners of the tile
-                const tl = isoProject(wx - S/2, wy - S/2, 0);
-                const tr = isoProject(wx + S/2, wy - S/2, 0);
-                const br = isoProject(wx + S/2, wy + S/2, 0);
-                const bl = isoProject(wx - S/2, wy + S/2, 0);
-                // top corners
-                const ttl = isoProject(wx - S/2, wy - S/2, height);
-                const ttr = isoProject(wx + S/2, wy - S/2, height);
-                const tbr = isoProject(wx + S/2, wy + S/2, height);
-                const tbl = isoProject(wx - S/2, wy + S/2, height);
-
-                const glow = isHovered ? 0.5 : 0;
-
-                // right face
-                ctx.beginPath();
-                ctx.moveTo(tr.sx, tr.sy); ctx.lineTo(br.sx, br.sy);
-                ctx.lineTo(tbr.sx, tbr.sy); ctx.lineTo(ttr.sx, ttr.sy);
-                ctx.closePath();
-                ctx.fillStyle = colors.side1;
-                ctx.fill();
-                if (isHovered) { ctx.strokeStyle = 'rgba(0,180,255,0.9)'; ctx.lineWidth = 1.5; ctx.stroke(); }
-
-                // left face
-                ctx.beginPath();
-                ctx.moveTo(bl.sx, bl.sy); ctx.lineTo(br.sx, br.sy);
-                ctx.lineTo(tbr.sx, tbr.sy); ctx.lineTo(tbl.sx, tbl.sy);
-                ctx.closePath();
-                ctx.fillStyle = colors.side2;
-                ctx.fill();
-                if (isHovered) { ctx.strokeStyle = 'rgba(0,180,255,0.9)'; ctx.lineWidth = 1.5; ctx.stroke(); }
-
-                // top face
-                ctx.beginPath();
-                ctx.moveTo(ttl.sx, ttl.sy); ctx.lineTo(ttr.sx, ttr.sy);
-                ctx.lineTo(tbr.sx, tbr.sy); ctx.lineTo(tbl.sx, tbl.sy);
-                ctx.closePath();
-                ctx.fillStyle = colors.top;
-                ctx.fill();
-                if (isHovered) { ctx.strokeStyle = 'rgba(100,200,255,1)'; ctx.lineWidth = 2; ctx.stroke(); }
-
-                // window lights on tall buildings
-                if (height >= 3 && Math.random() < 0.4) {
-                    ctx.fillStyle = 'rgba(0,122,255,0.4)';
-                    const wx1 = (ttr.sx + tbr.sx) / 2 - 2;
-                    const wy1 = (ttr.sy + tbr.sy) / 2;
-                    ctx.fillRect(wx1, wy1 - 2, 3, 2);
-                }
-
-                // return bounding box center for hover detection
-                return {
-                    cx: (ttl.sx + ttr.sx + tbr.sx + tbl.sx) / 4,
-                    cy: (ttl.sy + ttr.sy + tbr.sy + tbl.sy) / 4
-                };
-            }
-
-            // ── Draw floor tile ──
-            function drawFloor(wx, wy) {
-                const S = 0.9;
-                const tl = isoProject(wx - S/2, wy - S/2, 0);
-                const tr = isoProject(wx + S/2, wy - S/2, 0);
-                const br = isoProject(wx + S/2, wy + S/2, 0);
-                const bl = isoProject(wx - S/2, wy + S/2, 0);
-                ctx.beginPath();
-                ctx.moveTo(tl.sx, tl.sy); ctx.lineTo(tr.sx, tr.sy);
-                ctx.lineTo(br.sx, br.sy); ctx.lineTo(bl.sx, bl.sy);
-                ctx.closePath();
-                ctx.fillStyle = FLOOR_COLOR;
-                ctx.fill();
-                ctx.strokeStyle = FLOOR_BORDER;
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-            }
-
-            // ── Main draw ──
-            let hoveredCell = null;
-            function drawCity() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Background gradient
-                const bg = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width * 0.7);
-                bg.addColorStop(0, '#050510');
-                bg.addColorStop(1, '#020206');
-                ctx.fillStyle = bg;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                if (!contributions.length) return;
-
-                // Sort by depth for correct painter order
-                const WEEKS = 26;
-                const DAYS  = 7;
-                const offsetX = -WEEKS / 2;
-                const offsetY = -DAYS  / 2;
-
-                // Collect all items with sort key
-                const items = contributions.map(c => {
-                    const wx = c.week + offsetX;
-                    const wy = c.day  + offsetY;
-                    const proj = isoProject(wx, wy, 0);
-                    return { ...c, wx, wy, sortY: proj.sy };
-                });
-                items.sort((a, b) => b.sortY - a.sortY);  // back to front
-
-                // Hover detection — find closest building to mouse
-                let newHover = null;
-                let bestDist = 25;
-                const screenCells = [];
-
-                items.forEach(item => {
-                    // floor
-                    drawFloor(item.wx, item.wy);
-
-                    // building
-                    if (item.level > 0) {
-                        const colors = COLORS[item.level];
-                        const h = item.level * 1.4;
-                        const isHovered = hoveredCell && hoveredCell.date === item.date;
-                        const center = drawBuilding(item.wx, item.wy, h, colors, isHovered);
-                        if (center) {
-                            const dist = Math.hypot(center.cx - mouseX, center.cy - mouseY);
-                            if (dist < bestDist) { bestDist = dist; newHover = item; }
-                        }
-                    }
-                });
-
-                hoveredCell = newHover;
-
-                // Tooltip
-                if (hoveredCell && mouseX > 0) {
-                    const d = new Date(hoveredCell.date);
-                    const label = d.toLocaleDateString('de-AT', {weekday:'short', day:'numeric', month:'short', year:'numeric'});
-                    tooltip.innerHTML = `<strong>${hoveredCell.count} Commit${hoveredCell.count !== 1 ? 's' : ''}</strong><br>${label}`;
-                    tooltip.style.display = 'block';
-                    canvas.style.cursor = 'pointer';
-                } else {
-                    tooltip.style.display = 'none';
-                    canvas.style.cursor = isDragging ? 'grabbing' : 'grab';
-                }
-            }
-
-            // ── Animation loop ──
-            let raf;
-            function animate() {
-                drawCity();
-                raf = requestAnimationFrame(animate);
-            }
-
-            // ── Mouse / touch events ──
-            canvas.addEventListener('mousedown',  e => { isDragging = true;  lastMX = e.clientX; lastMY = e.clientY; });
-            canvas.addEventListener('mouseup',    () => isDragging = false);
-            canvas.addEventListener('mouseleave', () => { isDragging = false; mouseX = -1; mouseY = -1; tooltip.style.display='none'; });
-            canvas.addEventListener('mousemove',  e => {
-                const r = canvas.getBoundingClientRect();
-                mouseX = e.clientX - r.left;
-                mouseY = e.clientY - r.top;
-                if (isDragging) {
-                    rotY += (e.clientX - lastMX) * 0.008;
-                    rotX += (e.clientY - lastMY) * 0.005;
-                    rotX = Math.max(-0.2, Math.min(1.1, rotX));
-                    lastMX = e.clientX; lastMY = e.clientY;
-                }
-            });
-            canvas.addEventListener('wheel', e => {
-                e.preventDefault();
-                zoom *= e.deltaY > 0 ? 0.92 : 1.08;
-                zoom = Math.max(0.4, Math.min(2.2, zoom));
-            }, { passive: false });
-
-            // Touch support
-            let lastTouchDist = 0, lastTouchX = 0, lastTouchY = 0;
-            canvas.addEventListener('touchstart', e => {
-                if (e.touches.length === 1) { lastTouchX = e.touches[0].clientX; lastTouchY = e.touches[0].clientY; }
-                if (e.touches.length === 2) { lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
-                e.preventDefault();
-            }, { passive: false });
-            canvas.addEventListener('touchmove', e => {
-                if (e.touches.length === 1) {
-                    rotY += (e.touches[0].clientX - lastTouchX) * 0.008;
-                    rotX += (e.touches[0].clientY - lastTouchY) * 0.005;
-                    rotX = Math.max(-0.2, Math.min(1.1, rotX));
-                    lastTouchX = e.touches[0].clientX; lastTouchY = e.touches[0].clientY;
-                }
-                if (e.touches.length === 2) {
-                    const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-                    zoom *= dist / lastTouchDist;
-                    zoom = Math.max(0.4, Math.min(2.2, zoom));
-                    lastTouchDist = dist;
-                }
-                e.preventDefault();
-            }, { passive: false });
-
-            // ── Load data ──
             async function loadData() {
                 let map = null;
                 try {
@@ -882,7 +913,7 @@ layout: null
 
                 contributions = makeData(map);
                 computeStats(contributions);
-                animate();
+                draw();
             }
 
             loadData();
