@@ -4,105 +4,326 @@ title: Links
 ---
 
 <style>
-    .links-wrapper {
-        display: flex; flex-direction: column;
+    .links-page {
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        width: 100%; max-width: 480px;
+        width: 100%;
+        max-width: 520px;
         margin: 0 auto;
-        padding-bottom: 40px;
+        padding: 20px 0 60px;
     }
 
-    .links-page-header { text-align: center; margin-bottom: 32px; }
-    .links-page-header h1 { font-size: 2.2rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; font-family: 'Courier New', monospace; }
-    .links-page-header a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-family: 'Courier New', monospace; transition: color 0.2s; }
-    .links-page-header a:hover { color: var(--accent); }
+    /* ── PROFILE CARD ── */
+    .profile-card {
+        width: 100%;
+        background: linear-gradient(135deg, rgba(0,122,255,0.06) 0%, rgba(18,18,18,0.95) 60%);
+        border: 1px solid rgba(0,122,255,0.2);
+        border-radius: 24px;
+        padding: 36px 32px 28px;
+        text-align: center;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
 
-    .profile-img {
-        width: 120px; height: 120px; border-radius: 50%;
-        border: 2px solid var(--border); margin-bottom: 12px;
+    /* subtle grid pattern overlay */
+    .profile-card::before {
+        content: '';
+        position: absolute; inset: 0;
+        background-image:
+            linear-gradient(rgba(0,122,255,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,122,255,0.04) 1px, transparent 1px);
+        background-size: 32px 32px;
+        pointer-events: none;
+    }
+
+    /* glowing top accent line */
+    .profile-card::after {
+        content: '';
+        position: absolute; top: 0; left: 20%; right: 20%; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .profile-avatar-wrap {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 18px;
+    }
+
+    .profile-avatar {
+        width: 100px; height: 100px;
+        border-radius: 50%;
         object-fit: cover;
-        transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-        display: block; margin: 0 auto 12px;
+        border: 2px solid rgba(0,122,255,0.4);
+        display: block;
+        box-shadow: 0 0 0 6px rgba(0,122,255,0.06), 0 0 40px rgba(0,122,255,0.15);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
-    .profile-img:hover { border-color: var(--accent); box-shadow: 0 0 28px var(--accent-glow); transform: scale(1.04); }
+    .profile-avatar:hover {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 8px rgba(0,122,255,0.1), 0 0 60px rgba(0,122,255,0.25);
+    }
 
-    .profile-name { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
-    .profile-sub { color: var(--muted); font-size: 0.88rem; font-family: 'Courier New', monospace; margin-bottom: 28px; }
+    /* online indicator */
+    .avatar-status {
+        position: absolute; bottom: 4px; right: 4px;
+        width: 16px; height: 16px; border-radius: 50%;
+        background: #27c93f;
+        border: 2px solid #050505;
+        box-shadow: 0 0 8px #27c93f;
+        animation: status-pulse 2.5s infinite;
+    }
+    @keyframes status-pulse {
+        0%, 100% { box-shadow: 0 0 8px #27c93f; }
+        50% { box-shadow: 0 0 18px #27c93f, 0 0 30px rgba(39,201,63,0.4); }
+    }
 
-    .links-list { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+    .profile-name {
+        font-size: 1.35rem; font-weight: 800;
+        color: #fff; margin-bottom: 4px;
+        letter-spacing: -0.3px;
+    }
+
+    .profile-handle {
+        font-family: 'Courier New', monospace;
+        font-size: 0.78rem; color: var(--accent);
+        margin-bottom: 14px; letter-spacing: 0.5px;
+    }
+
+    .profile-tags {
+        display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    }
+    .profile-tag {
+        background: rgba(0,122,255,0.1);
+        border: 1px solid rgba(0,122,255,0.2);
+        color: #888; font-family: 'Courier New', monospace;
+        font-size: 0.72rem; padding: 3px 10px; border-radius: 20px;
+    }
+
+    /* ── LINK BUTTONS ── */
+    .links-list {
+        width: 100%;
+        display: flex; flex-direction: column; gap: 10px;
+    }
 
     .link-btn {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        padding: 16px 20px;
-        border-radius: 12px;
+        display: flex; align-items: center; gap: 16px;
+        padding: 15px 20px;
+        border-radius: 14px;
         text-decoration: none;
-        color: #ddd;
-        display: flex; align-items: center; gap: 14px;
-        font-weight: 600; font-family: 'Courier New', monospace;
-        font-size: 0.88rem;
+        border: 1px solid var(--border);
+        background: rgba(12,12,12,0.8);
         backdrop-filter: blur(10px);
         transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+        position: relative; overflow: hidden;
+        opacity: 0; transform: translateY(16px);
+        animation: slide-in 0.4s ease forwards;
     }
-    .link-btn:hover {
-        border-color: var(--accent);
-        transform: translateY(-3px) scale(1.01);
-        box-shadow: 0 10px 28px var(--accent-glow);
-        color: #fff;
-    }
-    .link-btn-home { border-color: var(--accent); color: var(--accent); }
-    .link-btn-home:hover { background: rgba(0,122,255,0.1); }
 
-    .link-icon { font-size: 1.2rem; flex-shrink: 0; width: 24px; text-align: center; }
-    .link-label { flex: 1; }
-    .link-arrow { color: #333; font-size: 0.8rem; transition: color 0.2s; }
-    .link-btn:hover .link-arrow { color: var(--accent); }
+    @keyframes slide-in {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* staggered entrance */
+    .link-btn:nth-child(1) { animation-delay: 0.05s; }
+    .link-btn:nth-child(2) { animation-delay: 0.12s; }
+    .link-btn:nth-child(3) { animation-delay: 0.19s; }
+    .link-btn:nth-child(4) { animation-delay: 0.26s; }
+    .link-btn:nth-child(5) { animation-delay: 0.33s; }
+    .link-btn:nth-child(6) { animation-delay: 0.40s; }
+
+    /* shine sweep on hover */
+    .link-btn::before {
+        content: '';
+        position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+        transition: left 0.4s ease;
+        pointer-events: none;
+    }
+    .link-btn:hover::before { left: 150%; }
+
+    .link-btn:hover {
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 0 1px var(--btn-color, var(--accent));
+        border-color: var(--btn-color, var(--accent));
+    }
+
+    /* colored left accent bar */
+    .link-btn-bar {
+        position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+        background: var(--btn-color, var(--accent));
+        border-radius: 14px 0 0 14px;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+    }
+    .link-btn:hover .link-btn-bar { opacity: 1; }
+
+    .link-icon-wrap {
+        width: 38px; height: 38px; border-radius: 10px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.06);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.15rem; flex-shrink: 0;
+        transition: background 0.2s, border-color 0.2s;
+    }
+    .link-btn:hover .link-icon-wrap {
+        background: rgba(var(--btn-color-rgb, 0,122,255), 0.12);
+        border-color: var(--btn-color, var(--accent));
+    }
+
+    .link-text { flex: 1; }
+    .link-title {
+        font-weight: 700; font-size: 0.9rem;
+        color: #e0e0e0; display: block;
+        transition: color 0.2s;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 0.3px;
+    }
+    .link-btn:hover .link-title { color: #fff; }
+    .link-subtitle {
+        font-size: 0.75rem; color: #444;
+        display: block; margin-top: 1px;
+        font-family: 'Courier New', monospace;
+        transition: color 0.2s;
+    }
+    .link-btn:hover .link-subtitle { color: #666; }
+
+    .link-arrow {
+        color: #2a2a2a; font-size: 1rem;
+        transition: color 0.2s, transform 0.2s;
+        flex-shrink: 0;
+    }
+    .link-btn:hover .link-arrow {
+        color: var(--btn-color, var(--accent));
+        transform: translateX(3px);
+    }
+
+    /* section divider */
+    .links-divider {
+        width: 100%; text-align: center;
+        font-family: 'Courier New', monospace;
+        font-size: 0.7rem; color: #2a2a2a;
+        letter-spacing: 2px; margin: 6px 0 4px;
+        display: flex; align-items: center; gap: 10px;
+    }
+    .links-divider::before, .links-divider::after {
+        content: ''; flex: 1; height: 1px; background: #111;
+    }
 </style>
 
-<div class="container" style="padding-top:30px;">
-    <div class="links-wrapper">
-        <div class="links-page-header">
-            <h1 data-de="[NETWORK_LINKS]" data-en="[NETWORK_LINKS]">[NETWORK_LINKS]</h1>
-            <a href="index.html">← TERMINATE_SESSION</a>
+<div class="container" style="padding-top:20px;">
+    <div class="links-page">
+
+        <!-- PROFILE CARD -->
+        <div class="profile-card reveal">
+            <div class="profile-avatar-wrap">
+                <img src="profile.jpg" alt="Sandro Exenberger" class="profile-avatar"
+                     onerror="this.src='https://placehold.co/100x100/111/007aff?text=SE'">
+                <div class="avatar-status"></div>
+            </div>
+            <div class="profile-name">Sandro Exenberger</div>
+            <div class="profile-handle">@Sandroexe &nbsp;·&nbsp; exemail.at</div>
+            <div class="profile-tags">
+                <span class="profile-tag">CCNA &#10003;</span>
+                <span class="profile-tag">Linux</span>
+                <span class="profile-tag">IoT</span>
+                <span class="profile-tag">Tirol, AT</span>
+            </div>
         </div>
 
-        <img src="profile.jpg" alt="Sandro Exenberger" class="profile-img"
-             onerror="this.src='https://placehold.co/120x120/111/007aff?text=SE'">
-        <div class="profile-name">Sandro Exenberger</div>
-        <div class="profile-sub" data-de="~/elektroniker ~/netzwerktechniker ~/maker" data-en="~/electrician ~/networkengineer ~/maker">~/elektroniker ~/netzwerktechniker ~/maker</div>
-
+        <!-- LINKS -->
         <div class="links-list">
-            <a href="index.html" class="link-btn link-btn-home reveal">
-                <span class="link-icon">🏠</span>
-                <span class="link-label" data-de="RETURN_TO_DASHBOARD" data-en="RETURN_TO_DASHBOARD">RETURN_TO_DASHBOARD</span>
+
+            <div class="links-divider">PORTFOLIO</div>
+
+            <a href="/index.html" class="link-btn" style="--btn-color:#007aff; --btn-color-rgb:0,122,255;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">🏠</div>
+                <div class="link-text">
+                    <span class="link-title" data-de="Startseite" data-en="Home">Startseite</span>
+                    <span class="link-subtitle">exemail.at</span>
+                </div>
                 <span class="link-arrow">→</span>
             </a>
-            <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" rel="noopener" class="link-btn reveal">
-                <span class="link-icon">💼</span>
-                <span class="link-label">LINKEDIN_PROFILE</span>
-                <span class="link-arrow">↗</span>
-            </a>
-            <a href="https://github.com/Sandroexe" target="_blank" rel="noopener" class="link-btn reveal">
-                <span class="link-icon">🐙</span>
-                <span class="link-label">GITHUB_REPOSITORY</span>
-                <span class="link-arrow">↗</span>
-            </a>
-            <a href="https://instagram.com/sandro_exe_2008" target="_blank" rel="noopener" class="link-btn reveal">
-                <span class="link-icon">📸</span>
-                <span class="link-label">INSTAGRAM_SOCIAL</span>
-                <span class="link-arrow">↗</span>
-            </a>
-            <a href="mailto:sandro@exemail.at" class="link-btn reveal">
-                <span class="link-icon">✉️</span>
-                <span class="link-label" data-de="ENCRYPTED_MAIL_CONTACT" data-en="ENCRYPTED_MAIL_CONTACT">ENCRYPTED_MAIL_CONTACT</span>
+
+            <a href="/projects.html" class="link-btn" style="--btn-color:#007aff; --btn-color-rgb:0,122,255;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">🛠️</div>
+                <div class="link-text">
+                    <span class="link-title" data-de="Projekte" data-en="Projects">Projekte</span>
+                    <span class="link-subtitle">~/projects</span>
+                </div>
                 <span class="link-arrow">→</span>
             </a>
-            <a href="tel:+436767406799" class="link-btn reveal">
-                <span class="link-icon">📱</span>
-                <span class="link-label">CALL_DIRECT</span>
+
+            <a href="/certificates.html" class="link-btn" style="--btn-color:#007aff; --btn-color-rgb:0,122,255;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">🏅</div>
+                <div class="link-text">
+                    <span class="link-title" data-de="Zertifikate" data-en="Certificates">Zertifikate</span>
+                    <span class="link-subtitle">CCNA &amp; LinkedIn Learning</span>
+                </div>
                 <span class="link-arrow">→</span>
             </a>
+
+            <div class="links-divider">SOCIAL</div>
+
+            <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" rel="noopener" class="link-btn" style="--btn-color:#0077b5; --btn-color-rgb:0,119,181;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">💼</div>
+                <div class="link-text">
+                    <span class="link-title">LinkedIn</span>
+                    <span class="link-subtitle">sandro-exenberger-1a5486315</span>
+                </div>
+                <span class="link-arrow">↗</span>
+            </a>
+
+            <a href="https://github.com/Sandroexe" target="_blank" rel="noopener" class="link-btn" style="--btn-color:#e0e0e0; --btn-color-rgb:224,224,224;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">🐙</div>
+                <div class="link-text">
+                    <span class="link-title">GitHub</span>
+                    <span class="link-subtitle">@Sandroexe</span>
+                </div>
+                <span class="link-arrow">↗</span>
+            </a>
+
+            <a href="https://instagram.com/sandro_exe_2008" target="_blank" rel="noopener" class="link-btn" style="--btn-color:#e1306c; --btn-color-rgb:225,48,108;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">📸</div>
+                <div class="link-text">
+                    <span class="link-title">Instagram</span>
+                    <span class="link-subtitle">@sandro_exe_2008</span>
+                </div>
+                <span class="link-arrow">↗</span>
+            </a>
+
+            <div class="links-divider">KONTAKT</div>
+
+            <a href="mailto:sandro@exemail.at" class="link-btn" style="--btn-color:#007aff; --btn-color-rgb:0,122,255;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">✉️</div>
+                <div class="link-text">
+                    <span class="link-title" data-de="E-Mail" data-en="E-Mail">E-Mail</span>
+                    <span class="link-subtitle">sandro@exemail.at</span>
+                </div>
+                <span class="link-arrow">→</span>
+            </a>
+
+            <a href="tel:+436767406799" class="link-btn" style="--btn-color:#27c93f; --btn-color-rgb:39,201,63;">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">📱</div>
+                <div class="link-text">
+                    <span class="link-title" data-de="Anrufen" data-en="Call">Anrufen</span>
+                    <span class="link-subtitle">+43 676 7406799</span>
+                </div>
+                <span class="link-arrow">→</span>
+            </a>
+
         </div>
     </div>
 </div>
