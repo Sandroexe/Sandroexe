@@ -9,7 +9,7 @@ layout: null
     <title>Sandro Exenberger | Portfolio</title>
     <meta property="og:type" content="website">
     <meta property="og:title" content="Sandro Exenberger | Elektroniker & Netzwerktechniker">
-    <meta property="og:description" content="Portfolio von Sandro Exenberger: CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schülerunion.">
+    <meta property="og:description" content="Portfolio von Sandro Exenberger: CCNA zertifiziert, Linux-Enthusiast und Regionalvorstand der Schuelerunion.">
     <meta property="og:image" content="https://exemail.at/profile.jpg">
     <meta property="og:url" content="https://exemail.at">
     <meta name="twitter:card" content="summary">
@@ -34,31 +34,22 @@ layout: null
             background-color: var(--bg);
             color: #fff;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0 0 0 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden; scroll-behavior: smooth;
         }
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
-        /* --- TOP NAV --- */
+        /* NAV */
         .top-nav {
-            position: fixed; top: 0; left: 0; right: 0;
-            z-index: 100;
-            background: rgba(5,5,5,0.85);
-            backdrop-filter: blur(20px);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(5,5,5,0.85); backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            padding: 0 24px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 0 24px; height: 56px;
+            display: flex; align-items: center; justify-content: space-between;
         }
         .nav-logo { font-family: 'Courier New', monospace; font-weight: 700; color: var(--accent); text-decoration: none; font-size: 1rem; letter-spacing: 1px; }
         .nav-logo span { color: #fff; }
@@ -78,16 +69,18 @@ layout: null
         .container { max-width: 900px; width: 100%; text-align: center; position: relative; z-index: 2; padding: 100px 20px 40px; }
 
         /* HERO */
-        .hero { padding: 40px 0 20px; }
-        .profile-wrap { position: relative; display: inline-block; margin-bottom: 24px; }
+        .hero { padding: 40px 0 20px; display: flex; flex-direction: column; align-items: center; width: 100%; text-align: center; }
+        .profile-wrap { display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 24px; }
         .profile-ring {
-            width: 110px; height: 110px; border-radius: 50%;
-            border: 2px solid var(--border);
+            width: 130px; height: 130px; border-radius: 50%;
+            border: 3px solid var(--accent);
             object-fit: cover;
+            box-shadow: 0 0 0 6px rgba(0,122,255,0.1), 0 0 30px var(--accent-glow);
             transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
             display: block;
+            margin: 0 auto;
         }
-        .profile-ring:hover { border-color: var(--accent); box-shadow: 0 0 30px var(--accent-glow); transform: scale(1.04); }
+        .profile-ring:hover { box-shadow: 0 0 0 6px rgba(0,122,255,0.2), 0 0 50px var(--accent-glow); transform: scale(1.05); }
 
         h1 {
             font-size: 2.8rem; margin-bottom: 0.5rem; font-weight: 700; letter-spacing: -1px;
@@ -107,12 +100,9 @@ layout: null
         .cursor { display: inline-block; width: 2px; height: 1em; background-color: #fff; vertical-align: middle; animation: blink 1s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* QUICK LINKS / CTA BUTTONS */
+        /* CTA */
         .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 20px 0 40px; }
-        .cta-btn {
-            text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.85rem;
-            padding: 10px 20px; border-radius: 8px; transition: all 0.25s ease; font-weight: 600;
-        }
+        .cta-btn { text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.85rem; padding: 10px 20px; border-radius: 8px; transition: all 0.25s ease; font-weight: 600; }
         .cta-primary { background: var(--accent); color: #fff; }
         .cta-primary:hover { background: #0066dd; box-shadow: 0 6px 20px var(--accent-glow); transform: translateY(-2px); }
         .cta-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
@@ -123,12 +113,7 @@ layout: null
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* CONTENT BOX */
-        .content-box {
-            margin-top: 30px; text-align: left; padding: 30px;
-            background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
+        .content-box { margin-top: 30px; text-align: left; padding: 30px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(10px); transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
         .content-box:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 12px 40px var(--accent-glow); }
         .content-box h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 1.5rem; margin-bottom: 20px; color: #fff; margin-top: 0; }
         .content-box p { color: var(--text); line-height: 1.8; font-size: 1.05rem; margin-bottom: 0.8em; }
@@ -140,6 +125,12 @@ layout: null
         .skill-badge { font-size: 0.75rem; background: rgba(0,122,255,0.15); color: var(--accent); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0,122,255,0.2); }
         .progress-bg { background: #1a1a1a; border-radius: 10px; height: 6px; width: 100%; overflow: hidden; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #00c6ff); border-radius: 10px; width: 0%; transition: width 1.5s ease-in-out; }
+
+        /* GITHUB */
+        .github-compact-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 12px; }
+        .github-compact-img { height: 120px; width: auto; max-width: 100%; border-radius: 8px; border: 1px solid var(--border); background: rgba(10,10,10,0.6); }
+        .github-profile-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
+        .github-profile-link:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,122,255,0.06); }
 
         /* TIMELINE */
         .cv-grid { display: flex; gap: 30px; margin-top: 30px; text-align: left; }
@@ -156,105 +147,60 @@ layout: null
         .cv-desc { color: #666; font-size: 0.88rem; line-height: 1.5; }
         @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
 
-        /* TERMINAL */
-        .terminal-toggle {
-            position: fixed; bottom: 24px; right: 24px;
-            background: var(--card-bg); border: 1px solid var(--border); color: var(--accent);
-            padding: 11px 18px; border-radius: 30px; cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 8px;
-            font-family: 'Courier New', monospace; font-weight: bold; transition: 0.25s; z-index: 1000; font-size: 0.9rem;
-        }
-        .terminal-toggle:hover { background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow); }
-        .terminal-toggle svg { width: 18px; fill: currentColor; }
-
-        .terminal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.88); backdrop-filter: blur(8px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 2000; opacity: 0; transition: opacity 0.25s;
-        }
-        .terminal-overlay.open { display: flex; opacity: 1; }
-
-        .terminal-window {
-            width: 90%; max-width: 740px; height: 580px;
-            background: #0a0a0a; border-radius: 12px;
-            box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 0 1px #1e1e1e;
-            display: flex; flex-direction: column;
-            font-family: 'Courier New', monospace; font-size: 0.92rem;
-            overflow: hidden;
-        }
-
-        .terminal-header {
-            background: #141414; padding: 12px 16px;
-            display: flex; justify-content: space-between;
-            align-items: center; border-bottom: 1px solid #1e1e1e; flex-shrink: 0;
-        }
-        .terminal-dots { display: flex; gap: 7px; align-items: center; }
-        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: filter 0.2s; }
-        .terminal-dot:hover { filter: brightness(1.4); }
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
-        .terminal-title-text { color: #444; font-size: 0.82rem; }
-
-        .terminal-body {
-            flex: 1; padding: 16px 20px;
-            color: #4caf50; overflow-y: auto; text-align: left; line-height: 1.65;
-        }
-        .terminal-body::-webkit-scrollbar { width: 5px; }
-        .terminal-body::-webkit-scrollbar-track { background: transparent; }
-        .terminal-body::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
-
-        .cmd-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; margin-bottom: 4px; }
-        .cmd-chip {
-            background: #111; border: 1px solid #2a2a2a; color: var(--accent);
-            padding: 4px 13px; border-radius: 20px; font-size: 0.78rem;
-            cursor: pointer; transition: all 0.18s; font-family: 'Courier New', monospace; user-select: none;
-        }
-        .cmd-chip:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-1px); }
-
-        .out-section { color: #ccc; margin-bottom: 12px; }
-        .out-table { border-left: 2px solid #1e1e1e; padding-left: 12px; margin: 6px 0; }
-        .out-table .row { display: flex; gap: 12px; margin: 3px 0; }
-        .out-table .key { color: #555; min-width: 140px; font-size: 0.86rem; }
-        .out-table .val { color: #ddd; font-size: 0.86rem; }
-
-        .terminal-input-area { border-top: 1px solid #141414; background: #0a0a0a; flex-shrink: 0; }
-        .terminal-input-line { display: flex; padding: 10px 20px; align-items: center; }
-        .prompt { color: var(--accent); margin-right: 10px; white-space: nowrap; font-size: 0.88rem; }
-        #terminal-input { background: transparent; border: none; color: #fff; flex: 1; font-family: 'Courier New', monospace; font-size: 0.92rem; outline: none; }
-        .cmd { color: #fff; font-weight: bold; }
-
-        /* FOOTER (inline, not from include since layout: null) */
-        .footer-container { margin-top: 80px; padding: 40px 20px; border-top: 1px solid var(--border); width: 100%; text-align: center; position: relative; z-index: 2; }
+        /* FOOTER */
+        .footer-container { margin-top: 60px; padding: 40px 20px; border-top: 1px solid var(--border); width: 100%; text-align: center; position: relative; z-index: 2; }
         .social-icons { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; flex-wrap: wrap; }
         .social-icon { width: 30px; height: 30px; transition: transform 0.3s ease, filter 0.3s ease; }
         .icon-linkedin { fill: #0077b5; } .icon-instagram { fill: #E4405F; } .icon-github { fill: #ffffff; } .icon-mail { fill: var(--accent); } .icon-phone { fill: #4caf50; }
         .social-icons a:hover .social-icon { transform: scale(1.3); filter: drop-shadow(0 0 8px currentColor); }
-        .legal-links { font-size: 0.85rem; color: #444; }
+        .legal-links { font-size: 0.85rem; color: #444; margin-top: 16px; }
         .legal-links a { color: var(--muted); margin: 0 10px; text-decoration: none; transition: color 0.2s; }
         .legal-links a:hover { color: #aaa; }
         .footer-nav { margin: 16px 0 8px; font-size: 0.9rem; }
         .footer-nav a { color: var(--muted); margin: 0 10px; text-decoration: none; font-weight: 600; transition: color 0.2s; }
         .footer-nav a:hover { color: var(--accent); }
 
-        /* GITHUB STATS (compact) */
-        .github-compact-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 12px; }
-        .github-compact-img { height: 120px; width: auto; max-width: 100%; border-radius: 8px; border: 1px solid var(--border); background: rgba(10,10,10,0.6); }
-        .stat-error { color: var(--muted); font-family: 'Courier New', monospace; font-size: 0.8rem; padding: 20px; }
-        .github-profile-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        .github-profile-link:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,122,255,0.06); }
-
+        /* TERMINAL */
+        .terminal-toggle { position: fixed; bottom: 24px; right: 24px; background: var(--card-bg); border: 1px solid var(--border); color: var(--accent); padding: 11px 18px; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 8px; font-family: 'Courier New', monospace; font-weight: bold; transition: 0.25s; z-index: 1000; font-size: 0.9rem; }
+        .terminal-toggle:hover { background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow); }
+        .terminal-toggle svg { width: 18px; fill: currentColor; }
+        .terminal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: opacity 0.25s; }
+        .terminal-overlay.open { display: flex; opacity: 1; }
+        .terminal-window { width: 90%; max-width: 740px; height: 580px; background: #0a0a0a; border-radius: 12px; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 0 1px #1e1e1e; display: flex; flex-direction: column; font-family: 'Courier New', monospace; font-size: 0.92rem; overflow: hidden; }
+        .terminal-header { background: #141414; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e1e1e; flex-shrink: 0; }
+        .terminal-dots { display: flex; gap: 7px; align-items: center; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: filter 0.2s; }
+        .terminal-dot:hover { filter: brightness(1.4); }
+        .dot-red { background: #ff5f56; } .dot-yellow { background: #ffbd2e; } .dot-green { background: #27c93f; }
+        .terminal-title-text { color: #444; font-size: 0.82rem; }
+        .terminal-body { flex: 1; padding: 16px 20px; color: #4caf50; overflow-y: auto; text-align: left; line-height: 1.65; }
+        .terminal-body::-webkit-scrollbar { width: 5px; }
+        .terminal-body::-webkit-scrollbar-track { background: transparent; }
+        .terminal-body::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+        .cmd-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; margin-bottom: 4px; }
+        .cmd-chip { background: #111; border: 1px solid #2a2a2a; color: var(--accent); padding: 4px 13px; border-radius: 20px; font-size: 0.78rem; cursor: pointer; transition: all 0.18s; font-family: 'Courier New', monospace; user-select: none; }
+        .cmd-chip:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-1px); }
+        .out-section { color: #ccc; margin-bottom: 12px; }
+        .out-table { border-left: 2px solid #1e1e1e; padding-left: 12px; margin: 6px 0; }
+        .out-table .row { display: flex; gap: 12px; margin: 3px 0; }
+        .out-table .key { color: #555; min-width: 140px; font-size: 0.86rem; }
+        .out-table .val { color: #ddd; font-size: 0.86rem; }
+        .terminal-input-area { border-top: 1px solid #141414; background: #0a0a0a; flex-shrink: 0; }
+        .terminal-input-line { display: flex; padding: 10px 20px; align-items: center; }
+        .prompt { color: var(--accent); margin-right: 10px; white-space: nowrap; font-size: 0.88rem; }
+        #terminal-input { background: transparent; border: none; color: #fff; flex: 1; font-family: 'Courier New', monospace; font-size: 0.92rem; outline: none; }
+        .cmd { color: #fff; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <canvas id="network-canvas"></canvas>
 
-    <!-- NAV -->
+    <!-- NAV (zentral verwaltet) -->
     {% include nav.html %}
 
     <div class="container">
+
         <!-- HERO -->
         <div class="hero">
             <div class="profile-wrap">
@@ -272,53 +218,44 @@ layout: null
             </div>
         </div>
 
-        <!-- ÜBER MICH -->
+        <!-- UEBER MICH -->
         <div class="content-box reveal">
-            <h2>Über mich</h2>
-            <p>Als Regionalvorstand für das Tiroler Unterland bei der Schülerunion Österreich setze ich mich aktiv für die Anliegen von Schüler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktlösung ein. Parallel dazu vertrete ich als Schülervertreter an der HTBLVA Anichstraße die Interessen von etwa 1600 Schüler:innen im Schulgemeinschaftsausschuss.</p>
-            <p>Neben meiner organisatorischen Tätigkeit leite ich den "HTL-Incubator", einen Open Maker Space, in dem ich Mitschüler bei der Nutzung moderner Technologien unterstütze. Mein technisches Wissen vertiefe ich durch meine Ausbildung in Elektronik und Technischer Informatik sowie durch meine CCNA-Zertifizierung.</p>
+            <h2>&#220;ber mich</h2>
+            <p>Als Regionalvorstand f&#252;r das Tiroler Unterland bei der Sch&#252;lerunion &#214;sterreich setze ich mich aktiv f&#252;r die Anliegen von Sch&#252;ler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktl&#246;sung ein. Parallel dazu vertrete ich als Sch&#252;lervertreter an der HTBLVA Anichstra&#223;e die Interessen von etwa 1600 Sch&#252;ler:innen im Schulgemeinschaftsausschuss.</p>
+            <p>Neben meiner organisatorischen T&#228;tigkeit leite ich den "HTL-Incubator", einen Open Maker Space, in dem ich Mitsch&#252;ler bei der Nutzung moderner Technologien unterst&#252;tze. Mein technisches Wissen vertiefe ich durch meine Ausbildung in Elektronik und Technischer Informatik sowie durch meine CCNA-Zertifizierung.</p>
         </div>
 
         <!-- TECH STACK -->
         <div class="content-box reveal">
             <h2>Tech Stack</h2>
             <div class="skill-item">
-                <div class="skill-info"><span>🐧 Linux / Debian & CachyOS</span><span class="skill-badge">Fortgeschritten</span></div>
+                <div class="skill-info"><span>&#127999; Linux / Debian &amp; CachyOS</span><span class="skill-badge">Fortgeschritten</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="88%"></div></div>
             </div>
             <div class="skill-item">
-                <div class="skill-info"><span>🌐 Netzwerktechnik (CCNA)</span><span class="skill-badge">Zertifiziert ✓</span></div>
+                <div class="skill-info"><span>&#127760; Netzwerktechnik (CCNA)</span><span class="skill-badge">Zertifiziert &#10003;</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="90%"></div></div>
             </div>
             <div class="skill-item">
-                <div class="skill-info"><span>📡 IoT & Elektronik</span><span class="skill-badge">Erfahren</span></div>
+                <div class="skill-info"><span>&#128225; IoT &amp; Elektronik</span><span class="skill-badge">Erfahren</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="75%"></div></div>
             </div>
             <div class="skill-item">
-                <div class="skill-info"><span>🤖 Chatbot & Python</span><span class="skill-badge">Fortgeschritten</span></div>
+                <div class="skill-info"><span>&#129302; Chatbot &amp; Python</span><span class="skill-badge">Fortgeschritten</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="80%"></div></div>
             </div>
             <div class="skill-item">
-                <div class="skill-info"><span>🛠️ Hardware / Maker</span><span class="skill-badge">Erfahren</span></div>
+                <div class="skill-info"><span>&#128295; Hardware / Maker</span><span class="skill-badge">Erfahren</span></div>
                 <div class="progress-bg"><div class="progress-bar" data-width="72%"></div></div>
             </div>
         </div>
 
-
         <!-- GITHUB STATS (compact) -->
-        <div class="content-box reveal" id="github-stats-box">
+        <div class="content-box reveal">
             <h2>GitHub</h2>
             <div class="github-compact-row">
-                <img
-                    src="https://github-readme-stats.vercel.app/api?username=Sandroexe&show_icons=true&theme=transparent&title_color=007aff&text_color=e0e0e0&icon_color=007aff&border_color=1e1e1e&bg_color=00000000&count_private=true&rank_icon=github&hide=contribs&card_width=400"
-                    alt="GitHub Stats" class="github-compact-img"
-                    onerror="this.style.display='none'"
-                >
-                <img
-                    src="https://github-readme-stats.vercel.app/api/top-langs/?username=Sandroexe&layout=compact&theme=transparent&title_color=007aff&text_color=e0e0e0&border_color=1e1e1e&bg_color=00000000&langs_count=4&card_width=200"
-                    alt="Top Languages" class="github-compact-img"
-                    onerror="this.style.display='none'"
-                >
+                <img src="https://github-readme-stats.vercel.app/api?username=Sandroexe&show_icons=true&theme=transparent&title_color=007aff&text_color=e0e0e0&icon_color=007aff&border_color=1e1e1e&bg_color=00000000&count_private=true&rank_icon=github&card_width=400" alt="GitHub Stats" class="github-compact-img" onerror="this.style.display='none'">
+                <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Sandroexe&layout=compact&theme=transparent&title_color=007aff&text_color=e0e0e0&border_color=1e1e1e&bg_color=00000000&langs_count=4&card_width=200" alt="Top Languages" class="github-compact-img" onerror="this.style.display='none'">
             </div>
             <a href="https://github.com/Sandroexe" target="_blank" rel="noopener" class="github-profile-link">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -332,9 +269,9 @@ layout: null
                 <h2>Schullaufbahn</h2>
                 <div class="cv-item">
                     <span class="cv-date">Seit 09/2022</span>
-                    <span class="cv-title">Elektronik & Techn. Informatik</span>
-                    <span class="cv-org">HTBLVA Anichstraße, Innsbruck</span>
-                    <div class="cv-desc">Ausbildung zum Elektroniker & Netzwerktechniker. Fokus auf Hardware, Software und Mechanik.</div>
+                    <span class="cv-title">Elektronik &amp; Techn. Informatik</span>
+                    <span class="cv-org">HTBLVA Anichstra&#223;e, Innsbruck</span>
+                    <div class="cv-desc">Ausbildung zum Elektroniker &amp; Netzwerktechniker. Fokus auf Hardware, Software und Mechanik.</div>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">2018 - 2022</span>
@@ -349,70 +286,42 @@ layout: null
                     <div class="cv-desc">Grundschulausbildung in meiner Heimatgemeinde.</div>
                 </div>
             </div>
-
             <div class="cv-column">
-                <h2>Beruf & Engagement</h2>
+                <h2>Beruf &amp; Engagement</h2>
                 <div class="cv-item">
                     <span class="cv-date">Okt 2025 - Heute</span>
                     <span class="cv-title">Regionalvorstand Tiroler Unterland</span>
-                    <span class="cv-org">Schülerunion Österreich</span>
-                    <div class="cv-desc">Einsatz für Schüleranliegen, Kommunikation und Konfliktlösung.</div>
+                    <span class="cv-org">Sch&#252;lerunion &#214;sterreich</span>
+                    <div class="cv-desc">Einsatz f&#252;r Sch&#252;leranliegen, Kommunikation und Konfliktl&#246;sung.</div>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">Okt 2025 - Heute</span>
-                    <span class="cv-title">Gewählte Schülervertretung</span>
-                    <span class="cv-org">HTBLVA Anichstraße</span>
-                    <div class="cv-desc">Interessenvertretung von ~1600 Schüler:innen im Schulgemeinschaftsausschuss.</div>
+                    <span class="cv-title">Gew&#228;hlte Sch&#252;lervertretung</span>
+                    <span class="cv-org">HTBLVA Anichstra&#223;e</span>
+                    <div class="cv-desc">Interessenvertretung von ~1600 Sch&#252;ler:innen im Schulgemeinschaftsausschuss.</div>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">Jun 2025 - Heute</span>
                     <span class="cv-title">Leitung HTL-Incubator</span>
-                    <span class="cv-org">HTBLVA Anichstraße</span>
-                    <div class="cv-desc">Open Maker Space - Unterstützung bei modernen Technologien und eigenen Projekten.</div>
+                    <span class="cv-org">HTBLVA Anichstra&#223;e</span>
+                    <div class="cv-desc">Open Maker Space - Unterst&#252;tzung bei modernen Technologien und eigenen Projekten.</div>
                 </div>
                 <div class="cv-item">
                     <span class="cv-date">Jul 2024 - Aug 2024</span>
-                    <span class="cv-title">Praktikum WörglWeb</span>
-                    <span class="cv-org">Stadtwerke Wörgl GmbH</span>
-                    <div class="cv-desc">Installation & Wartung Netzwerkinfrastruktur, Außendienst, Fehlerbehebung, Hardware-Vorkonfiguration.</div>
+                    <span class="cv-title">Praktikum W&#246;rglWeb</span>
+                    <span class="cv-org">Stadtwerke W&#246;rgl GmbH</span>
+                    <div class="cv-desc">Installation &amp; Wartung Netzwerkinfrastruktur, Au&#223;endienst, Fehlerbehebung, Hardware-Vorkonfiguration.</div>
                 </div>
             </div>
         </div>
 
-        <!-- FOOTER (inline, kein Jekyll include wegen layout: null) -->
-        <footer class="footer-container reveal">
-            <div class="social-icons">
-                <a href="https://www.linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" rel="noopener" title="LinkedIn">
-                    <svg class="social-icon icon-linkedin" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-                <a href="https://instagram.com/sandro_exe_2008" target="_blank" rel="noopener" title="Instagram">
-                    <svg class="social-icon icon-instagram" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.36-.2 6.78-2.618 6.98-6.98.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.2-4.361-2.617-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                </a>
-                <a href="https://github.com/Sandroexe" target="_blank" rel="noopener" title="GitHub">
-                    <svg class="social-icon icon-github" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                </a>
-                <a href="javascript:void(0)" onclick="copyMail()" title="E-Mail kopieren">
-                    <svg class="social-icon icon-mail" id="mail-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                </a>
-                <a href="tel:+436767406799" title="Anrufen">
-                    <svg class="social-icon icon-phone" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                </a>
-            </div>
-            <div class="footer-nav">
-                <a href="projects.html">Projekte</a>
-                <a href="certificates.html">Zertifikate</a>
-                <a href="lab.html">Lab</a>
-                <a href="links.html">Links</a>
-            </div>
-            <div class="legal-links">
-                <a href="impressum.html">Impressum</a> &bull;
-                <a href="datenschutz.html">Datenschutz</a>
-            </div>
-        </footer>
     </div>
 
+    <!-- FOOTER (zentral verwaltet via _includes/footer.html) -->
+    {% include footer.html %}
+
     <!-- TERMINAL -->
-    <div class="terminal-toggle" onclick="toggleTerminal()" title="Terminal öffnen">
+    <div class="terminal-toggle" onclick="toggleTerminal()" title="Terminal oeffnen">
         <svg viewBox="0 0 24 24"><path d="M7.5 17l-1.41-1.41L9.67 12 6.09 8.41 7.5 7l5 5-5 5zM18 17h-6v-2h6v2z"/></svg>
         <span>_CMD</span>
     </div>
@@ -421,7 +330,7 @@ layout: null
         <div class="terminal-window">
             <div class="terminal-header">
                 <div class="terminal-dots">
-                    <div class="terminal-dot dot-red" onclick="toggleTerminal()" title="Schließen"></div>
+                    <div class="terminal-dot dot-red" onclick="toggleTerminal()" title="Schliessen"></div>
                     <div class="terminal-dot dot-yellow"></div>
                     <div class="terminal-dot dot-green"></div>
                 </div>
@@ -450,7 +359,7 @@ layout: null
             <div class="terminal-input-area">
                 <div class="terminal-input-line">
                     <span class="prompt">guest@sandro:~$</span>
-                    <input type="text" id="terminal-input" autocomplete="off" placeholder="Befehl eingeben…">
+                    <input type="text" id="terminal-input" autocomplete="off" placeholder="Befehl eingeben...">
                 </div>
             </div>
         </div>
@@ -459,7 +368,7 @@ layout: null
     <script>
         // TYPEWRITER
         const textEl = document.getElementById('typewriter');
-        const phrases = ["Elektroniker", "Netzwerktechniker", "Schülervertreter", "Linux-User", "Maker"];
+        const phrases = ["Elektroniker", "Netzwerktechniker", "Schulervertreter", "Linux-User", "Maker"];
         let pi = 0, ci = 0, del = false;
         function type() {
             const p = phrases[pi];
@@ -490,7 +399,7 @@ layout: null
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas); resizeCanvas();
         class Particle {
-            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.vx=(Math.random()-.5)*.5; this.vy=(Math.random()-.5)*.5; this.size=Math.random()*1.5+.5; }
+            constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-.5)*.5; this.vy=(Math.random()-.5)*.5; this.size=Math.random()*1.5+.5; }
             update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; }
             draw() { ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
         }
@@ -501,7 +410,7 @@ layout: null
                 p.update(); p.draw();
                 for(let j=i+1;j<particles.length;j++) {
                     const d=Math.hypot(p.x-particles[j].x,p.y-particles[j].y);
-                    if(d<120) { ctx.strokeStyle=`rgba(0,122,255,${1-d/120})`; ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(particles[j].x,particles[j].y); ctx.stroke(); }
+                    if(d<120){ctx.strokeStyle=`rgba(0,122,255,${1-d/120})`;ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke();}
                 }
             });
             requestAnimationFrame(animP);
@@ -512,130 +421,44 @@ layout: null
         const overlay = document.getElementById('terminal-overlay');
         const input = document.getElementById('terminal-input');
         const output = document.getElementById('terminal-output');
-
         function toggleTerminal() {
-            if (overlay.classList.contains('open')) {
-                overlay.classList.remove('open');
-                setTimeout(() => overlay.style.display='none', 250);
-            } else {
-                overlay.style.display='flex';
-                setTimeout(() => { overlay.classList.add('open'); input.focus(); }, 10);
-            }
+            if(overlay.classList.contains('open')){overlay.classList.remove('open');setTimeout(()=>overlay.style.display='none',250);}
+            else{overlay.style.display='flex';setTimeout(()=>{overlay.classList.add('open');input.focus();},10);}
         }
-
-        function appendOutput(html) {
-            const d = document.createElement('div');
-            d.className = 'out-section'; d.innerHTML = html;
-            output.appendChild(d); output.scrollTop = output.scrollHeight;
-        }
-        function appendEcho(cmd) {
-            const d = document.createElement('div');
-            d.innerHTML = `<span class="prompt">guest@sandro:~$</span> <span class="cmd">${cmd}</span>`;
-            d.style.marginBottom='6px'; output.appendChild(d);
-        }
-
+        function appendOutput(html){const d=document.createElement('div');d.className='out-section';d.innerHTML=html;output.appendChild(d);output.scrollTop=output.scrollHeight;}
+        function appendEcho(cmd){const d=document.createElement('div');d.innerHTML=`<span class="prompt">guest@sandro:~$</span> <span class="cmd">${cmd}</span>`;d.style.marginBottom='6px';output.appendChild(d);}
         const cmds = {
-            help: () => `<div style="color:#888;margin-bottom:8px;">Verfügbare Befehle:</div>
-<div class="out-table">
-  <div class="row"><span class="key" style="color:#007aff;">whoami</span><span class="val">Wer ist Sandro?</span></div>
-  <div class="row"><span class="key" style="color:#007aff;">skills</span><span class="val">Tech-Skills & Zertifikate</span></div>
-  <div class="row"><span class="key" style="color:#007aff;">fetch</span><span class="val">System-Info (Hardware & OS)</span></div>
-  <div class="row"><span class="key" style="color:#007aff;">contact</span><span class="val">Kontaktdaten</span></div>
-  <div class="row"><span class="key" style="color:#007aff;">clear</span><span class="val">Terminal leeren</span></div>
-  <div class="row"><span class="key" style="color:#007aff;">exit</span><span class="val">Terminal schließen</span></div>
-</div>
-<div style="margin-top:8px;color:#333;font-size:0.82rem;">Tipp: Klick auf einen Chip oben für schnellen Zugriff.</div>`,
-
-            whoami: () => `<div style="color:#27c93f;font-weight:bold;margin-bottom:6px;">Sandro Exenberger</div>
-<div class="out-table">
-  <div class="row"><span class="key">Rolle</span><span class="val">Elektroniker & Netzwerktechniker</span></div>
-  <div class="row"><span class="key">Zertifikat</span><span class="val">Cisco CCNA ✓</span></div>
-  <div class="row"><span class="key">Position</span><span class="val">Regionalvorstand Tiroler Unterland</span></div>
-  <div class="row"><span class="key">Schule</span><span class="val">HTBLVA Anichstraße, Innsbruck</span></div>
-  <div class="row"><span class="key">Leidenschaft</span><span class="val">Linux, Maker-Kultur, Netzwerke, IoT</span></div>
-  <div class="row"><span class="key">Heimat</span><span class="val">Schwoich, Tirol 🏔️</span></div>
-</div>`,
-
-            skills: () => `<div style="color:#555;margin-bottom:8px;">── Tech Stack ───────────────────────</div>
-<div class="out-table">
-  <div class="row"><span class="key">🐧 Linux/CachyOS</span><span class="val" style="color:#27c93f;">████████████████████  88%</span></div>
-  <div class="row"><span class="key">🌐 CCNA Netzwerk</span><span class="val" style="color:#27c93f;">████████████████████  ZERTIFIZIERT</span></div>
-  <div class="row"><span class="key">📡 IoT/Elektronik</span><span class="val" style="color:#007aff;">███████████████░░░░░  75%</span></div>
-  <div class="row"><span class="key">🤖 Python/Bots</span><span class="val" style="color:#007aff;">████████████████░░░░  80%</span></div>
-  <div class="row"><span class="key">🛠️ Hardware</span><span class="val" style="color:#ffbd2e;">██████████████░░░░░░  72%</span></div>
-</div>`,
-
-            fetch: () => `<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;">
-  <div style="color:#007aff;font-size:1.8rem;line-height:1.1;white-space:pre;margin-top:4px;font-family:monospace;">
- ██████╗
-██╔════╝
-██║
-██║
-╚██████╗
- ╚═════╝</div>
-  <div>
-    <div style="color:#27c93f;font-weight:bold;margin-bottom:6px;">sandro@sandroOS</div>
-    <div style="color:#1e1e1e;margin-bottom:6px;">─────────────────────────────────</div>
-    <div class="out-table">
-      <div class="row"><span class="key">OS</span><span class="val">CachyOS + Windows 11 <span style="color:#333;">[Dual-Boot]</span></span></div>
-      <div class="row"><span class="key">Kernel</span><span class="val">Linux 6.x.x-cachyos-bore</span></div>
-      <div class="row"><span class="key">CPU</span><span class="val">AMD Ryzen 7 9800X3D <span style="color:#ffbd2e;">⚡3D V-Cache</span></span></div>
-      <div class="row"><span class="key">GPU</span><span class="val">ASUS TUF RTX 5070 OC <span style="color:#27c93f;">[Blackwell]</span></span></div>
-      <div class="row"><span class="key">RAM</span><span class="val">32 GB Corsair DDR5 @ 6000MHz</span></div>
-      <div class="row"><span class="key">Storage</span><span class="val">2 TB NVMe PCIe 5.0</span></div>
-      <div class="row"><span class="key">Shell</span><span class="val">zsh + oh-my-zsh</span></div>
-    </div>
-  </div>
-</div>`,
-
-            contact: () => `<div style="color:#555;margin-bottom:8px;">── Kontakt ──────────────────────────</div>
-<div class="out-table">
-  <div class="row"><span class="key">📧 E-Mail</span><span class="val"><a href="mailto:sandro@exemail.at" style="color:#007aff;text-decoration:none;">sandro@exemail.at</a></span></div>
-  <div class="row"><span class="key">📱 Telefon</span><span class="val">+43 676 7406799</span></div>
-  <div class="row"><span class="key">📍 Ort</span><span class="val">Schwoich, Tirol, Österreich</span></div>
-  <div class="row"><span class="key">💼 LinkedIn</span><span class="val"><a href="https://linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" style="color:#007aff;text-decoration:none;">sandro-exenberger</a></span></div>
-</div>`
+            help: ()=>`<div style="color:#888;margin-bottom:8px;">Verfugbare Befehle:</div><div class="out-table"><div class="row"><span class="key" style="color:#007aff;">whoami</span><span class="val">Wer ist Sandro?</span></div><div class="row"><span class="key" style="color:#007aff;">skills</span><span class="val">Tech-Skills &amp; Zertifikate</span></div><div class="row"><span class="key" style="color:#007aff;">fetch</span><span class="val">System-Info</span></div><div class="row"><span class="key" style="color:#007aff;">contact</span><span class="val">Kontaktdaten</span></div><div class="row"><span class="key" style="color:#007aff;">clear</span><span class="val">Terminal leeren</span></div><div class="row"><span class="key" style="color:#007aff;">exit</span><span class="val">Terminal schliessen</span></div></div>`,
+            whoami: ()=>`<div style="color:#27c93f;font-weight:bold;margin-bottom:6px;">Sandro Exenberger</div><div class="out-table"><div class="row"><span class="key">Rolle</span><span class="val">Elektroniker &amp; Netzwerktechniker</span></div><div class="row"><span class="key">Zertifikat</span><span class="val">Cisco CCNA</span></div><div class="row"><span class="key">Position</span><span class="val">Regionalvorstand Tiroler Unterland</span></div><div class="row"><span class="key">Schule</span><span class="val">HTBLVA Anichstrasse, Innsbruck</span></div><div class="row"><span class="key">Leidenschaft</span><span class="val">Linux, Maker-Kultur, Netzwerke, IoT</span></div><div class="row"><span class="key">Heimat</span><span class="val">Schwoich, Tirol</span></div></div>`,
+            skills: ()=>`<div style="color:#555;margin-bottom:8px;">-- Tech Stack ---</div><div class="out-table"><div class="row"><span class="key">Linux/CachyOS</span><span class="val" style="color:#27c93f;">88%</span></div><div class="row"><span class="key">CCNA Netzwerk</span><span class="val" style="color:#27c93f;">ZERTIFIZIERT</span></div><div class="row"><span class="key">IoT/Elektronik</span><span class="val" style="color:#007aff;">75%</span></div><div class="row"><span class="key">Python/Bots</span><span class="val" style="color:#007aff;">80%</span></div><div class="row"><span class="key">Hardware</span><span class="val" style="color:#ffbd2e;">72%</span></div></div>`,
+            fetch: ()=>`<div class="out-table"><div class="row"><span class="key">OS</span><span class="val">CachyOS + Windows 11 [Dual-Boot]</span></div><div class="row"><span class="key">CPU</span><span class="val">AMD Ryzen 7 9800X3D</span></div><div class="row"><span class="key">GPU</span><span class="val">ASUS TUF RTX 5070 OC</span></div><div class="row"><span class="key">RAM</span><span class="val">32 GB Corsair DDR5 @ 6000MHz</span></div><div class="row"><span class="key">Storage</span><span class="val">2 TB NVMe PCIe 5.0</span></div><div class="row"><span class="key">Shell</span><span class="val">zsh + oh-my-zsh</span></div></div>`,
+            contact: ()=>`<div class="out-table"><div class="row"><span class="key">E-Mail</span><span class="val"><a href="mailto:sandro@exemail.at" style="color:#007aff;text-decoration:none;">sandro@exemail.at</a></span></div><div class="row"><span class="key">Telefon</span><span class="val">+43 676 7406799</span></div><div class="row"><span class="key">Ort</span><span class="val">Schwoich, Tirol</span></div><div class="row"><span class="key">LinkedIn</span><span class="val"><a href="https://linkedin.com/in/sandro-exenberger-1a5486315/" target="_blank" style="color:#007aff;text-decoration:none;">sandro-exenberger</a></span></div></div>`
         };
-
-        function runCommand(cmd) {
+        function runCommand(cmd){
             appendEcho(cmd);
-            const t = cmd.toLowerCase().trim();
-            if (t === 'clear') {
-                output.innerHTML = '';
-                const chips = document.createElement('div'); chips.className='cmd-chips';
-                chips.innerHTML = ['help','whoami','skills','fetch','contact','clear','exit'].map(c=>`<span class="cmd-chip" onclick="runCommand('${c}')">${c}</span>`).join('');
-                output.appendChild(chips); output.scrollTop=output.scrollHeight; return;
-            }
-            if (t === 'exit') { toggleTerminal(); return; }
-            if (cmds[t]) appendOutput(cmds[t]());
-            else appendOutput(`<span style="color:#ff5f56;">bash: ${cmd}: command not found</span><br><span style="color:#333;">Tippe <span class="cmd">help</span> für alle Befehle.</span>`);
-            input.value = ''; output.scrollTop = output.scrollHeight;
+            const t=cmd.toLowerCase().trim();
+            if(t==='clear'){output.innerHTML='';const chips=document.createElement('div');chips.className='cmd-chips';chips.innerHTML=['help','whoami','skills','fetch','contact','clear','exit'].map(c=>`<span class="cmd-chip" onclick="runCommand('${c}')">${c}</span>`).join('');output.appendChild(chips);return;}
+            if(t==='exit'){toggleTerminal();return;}
+            if(cmds[t])appendOutput(cmds[t]());
+            else appendOutput(`<span style="color:#ff5f56;">bash: ${cmd}: command not found</span>`);
+            input.value='';output.scrollTop=output.scrollHeight;
         }
-
-        input.addEventListener('keydown', e => { if(e.key==='Enter' && input.value.trim()) { runCommand(input.value.trim()); input.value=''; } });
-        document.getElementById('terminal-overlay').addEventListener('click', e => { if(e.target === overlay) toggleTerminal(); });
+        input.addEventListener('keydown',e=>{if(e.key==='Enter'&&input.value.trim()){runCommand(input.value.trim());input.value='';}});
+        document.getElementById('terminal-overlay').addEventListener('click',e=>{if(e.target===overlay)toggleTerminal();});
 
         // EASTER EGG
-        let seq = '';
-        document.addEventListener('keydown', e => {
-            seq += e.key.toLowerCase();
-            if (seq.length > 15) seq = seq.slice(-10);
-            if (seq.includes('sandro')) {
-                const g = '#00ff00';
-                document.querySelectorAll('.subtitle, h2').forEach(el => { el.style.color=g; el.style.borderColor=g; });
-                document.querySelectorAll('.content-box').forEach(el => { el.style.borderColor=g; el.style.boxShadow=`0 0 20px ${g}`; });
-                document.querySelectorAll('.progress-bar').forEach(el => { el.style.background=g; });
-                document.querySelector('.terminal-toggle').style.background=g;
-                seq=''; alert('🔓 SYSTEM UNLOCKED: Welcome, Sandro!');
+        let seq='';
+        document.addEventListener('keydown',e=>{
+            seq+=e.key.toLowerCase();
+            if(seq.length>15)seq=seq.slice(-10);
+            if(seq.includes('sandro')){
+                const g='#00ff00';
+                document.querySelectorAll('.subtitle, h2').forEach(el=>{el.style.color=g;el.style.borderColor=g;});
+                document.querySelectorAll('.content-box').forEach(el=>{el.style.borderColor=g;el.style.boxShadow=`0 0 20px ${g}`;});
+                document.querySelectorAll('.progress-bar').forEach(el=>{el.style.background=g;});
+                seq='';alert('SYSTEM UNLOCKED: Welcome, Sandro!');
             }
         });
-
-        // MAIL COPY
-        function copyMail() {
-            navigator.clipboard.writeText('sandro@exemail.at').then(() => {
-                const i = document.getElementById('mail-icon'); if(i){i.style.fill='#27c93f'; setTimeout(()=>{i.style.fill='';},2000);}
-            });
-        }
 
         document.addEventListener('DOMContentLoaded', type);
         window.addEventListener('scroll', reveal);
