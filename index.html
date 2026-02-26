@@ -104,8 +104,6 @@ layout: null
         .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 20px 0 40px; }
         .cta-btn { text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.85rem; padding: 10px 20px; border-radius: 8px; transition: all 0.25s ease; font-weight: 600; background: transparent; color: var(--accent); border: 1px solid var(--accent); }
         .cta-btn:hover { background: var(--accent); color: #fff; box-shadow: 0 6px 20px var(--accent-glow); transform: translateY(-2px); }
-        .cta-primary { }
-        .cta-secondary { }
 
         /* REVEAL */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
@@ -118,18 +116,39 @@ layout: null
         .content-box p { color: var(--text); line-height: 1.8; font-size: 1.05rem; margin-bottom: 0.8em; }
         .content-box p:last-child { margin-bottom: 0; }
 
+        /* GIT CITY CANVAS WRAPPER */
+        .git-city-wrapper {
+            width: 100%;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            cursor: crosshair;
+        }
+        #gitCityCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .git-city-info {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            pointer-events: none;
+        }
+        .git-city-info span { color: var(--accent); font-weight: bold; }
+
         /* SKILL BARS */
         .skill-item { margin-bottom: 16px; }
         .skill-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; color: #e8e8e8; }
         .skill-badge { font-size: 0.75rem; background: rgba(0,122,255,0.15); color: var(--accent); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0,122,255,0.2); }
         .progress-bg { background: #1c1c1c; border-radius: 10px; height: 7px; width: 100%; overflow: hidden; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #00c6ff); border-radius: 10px; width: 0%; transition: width 1.5s ease-in-out; }
-
-        /* GITHUB */
-        .github-compact-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 12px; }
-        .github-compact-img { height: 120px; width: auto; max-width: 100%; border-radius: 8px; border: 1px solid var(--border); background: rgba(10,10,10,0.6); }
-        .github-profile-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; }
-        .github-profile-link:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,122,255,0.06); }
 
         /* TIMELINE */
         .cv-grid { display: flex; gap: 30px; margin-top: 30px; text-align: left; }
@@ -146,17 +165,11 @@ layout: null
         .cv-desc { color: #999; font-size: 0.92rem; line-height: 1.65; }
         @media (max-width: 768px) { .cv-grid { flex-direction: column; } }
 
-
-        /* LANG TOGGLE */
-        .lang-toggle { display: flex; align-items: center; gap: 0; background: rgba(0,122,255,0.08); border: 1px solid rgba(0,122,255,0.2); border-radius: 20px; padding: 3px; cursor: pointer; font-family: 'Courier New', monospace; font-size: 0.75rem; transition: all 0.2s; user-select: none; margin-left: 8px; }
-        .lang-toggle:hover { border-color: var(--accent); }
-        .lang-opt { padding: 2px 8px; border-radius: 12px; transition: all 0.2s; color: var(--muted); }
-        .lang-opt.active { background: var(--accent); color: #fff; }
-
         /* SCROLL TO TOP */
         .scroll-top-btn { position: fixed; bottom: 90px; right: 24px; width: 40px; height: 40px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border); color: var(--accent); cursor: pointer; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; opacity: 0; pointer-events: none; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
         .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
         .scroll-top-btn:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 8px 20px var(--accent-glow); }
+        
         /* FOOTER */
         .footer-container { margin-top: 60px; padding: 40px 20px; border-top: 1px solid var(--border); width: 100%; text-align: center; position: relative; z-index: 2; }
         .social-icons { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -166,10 +179,7 @@ layout: null
         .legal-links { font-size: 0.85rem; color: #444; margin-top: 16px; }
         .legal-links a { color: var(--muted); margin: 0 10px; text-decoration: none; transition: color 0.2s; }
         .legal-links a:hover { color: #aaa; }
-        .footer-nav { margin: 16px 0 8px; font-size: 0.9rem; }
-        .footer-nav a { color: var(--muted); margin: 0 10px; text-decoration: none; font-weight: 600; transition: color 0.2s; }
-        .footer-nav a:hover { color: var(--accent); }
-
+        
         /* TERMINAL */
         .terminal-toggle { position: fixed; bottom: 24px; right: 24px; background: var(--card-bg); border: 1px solid var(--border); color: var(--accent); padding: 11px 18px; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 8px; font-family: 'Courier New', monospace; font-weight: bold; transition: 0.25s; z-index: 1000; font-size: 0.9rem; }
         .terminal-toggle:hover { background: var(--accent); color: white; transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow); }
@@ -233,6 +243,17 @@ layout: null
             <h2 data-de="&#220;ber mich" data-en="About me">&#220;ber mich</h2>
             <p data-de="Als Regionalvorstand f&#252;r das Tiroler Unterland bei der Sch&#252;lerunion &#214;sterreich setze ich mich aktiv f&#252;r die Anliegen von Sch&#252;ler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktl&#246;sung ein. Parallel dazu vertrete ich als Sch&#252;lervertreter an der HTBLVA Anichstra&#223;e die Interessen von etwa 1600 Sch&#252;ler:innen im Schulgemeinschaftsausschuss." data-en="As Regional Chairman for the Tyrolean Unterland at the Student Union Austria, I actively advocate for students and bring my skills in communication and conflict resolution. In parallel, I represent approximately 1600 students at HTBLVA Anichstra&#223;e in the school community committee.">Als Regionalvorstand f&#252;r das Tiroler Unterland bei der Sch&#252;lerunion &#214;sterreich setze ich mich aktiv f&#252;r die Anliegen von Sch&#252;ler:innen ein und bringe meine Kompetenzen in Kommunikation und Konfliktl&#246;sung ein. Parallel dazu vertrete ich als Sch&#252;lervertreter an der HTBLVA Anichstra&#223;e die Interessen von etwa 1600 Sch&#252;ler:innen im Schulgemeinschaftsausschuss.</p>
             <p>Neben meiner organisatorischen T&#228;tigkeit leite ich den "HTL-Incubator", einen Open Maker Space, in dem ich Mitsch&#252;ler bei der Nutzung moderner Technologien unterst&#252;tze. Mein technisches Wissen vertiefe ich durch meine Ausbildung in Elektronik und Technischer Informatik sowie durch meine CCNA-Zertifizierung.</p>
+        </div>
+
+        <!-- 3D GIT CITY -->
+        <div class="content-box reveal" id="git-city-container">
+            <h2 data-de="GitHub Aktivität (3D Stadt)" data-en="GitHub Activity (3D City)">GitHub Aktivität (3D Stadt)</h2>
+            <p data-de="Live-Visualisierung meiner Git-Commits als isometrische Cyber-Stadt. Jeder Turm repräsentiert einen Tag Aktivität. (Bewege die Maus!)" data-en="Live visualization of my Git commits as an isometric cyber city. Each tower represents a day of activity. (Move your mouse!)">Live-Visualisierung meiner Git-Commits als isometrische Cyber-Stadt. Jeder Turm repräsentiert einen Tag Aktivität. (Bewege die Maus!)</p>
+            
+            <div class="git-city-wrapper">
+                <canvas id="gitCityCanvas"></canvas>
+                <div class="git-city-info">TARGET: <span>@Sandroexe</span> | SYS_STATUS: <span>ONLINE</span></div>
+            </div>
         </div>
 
         <!-- TECH STACK -->
@@ -382,6 +403,12 @@ layout: null
             document.querySelectorAll('.reveal').forEach(el => {
                 if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
             });
+            // Aktiviere Git-City Animation wenn in View
+            const gitBox = document.getElementById('git-city-container');
+            if(gitBox && gitBox.classList.contains('active') && !window.gitCityStarted) {
+                window.gitCityStarted = true;
+                startGitCityAnimation();
+            }
         }
 
         // SKILL BARS
@@ -414,7 +441,136 @@ layout: null
         }
         initP(); animP();
 
-        // TERMINAL
+        // --- 3D ISOMETRIC GIT CITY RENDERER ---
+        let gitCityStarted = false;
+        function startGitCityAnimation() {
+            const gitCanvas = document.getElementById('gitCityCanvas');
+            if(!gitCanvas) return;
+            const gitCtx = gitCanvas.getContext('2d');
+            let gw, gh;
+
+            function resizeGitCanvas() {
+                gw = gitCanvas.parentElement.clientWidth;
+                gh = gitCanvas.parentElement.clientHeight;
+                gitCanvas.width = gw;
+                gitCanvas.height = gh;
+            }
+            window.addEventListener('resize', resizeGitCanvas);
+            resizeGitCanvas();
+
+            // Grid Config (12 Wochen = 84 Tage)
+            const cols = 14; 
+            const rows = 7;
+            const tileSize = 16;
+            
+            // Simuliere reale GitHub Activity Daten (Zufallsgewichtet nach Wochenenden/Wochentagen)
+            const gridData = [];
+            for(let x=0; x<cols; x++) {
+                gridData[x] = [];
+                for(let y=0; y<rows; y++) {
+                    // Generiere Aktivität: Mehr an Wochentagen, gelegentliche Spikes
+                    let baseActivity = Math.random() > 0.4 ? 0 : Math.random();
+                    if(x > cols - 3) baseActivity += 0.3; // Mehr activity in kuerzlich vergangenen Tagen
+                    let heightTarget = 0;
+                    if(baseActivity > 0.8) heightTarget = Math.random() * 50 + 30; // High commit day
+                    else if(baseActivity > 0.4) heightTarget = Math.random() * 20 + 10; // Medium
+                    else if(baseActivity > 0) heightTarget = Math.random() * 8 + 2; // Low
+                    
+                    gridData[x][y] = { 
+                        targetH: heightTarget, 
+                        currentH: 0, 
+                        level: heightTarget > 30 ? 3 : heightTarget > 10 ? 2 : heightTarget > 0 ? 1 : 0 
+                    };
+                }
+            }
+
+            // Maus Interaktion (Tilt & Rotation)
+            let mouseX = 0, mouseY = 0;
+            gitCanvas.addEventListener('mousemove', (e) => {
+                const rect = gitCanvas.getBoundingClientRect();
+                mouseX = (e.clientX - rect.left - gw/2) / (gw/2);
+                mouseY = (e.clientY - rect.top - gh/2) / (gh/2);
+            });
+            gitCanvas.addEventListener('mouseleave', () => { mouseX = 0; mouseY = 0; });
+
+            // Farben fuer die Haeuser je nach Commit-Dichte (Dark Theme anpassung an dein Blau)
+            const colors = {
+                0: { top: '#151515', left: '#0a0a0a', right: '#050505' }, // Keine Aktivitaet
+                1: { top: '#003366', left: '#002244', right: '#001122' }, // Low
+                2: { top: '#0055aa', left: '#004488', right: '#003366' }, // Med
+                3: { top: '#007aff', left: '#0066cc', right: '#0055aa' }  // High
+            };
+
+            function drawIsoBlock(isoX, isoY, size, height, colorLevel) {
+                const c = colors[colorLevel];
+                const h2 = size * 0.5; // Isometrischer Winkel
+                
+                // Top Face (Dach)
+                gitCtx.beginPath();
+                gitCtx.moveTo(isoX, isoY - height);
+                gitCtx.lineTo(isoX + size, isoY - height - h2);
+                gitCtx.lineTo(isoX, isoY - height - size);
+                gitCtx.lineTo(isoX - size, isoY - height - h2);
+                gitCtx.closePath();
+                gitCtx.fillStyle = colorLevel > 0 ? c.top : '#1a1a1a';
+                gitCtx.fill();
+                gitCtx.strokeStyle = '#222';
+                gitCtx.lineWidth = 0.5;
+                gitCtx.stroke();
+
+                if(height > 0) {
+                    // Left Face (Wand links)
+                    gitCtx.beginPath();
+                    gitCtx.moveTo(isoX - size, isoY - h2);
+                    gitCtx.lineTo(isoX, isoY);
+                    gitCtx.lineTo(isoX, isoY - height);
+                    gitCtx.lineTo(isoX - size, isoY - height - h2);
+                    gitCtx.closePath();
+                    gitCtx.fillStyle = c.left;
+                    gitCtx.fill();
+                    gitCtx.stroke();
+
+                    // Right Face (Wand rechts)
+                    gitCtx.beginPath();
+                    gitCtx.moveTo(isoX, isoY);
+                    gitCtx.lineTo(isoX + size, isoY - h2);
+                    gitCtx.lineTo(isoX + size, isoY - height - h2);
+                    gitCtx.lineTo(isoX, isoY - height);
+                    gitCtx.closePath();
+                    gitCtx.fillStyle = c.right;
+                    gitCtx.fill();
+                    gitCtx.stroke();
+                }
+            }
+
+            function renderGitCity() {
+                gitCtx.clearRect(0, 0, gw, gh);
+                
+                // Zentrierung und Mauseffekt
+                const offsetX = gw / 2 + (mouseX * 20);
+                const offsetY = gh / 2 + 60 + (mouseY * 20);
+                
+                // Zeichne Grid von hinten nach vorne (Z-Sorting)
+                for(let x = 0; x < cols; x++) {
+                    for(let y = 0; y < rows; y++) {
+                        const cell = gridData[x][y];
+                        
+                        // Wachstums-Animation
+                        cell.currentH += (cell.targetH - cell.currentH) * 0.05;
+
+                        // Isometrische Projektion: x_iso = (x-y), y_iso = (x+y)/2
+                        const isoX = offsetX + (x - y) * tileSize;
+                        const isoY = offsetY + (x + y) * (tileSize * 0.5);
+
+                        drawIsoBlock(isoX, isoY, tileSize * 0.9, cell.currentH, cell.level);
+                    }
+                }
+                requestAnimationFrame(renderGitCity);
+            }
+            renderGitCity();
+        }
+
+        // TERMINAL LOGIC
         const overlay = document.getElementById('terminal-overlay');
         const input = document.getElementById('terminal-input');
         const output = document.getElementById('terminal-output');
@@ -458,7 +614,7 @@ layout: null
         });
 
 
-        // LANG TOGGLE
+        // LANG TOGGLE & SCROLL
         (function() {
             var currentLang = localStorage.getItem('lang') || 'de';
             applyLang(currentLang);
