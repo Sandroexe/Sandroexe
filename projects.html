@@ -110,7 +110,6 @@ title: Projekte
     .gh-months {
         display: flex; gap: 0;
         margin-bottom: 8px;
-        padding-left: 42px;
     }
     .gh-month-label {
         font-family: 'Courier New', monospace;
@@ -120,33 +119,20 @@ title: Projekte
 
     /* GRID LAYOUT */
     .gh-grid-wrap {
-        display: flex; gap: 8px; align-items: flex-start;
-        overflow-x: auto;
-    }
-    .gh-grid-wrap::-webkit-scrollbar { height: 4px; }
-    .gh-grid-wrap::-webkit-scrollbar-track { background: transparent; }
-    .gh-grid-wrap::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
-
-    .gh-day-labels {
-        display: flex; flex-direction: column; gap: 4px;
-        padding-top: 1px; flex-shrink: 0;
-    }
-    .gh-day-label {
-        font-family: 'Courier New', monospace;
-        font-size: 0.72rem; color: #555;
-        height: 14px; display: flex; align-items: center;
-        width: 34px; padding-right: 6px; justify-content: flex-end;
+        display: flex; align-items: flex-start;
+        overflow: hidden;
+        width: 100%;
     }
 
     .gh-grid {
-        display: flex; gap: 4px; flex: 1;
-        padding-bottom: 2px;
+        display: flex; gap: 3px; flex: 1;
+        width: 100%;
     }
 
-    .gh-week { display: flex; flex-direction: column; gap: 4px; }
+    .gh-week { display: flex; flex-direction: column; gap: 3px; flex: 1; }
 
     .gh-cell {
-        width: 14px; height: 14px;
+        width: 100%; aspect-ratio: 1;
         border-radius: 3px;
         background: #111;
         border: 1px solid rgba(255,255,255,0.04);
@@ -339,7 +325,6 @@ title: Projekte
     function getLast52Weeks() {
         const weeks = [];
         const today = new Date();
-        // Start from the Sunday 52 weeks ago
         const startDate = new Date(today);
         startDate.setDate(today.getDate() - today.getDay() - 52 * 7);
 
@@ -399,26 +384,17 @@ title: Projekte
         // Stats
         const contribArray = Object.values(contributionMap || {});
         const maxStreak = calcStreak(contributionMap);
-        const activedays = contribArray.filter(v => v > 0).length;
         const avgPerDay = totalContribs > 0 ? (totalContribs / 365).toFixed(1) : '0.0';
+        const activedays = contribArray.filter(v => v > 0).length;
 
         document.getElementById('gh-total-badge').textContent =
             totalContribs + ' Contributions im letzten Jahr';
 
         const html = `
         <div class="gh-months">
-            ${monthLabels.map(m => `<div class="gh-month-label" style="min-width:${m.label?'auto':'0'}">${m.label}</div>`).join('')}
+            ${monthLabels.map(m => `<div class="gh-month-label">${m.label}</div>`).join('')}
         </div>
         <div class="gh-grid-wrap">
-            <div class="gh-day-labels">
-                <div class="gh-day-label"></div>
-                <div class="gh-day-label">Mon</div>
-                <div class="gh-day-label"></div>
-                <div class="gh-day-label">Wed</div>
-                <div class="gh-day-label"></div>
-                <div class="gh-day-label">Fri</div>
-                <div class="gh-day-label"></div>
-            </div>
             <div class="gh-grid" id="gh-grid-inner">
                 ${weeks.map(week => `
                     <div class="gh-week">
@@ -490,23 +466,18 @@ title: Projekte
 
     function calcStreak(map) {
         if (!map) return 0;
-        const dates = Object.keys(map).sort(); // ascending order
-        let max = 0, cur = 0;
-        let prev = null;
+        const dates = Object.keys(map).sort();
+        let max = 0, cur = 0, prev = null;
         for (const d of dates) {
             if (map[d] > 0) {
-                if (!prev) {
-                    cur = 1;
-                } else {
+                if (!prev) { cur = 1; }
+                else {
                     const diff = (new Date(d) - new Date(prev)) / 86400000;
                     cur = diff === 1 ? cur + 1 : 1;
                 }
                 if (cur > max) max = cur;
                 prev = d;
-            } else {
-                prev = null;
-                cur = 0;
-            }
+            } else { prev = null; cur = 0; }
         }
         return max;
     }
