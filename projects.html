@@ -339,11 +339,11 @@ title: Projekte
     function getLast52Weeks() {
         const weeks = [];
         const today = new Date();
-        // Go back to last Sunday, show 26 weeks for better readability
+        // Start from the Sunday 52 weeks ago
         const startDate = new Date(today);
-        startDate.setDate(today.getDate() - today.getDay() - 26 * 7);
+        startDate.setDate(today.getDate() - today.getDay() - 52 * 7);
 
-        for (let w = 0; w < 27; w++) {
+        for (let w = 0; w < 53; w++) {
             const week = [];
             for (let d = 0; d < 7; d++) {
                 const date = new Date(startDate);
@@ -399,8 +399,8 @@ title: Projekte
         // Stats
         const contribArray = Object.values(contributionMap || {});
         const maxStreak = calcStreak(contributionMap);
-        const avgPerDay = totalContribs > 0 ? (totalContribs / 365).toFixed(1) : '0.0';
         const activedays = contribArray.filter(v => v > 0).length;
+        const avgPerDay = totalContribs > 0 ? (totalContribs / 365).toFixed(1) : '0.0';
 
         document.getElementById('gh-total-badge').textContent =
             totalContribs + ' Contributions im letzten Jahr';
@@ -490,19 +490,23 @@ title: Projekte
 
     function calcStreak(map) {
         if (!map) return 0;
-        const dates = Object.keys(map).sort().reverse();
-        let streak = 0, max = 0, cur = 0;
+        const dates = Object.keys(map).sort(); // ascending order
+        let max = 0, cur = 0;
         let prev = null;
         for (const d of dates) {
             if (map[d] > 0) {
-                if (!prev) { cur = 1; }
-                else {
-                    const diff = (new Date(prev) - new Date(d)) / 86400000;
+                if (!prev) {
+                    cur = 1;
+                } else {
+                    const diff = (new Date(d) - new Date(prev)) / 86400000;
                     cur = diff === 1 ? cur + 1 : 1;
                 }
                 if (cur > max) max = cur;
                 prev = d;
-            } else { prev = null; cur = 0; }
+            } else {
+                prev = null;
+                cur = 0;
+            }
         }
         return max;
     }
