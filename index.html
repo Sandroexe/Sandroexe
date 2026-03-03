@@ -321,7 +321,7 @@ layout: null
         <!-- 3D GITHUB CITY -->
         <div class="city-box reveal">
             <h2 data-de="GitHub Aktivit&#228;t" data-en="GitHub Activity">GitHub Aktivit&#228;t</h2>
-            <div class="city-sub" data-de="3D-Visualisierung meiner Commit-Aktivit&#228;t &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen." data-en="3D visualization of my commit activity &mdash; LMB rotate &bull; RMB pan &bull; scroll zoom.">3D-Visualisierung meiner Commit-Aktivit&#228;t &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen.</div>
+            <div class="city-sub" data-de="3D-Visualisierung meiner Commit-Aktivit&#228;t (letztes Jahr) &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen." data-en="3D visualization of my commit activity (last year) &mdash; LMB rotate &bull; RMB pan &bull; scroll zoom.">3D-Visualisierung meiner Commit-Aktivit&#228;t (letztes Jahr) &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen.</div>
             <div class="city-canvas-wrap" style="height:460px;">
                 <div id="city-3d" style="width:100%;height:100%;"></div>
                 <div class="city-hud">TARGET: <span>@Sandroexe</span> | SYS_STATUS: <span>ONLINE</span></div>
@@ -586,7 +586,7 @@ layout: null
                 scene.fog        = new THREE.FogExp2(0x07071a, 0.012);
 
                 const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
-                camera.position.set(18, 22, 28);
+                camera.position.set(28, 22, 28);
                 camera.lookAt(0, 0, 0);
 
                 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -605,8 +605,8 @@ layout: null
                 sun.shadow.mapSize.set(2048, 2048);
                 sun.shadow.camera.near = 0.5;
                 sun.shadow.camera.far  = 100;
-                sun.shadow.camera.left = sun.shadow.camera.bottom = -40;
-                sun.shadow.camera.right = sun.shadow.camera.top   =  40;
+                sun.shadow.camera.left = sun.shadow.camera.bottom = -55;
+                sun.shadow.camera.right = sun.shadow.camera.top   =  55;
                 scene.add(sun);
 
                 const fill = new THREE.DirectionalLight(0x0033ff, 0.6);
@@ -619,7 +619,7 @@ layout: null
 
                 // ── Ground plane ──
                 const ground = new THREE.Mesh(
-                    new THREE.PlaneGeometry(60, 20),
+                    new THREE.PlaneGeometry(60, 12),
                     new THREE.MeshStandardMaterial({ color: 0x080818, roughness: 1, metalness: 0 })
                 );
                 ground.rotation.x = -Math.PI / 2;
@@ -627,7 +627,7 @@ layout: null
                 scene.add(ground);
 
                 // Grid lines on ground
-                const gridHelper = new THREE.GridHelper(60, 28, 0x112233, 0x0d1a2e);
+                const gridHelper = new THREE.GridHelper(60, 54, 0x112233, 0x0d1a2e);
                 gridHelper.position.y = 0.01;
                 scene.add(gridHelper);
 
@@ -645,7 +645,7 @@ layout: null
                 const bars   = [];
                 const barGeo = new THREE.BoxGeometry(1, 1, 1); // unit box, scaled per bar
 
-                const WEEKS = 26, DAYS = 7;
+                const WEEKS = 52, DAYS = 7;
                 const offX  = (WEEKS - 1) / 2;
                 const offZ  = (DAYS  - 1) / 2;
 
@@ -690,7 +690,7 @@ layout: null
                 // ── Orbit controls (manual, no external dependency) ──
                 let isDragging = false, isRightDrag = false;
                 let lastX = 0, lastY = 0;
-                let spherical = { theta: 0.78, phi: 0.88, radius: 38 }; // azimuth, polar, dist
+                let spherical = { theta: 0.78, phi: 0.88, radius: 52 }; // azimuth, polar, dist
                 let panOffset = new THREE.Vector3(0, 0, 0);
                 let target    = new THREE.Vector3(0, 2, 0);
                 let autoSpin  = true;
@@ -733,9 +733,9 @@ layout: null
                         target.addScaledVector(right, -dx * panSpeed);
                         target.y += dy * panSpeed;
                     } else {
-                        // Rotate
+                        // Rotate — vertical inverted (dy positive = tilt up)
                         spherical.theta -= dx * 0.005;
-                        spherical.phi    = Math.max(0.1, Math.min(Math.PI * 0.85, spherical.phi + dy * 0.005));
+                        spherical.phi    = Math.max(0.1, Math.min(Math.PI * 0.85, spherical.phi - dy * 0.005));
                     }
                     lastX = e.clientX; lastY = e.clientY;
                     updateCamera();
@@ -760,7 +760,7 @@ layout: null
                 cvs.addEventListener('touchmove',e=>{
                     if (e.touches.length===1&&tDown){
                         spherical.theta-=(e.touches[0].clientX-t0x)*0.005;
-                        spherical.phi=Math.max(0.1,Math.min(Math.PI*0.85,spherical.phi+(e.touches[0].clientY-t0y)*0.005));
+                        spherical.phi=Math.max(0.1,Math.min(Math.PI*0.85,spherical.phi-(e.touches[0].clientY-t0y)*0.005));
                         t0x=e.touches[0].clientX;t0y=e.touches[0].clientY;
                         updateCamera();
                     }
@@ -838,7 +838,7 @@ layout: null
                 function rand() { _seed=(_seed*1664525+1013904223)&0xffffffff; return (_seed>>>0)/0xffffffff; }
 
                 function makeData(map) {
-                    const result=[], today=new Date(), WEEKS=26;
+                    const result=[], today=new Date(), WEEKS=52;
                     const start=new Date(today);
                     start.setDate(today.getDate()-today.getDay()-WEEKS*7);
                     for (let w=0;w<=WEEKS;w++) for (let d=0;d<7;d++){
