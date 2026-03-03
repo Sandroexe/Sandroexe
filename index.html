@@ -321,12 +321,10 @@ layout: null
         <!-- 3D GITHUB CITY -->
         <div class="city-box reveal">
             <h2 data-de="GitHub Aktivit&#228;t" data-en="GitHub Activity">GitHub Aktivit&#228;t</h2>
-            <div class="city-sub" data-de="Isometrische 3D-Visualisierung meiner Commit-Aktivit&#228;t &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen." data-en="Isometric 3D visualization of my commit activity &mdash; LMB rotate &bull; RMB pan &bull; scroll zoom.">Isometrische 3D-Visualisierung meiner Commit-Aktivit&#228;t &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen.</div>
-            <div class="city-canvas-wrap">
-                <canvas id="city-canvas"></canvas>
-                <div class="city-hud">
-                    TARGET: <span>@Sandroexe</span> | SYS_STATUS: <span>ONLINE</span>
-                </div>
+            <div class="city-sub" data-de="3D-Visualisierung meiner Commit-Aktivit&#228;t &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen." data-en="3D visualization of my commit activity &mdash; LMB rotate &bull; RMB pan &bull; scroll zoom.">3D-Visualisierung meiner Commit-Aktivit&#228;t &mdash; LMT drehen &bull; RMT verschieben &bull; Scroll zoomen.</div>
+            <div class="city-canvas-wrap" style="height:460px;">
+                <div id="city-3d" style="width:100%;height:100%;"></div>
+                <div class="city-hud">TARGET: <span>@Sandroexe</span> | SYS_STATUS: <span>ONLINE</span></div>
                 <div class="city-tooltip" id="city-tooltip"></div>
             </div>
             <div class="city-stats" id="city-stats">
@@ -565,308 +563,320 @@ layout: null
             }
         })();
 
-        // ── 3D GITHUB CITY ──────────────────────────────────────────
-        (function () {
+        // ── 3D GITHUB CITY (Three.js) ───────────────────────────────
+        (function() {
+            const el = document.getElementById('city-3d');
+            if (!el) return;
+
             const USERNAME = 'Sandroexe';
-            const canvas   = document.getElementById('city-canvas');
-            if (!canvas) return;
-            const wrap    = canvas.parentElement;
-            const tooltip = document.getElementById('city-tooltip');
-            const ctx     = canvas.getContext('2d');
+            const tooltip  = document.getElementById('city-tooltip');
 
-            function resize() { canvas.width = wrap.clientWidth; canvas.height = wrap.clientHeight; }
-            resize();
-            window.addEventListener('resize', resize);
-
-            // ── Camera state ──
-            // rotY = spin around vertical axis, rotX = tilt (fixed ~30°), zoom, pan
-            let rotY   = Math.PI / 5;   // initial horizontal angle
-            let rotX   = 0.55;          // fixed tilt downward (~31°) — gives classic iso look
-            let zoom   = 1.0;
-            let panX   = 0, panY = 0;
-            // Mouse
-            let dragMode = null; // 'rotate' | 'pan'
-            let lastMX = 0, lastMY = 0;
-            let mouseX = -9999, mouseY = -9999;
-            let hoveredCell = null;
-            let contributions = [];
-
-            // ── Seeded RNG for fallback data ──
-            let _seed = 0xABCD1234;
-            function rand() { _seed = (_seed * 1664525 + 1013904223) & 0xffffffff; return (_seed >>> 0) / 0xffffffff; }
-
-            // ─────────────────────────────────────────────────────────
-            //  PROJECT: world (x, y, z) → screen (sx, sy)
-            //
-            //  World axes:
-            //    x = week  (0..WEEKS-1)
-            //    y = day   (0..6)
-            //    z = height (0 = ground, positive = UP)
-            //
-            //  Steps:
-            //    1. Centre the grid so origin is at grid centre
-            //    2. Rotate around world-Z (vertical spin) by rotY
-            //    3. Project with a fixed top-down tilt (rotX) so Z always goes UP on screen
-            //    4. Scale by zoom and offset to canvas centre
-            // ─────────────────────────────────────────────────────────
-            function project(wx, wy, wz) {
-                const TILE = 20 * zoom;
-
-                // 1. Spin around world-Z
-                const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
-                const rx =  wx * cosY - wy * sinY;
-                const ry =  wx * sinY + wy * cosY;
-
-                // 2. Apply top-down tilt: tilt maps grid-depth (ry) into screen-Y,
-                //    and height (wz) ALWAYS subtracts from screen-Y (goes UP).
-                const cosX = Math.cos(rotX);
-                const sinX = Math.sin(rotX);
-                const sx = rx * TILE;
-                const sy = (ry * cosX - wz * sinX) * TILE;
-
-                return {
-                    x: canvas.width  * 0.5 + sx + panX,
-                    y: canvas.height * 0.58 + sy + panY
-                };
+            // Load Three.js + OrbitControls dynamically
+            function loadScript(src, cb) {
+                const s = document.createElement('script');
+                s.src = src; s.onload = cb; document.head.appendChild(s);
             }
 
-            // ── Colour palette ──
-            const COLORS = [
-                null, // level 0 = no commits
-                { top: '#152d4a', fr: '#0d1f33', fl: '#091829', glow: null },             // L1 dim
-                { top: '#1a5c9e', fr: '#103d6a', fl: '#0c2f52', glow: null },             // L2 mid
-                { top: '#2684ff', fr: '#145db5', fl: '#0e4a8f', glow: 'rgba(38,132,255,0.35)' }, // L3 bright
-                { top: '#4db8ff', fr: '#007acc', fl: '#005fa3', glow: 'rgba(0,140,255,0.7)' },   // L4 accent
-            ];
-            const FLOOR_FILL   = '#090916';
-            const FLOOR_STROKE = '#161628';
-            const HEIGHTS      = [0, 14, 28, 48, 72]; // pixel heights per level (before zoom applied)
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', () => {
 
-            // ── Draw one bar ──
-            function drawBar(wx, wy, level, hovered) {
-                const h2 = 0.46; // half-width of tile (leaves a gap)
+                // ── Scene ──
+                const W = el.clientWidth, H = el.clientHeight;
+                const scene    = new THREE.Scene();
+                scene.background = new THREE.Color(0x07071a);
+                scene.fog        = new THREE.FogExp2(0x07071a, 0.012);
 
-                // Bottom face corners
-                const bl = project(wx - h2, wy + h2, 0);
-                const br = project(wx + h2, wy + h2, 0);
-                const tl = project(wx - h2, wy - h2, 0);
-                const tr = project(wx + h2, wy - h2, 0);
+                const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
+                camera.position.set(18, 22, 28);
+                camera.lookAt(0, 0, 0);
 
-                // Ground tile
-                ctx.beginPath();
-                ctx.moveTo(tl.x, tl.y); ctx.lineTo(tr.x, tr.y);
-                ctx.lineTo(br.x, br.y); ctx.lineTo(bl.x, bl.y);
-                ctx.closePath();
-                ctx.fillStyle   = hovered ? '#16163a' : FLOOR_FILL;
-                ctx.strokeStyle = FLOOR_STROKE;
-                ctx.lineWidth   = 0.6;
-                ctx.fill(); ctx.stroke();
+                const renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(W, H);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
+                el.appendChild(renderer.domElement);
 
-                if (level === 0) return null;
+                // ── Lights ──
+                scene.add(new THREE.AmbientLight(0x223366, 1.2));
 
-                const col = COLORS[level];
-                // Height is in world-Z units; we scale so level-4 ≈ 6 world units
-                const H = [0, 1.2, 2.6, 4.5, 7.0][level];
+                const sun = new THREE.DirectionalLight(0x4488ff, 2.0);
+                sun.position.set(10, 30, 10);
+                sun.castShadow = true;
+                sun.shadow.mapSize.set(2048, 2048);
+                sun.shadow.camera.near = 0.5;
+                sun.shadow.camera.far  = 100;
+                sun.shadow.camera.left = sun.shadow.camera.bottom = -40;
+                sun.shadow.camera.right = sun.shadow.camera.top   =  40;
+                scene.add(sun);
 
-                // Top face corners (same xy, raised by H)
-                const tbl = project(wx - h2, wy + h2, H);
-                const tbr = project(wx + h2, wy + h2, H);
-                const ttl = project(wx - h2, wy - h2, H);
-                const ttr = project(wx + h2, wy - h2, H);
+                const fill = new THREE.DirectionalLight(0x0033ff, 0.6);
+                fill.position.set(-10, 5, -10);
+                scene.add(fill);
 
-                if (col.glow && zoom > 0.55) {
-                    ctx.save();
-                    ctx.shadowColor = col.glow;
-                    ctx.shadowBlur  = hovered ? 32 : 16;
+                const pointGlow = new THREE.PointLight(0x007aff, 3, 60);
+                pointGlow.position.set(0, 8, 0);
+                scene.add(pointGlow);
+
+                // ── Ground plane ──
+                const ground = new THREE.Mesh(
+                    new THREE.PlaneGeometry(60, 20),
+                    new THREE.MeshStandardMaterial({ color: 0x080818, roughness: 1, metalness: 0 })
+                );
+                ground.rotation.x = -Math.PI / 2;
+                ground.receiveShadow = true;
+                scene.add(ground);
+
+                // Grid lines on ground
+                const gridHelper = new THREE.GridHelper(60, 28, 0x112233, 0x0d1a2e);
+                gridHelper.position.y = 0.01;
+                scene.add(gridHelper);
+
+                // ── Bar colours per level ──
+                const LEVEL_COLORS = [
+                    null,
+                    { base: 0x0d2540, emissive: 0x061525, glow: null },
+                    { base: 0x0e3d78, emissive: 0x081e3c, glow: null },
+                    { base: 0x1a6bcc, emissive: 0x0e3d78, glow: 0x2684ff },
+                    { base: 0x007aff, emissive: 0x1a4a99, glow: 0x4db8ff },
+                ];
+                const HEIGHTS = [0, 0.6, 1.4, 2.8, 4.8]; // world units
+
+                // ── Bar meshes ──
+                const bars   = [];
+                const barGeo = new THREE.BoxGeometry(1, 1, 1); // unit box, scaled per bar
+
+                const WEEKS = 26, DAYS = 7;
+                const offX  = (WEEKS - 1) / 2;
+                const offZ  = (DAYS  - 1) / 2;
+
+                function buildBars(data) {
+                    // Remove old
+                    bars.forEach(b => scene.remove(b.mesh));
+                    bars.length = 0;
+
+                    data.forEach(c => {
+                        if (c.level === 0) return;
+                        const col  = LEVEL_COLORS[c.level];
+                        const h    = HEIGHTS[c.level];
+                        const mat  = new THREE.MeshStandardMaterial({
+                            color:    col.base,
+                            emissive: col.emissive,
+                            emissiveIntensity: 0.4,
+                            roughness: 0.4,
+                            metalness: 0.6,
+                        });
+                        const mesh = new THREE.Mesh(barGeo, mat);
+                        mesh.scale.set(0.85, h, 0.85);
+                        mesh.position.set(
+                            c.week - offX,
+                            h / 2,
+                            c.day  - offZ
+                        );
+                        mesh.castShadow    = true;
+                        mesh.receiveShadow = true;
+                        mesh.userData      = c;
+                        scene.add(mesh);
+                        bars.push({ mesh, col, baseH: h });
+
+                        // Glow point for tall bars
+                        if (col.glow && c.level === 4) {
+                            const pt = new THREE.PointLight(col.glow, 1.5, 4);
+                            pt.position.set(c.week - offX, h + 0.5, c.day - offZ);
+                            scene.add(pt);
+                        }
+                    });
                 }
 
-                // Determine which two side faces to draw based on camera spin
-                // Front-left face:  bl→br (bottom) / tbl→tbr (top)  ← "south" face
-                // Front-right face: br→tr (bottom) / tbr→ttr (top)  ← "east" face
-                // We always draw both; painter's-sort handles overlap correctly.
+                // ── Orbit controls (manual, no external dependency) ──
+                let isDragging = false, isRightDrag = false;
+                let lastX = 0, lastY = 0;
+                let spherical = { theta: 0.78, phi: 0.88, radius: 38 }; // azimuth, polar, dist
+                let panOffset = new THREE.Vector3(0, 0, 0);
+                let target    = new THREE.Vector3(0, 2, 0);
+                let autoSpin  = true;
 
-                // South face (wy+h2 edge)
-                ctx.beginPath();
-                ctx.moveTo(bl.x, bl.y); ctx.lineTo(br.x, br.y);
-                ctx.lineTo(tbr.x, tbr.y); ctx.lineTo(tbl.x, tbl.y);
-                ctx.closePath();
-                ctx.fillStyle = col.fl;
-                ctx.fill();
-                if (hovered) { ctx.strokeStyle = '#4db8ff'; ctx.lineWidth = 1.2; ctx.stroke(); }
-
-                // East face (wx+h2 edge)
-                ctx.beginPath();
-                ctx.moveTo(br.x, br.y); ctx.lineTo(tr.x, tr.y);
-                ctx.lineTo(ttr.x, ttr.y); ctx.lineTo(tbr.x, tbr.y);
-                ctx.closePath();
-                ctx.fillStyle = col.fr;
-                ctx.fill();
-                if (hovered) { ctx.strokeStyle = '#4db8ff'; ctx.lineWidth = 1.2; ctx.stroke(); }
-
-                // Top face
-                ctx.beginPath();
-                ctx.moveTo(ttl.x, ttl.y); ctx.lineTo(ttr.x, ttr.y);
-                ctx.lineTo(tbr.x, tbr.y); ctx.lineTo(tbl.x, tbl.y);
-                ctx.closePath();
-                ctx.fillStyle = col.top;
-                ctx.fill();
-                if (hovered) { ctx.strokeStyle = '#a8d8ff'; ctx.lineWidth = 1.8; ctx.stroke(); }
-
-                if (col.glow) ctx.restore();
-
-                // Tiny window dots on level 3+
-                if (level >= 3 && zoom > 0.6) {
-                    ctx.fillStyle = 'rgba(200,235,255,0.45)';
-                    for (let i = 1; i <= level - 1; i++) {
-                        const t = i / level;
-                        const wx2 = br.x + (ttr.x - br.x) * t;
-                        const wy2 = br.y + (ttr.y - br.y) * t;
-                        ctx.fillRect(wx2 - 1.5, wy2 - 1.5, 2.5, 2.5);
-                    }
+                function updateCamera() {
+                    const sinPhi = Math.sin(spherical.phi);
+                    camera.position.set(
+                        target.x + spherical.radius * sinPhi * Math.sin(spherical.theta),
+                        target.y + spherical.radius * Math.cos(spherical.phi),
+                        target.z + spherical.radius * sinPhi * Math.cos(spherical.theta)
+                    );
+                    camera.lookAt(target);
                 }
+                updateCamera();
 
-                return { cx: (ttl.x+ttr.x+tbr.x+tbl.x)/4, cy: (ttl.y+ttr.y+tbr.y+tbl.y)/4 };
-            }
+                const cvs = renderer.domElement;
 
-            // ── Render loop ──
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cvs.addEventListener('contextmenu', e => e.preventDefault());
 
-                // Deep space background
-                const bg = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width * 0.85);
-                bg.addColorStop(0, '#07071a'); bg.addColorStop(1, '#020208');
-                ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                if (!contributions.length) { requestAnimationFrame(draw); return; }
-
-                const WEEKS = 26;
-                const offX = -(WEEKS - 1) / 2;
-                const offY = -3; // centre 7 days
-
-                // Painter's sort: project base centre, sort by screen-Y descending (far first)
-                const items = contributions.map(c => {
-                    const wx = c.week + offX, wy = c.day + offY;
-                    const p = project(wx, wy, 0);
-                    return { ...c, wx, wy, sy: p.y };
+                cvs.addEventListener('mousedown', e => {
+                    isDragging    = true;
+                    isRightDrag   = e.button === 2;
+                    lastX = e.clientX; lastY = e.clientY;
+                    autoSpin = false;
+                    cvs.style.cursor = isRightDrag ? 'move' : 'grabbing';
                 });
-                items.sort((a, b) => a.sy - b.sy);
-
-                let newHover = null, bestDist = 45;
-
-                items.forEach(it => {
-                    const hov = hoveredCell && hoveredCell.date === it.date;
-                    const ctr = drawBar(it.wx, it.wy, it.level, hov);
-                    if (ctr) {
-                        const d = Math.hypot(ctr.cx - mouseX, ctr.cy - mouseY);
-                        if (d < bestDist) { bestDist = d; newHover = it; }
+                window.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    cvs.style.cursor = 'grab';
+                });
+                window.addEventListener('mousemove', e => {
+                    if (!isDragging) return;
+                    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+                    if (isRightDrag) {
+                        // Pan: move target in camera's local XY plane
+                        const panSpeed = spherical.radius * 0.001;
+                        const right = new THREE.Vector3();
+                        const up    = new THREE.Vector3(0,1,0);
+                        right.crossVectors(camera.getWorldDirection(new THREE.Vector3()), up).normalize();
+                        target.addScaledVector(right, -dx * panSpeed);
+                        target.y += dy * panSpeed;
+                    } else {
+                        // Rotate
+                        spherical.theta -= dx * 0.005;
+                        spherical.phi    = Math.max(0.1, Math.min(Math.PI * 0.85, spherical.phi + dy * 0.005));
                     }
+                    lastX = e.clientX; lastY = e.clientY;
+                    updateCamera();
                 });
-                hoveredCell = newHover;
+                cvs.addEventListener('wheel', e => {
+                    e.preventDefault();
+                    spherical.radius *= e.deltaY > 0 ? 1.08 : 0.93;
+                    spherical.radius  = Math.max(5, Math.min(80, spherical.radius));
+                    autoSpin = false;
+                    updateCamera();
+                }, { passive: false });
 
-                // Tooltip
-                if (hoveredCell && mouseX > -9000) {
-                    const d   = new Date(hoveredCell.date);
-                    const lbl = d.toLocaleDateString('de-AT', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
-                    tooltip.innerHTML     = `<strong>${hoveredCell.count} Commit${hoveredCell.count!==1?'s':''}</strong><br>${lbl}`;
-                    tooltip.style.display = 'block';
-                } else {
+                // Touch
+                let t0x=0,t0y=0,tDist=0,tDown=false;
+                cvs.addEventListener('touchstart', e => {
+                    tDown=true; autoSpin=false;
+                    if (e.touches.length===1) { t0x=e.touches[0].clientX; t0y=e.touches[0].clientY; }
+                    if (e.touches.length===2) tDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+                    e.preventDefault();
+                },{passive:false});
+                cvs.addEventListener('touchend',()=>tDown=false,{passive:false});
+                cvs.addEventListener('touchmove',e=>{
+                    if (e.touches.length===1&&tDown){
+                        spherical.theta-=(e.touches[0].clientX-t0x)*0.005;
+                        spherical.phi=Math.max(0.1,Math.min(Math.PI*0.85,spherical.phi+(e.touches[0].clientY-t0y)*0.005));
+                        t0x=e.touches[0].clientX;t0y=e.touches[0].clientY;
+                        updateCamera();
+                    }
+                    if(e.touches.length===2){
+                        const d2=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+                        spherical.radius*=tDist/d2;spherical.radius=Math.max(5,Math.min(80,spherical.radius));tDist=d2;
+                        updateCamera();
+                    }
+                    e.preventDefault();
+                },{passive:false});
+
+                // ── Raycaster for hover ──
+                const raycaster = new THREE.Raycaster();
+                const mouse     = new THREE.Vector2(-9,-9);
+                cvs.addEventListener('mousemove', e => {
+                    if (isDragging) return;
+                    const r = cvs.getBoundingClientRect();
+                    mouse.x =  ((e.clientX - r.left)  / r.width)  * 2 - 1;
+                    mouse.y = -((e.clientY - r.top)   / r.height) * 2 + 1;
+                });
+                cvs.addEventListener('mouseleave', () => {
+                    mouse.set(-9, -9);
                     tooltip.style.display = 'none';
+                });
+
+                // ── Resize ──
+                window.addEventListener('resize', () => {
+                    const w = el.clientWidth, h = el.clientHeight;
+                    camera.aspect = w / h;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(w, h);
+                });
+
+                // ── Animate ──
+                const clock = new THREE.Clock();
+                let hoveredMesh = null;
+                function animate() {
+                    requestAnimationFrame(animate);
+                    const dt = clock.getDelta();
+
+                    // Auto spin
+                    if (autoSpin) { spherical.theta += 0.003; updateCamera(); }
+
+                    // Hover
+                    raycaster.setFromCamera(mouse, camera);
+                    const hits = raycaster.intersectObjects(bars.map(b => b.mesh));
+
+                    // Reset previous
+                    if (hoveredMesh) {
+                        hoveredMesh.material.emissiveIntensity = 0.4;
+                        hoveredMesh = null;
+                        tooltip.style.display = 'none';
+                        cvs.style.cursor = isDragging ? 'grabbing' : 'grab';
+                    }
+                    if (hits.length > 0) {
+                        hoveredMesh = hits[0].object;
+                        hoveredMesh.material.emissiveIntensity = 1.2;
+                        const c = hoveredMesh.userData;
+                        const d = new Date(c.date);
+                        const lbl = d.toLocaleDateString('de-AT', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+                        tooltip.innerHTML = `<strong>${c.count} Commit${c.count!==1?'s':''}</strong><br>${lbl}`;
+                        tooltip.style.display = 'block';
+                        cvs.style.cursor = 'pointer';
+                    }
+
+                    // Pulse glow
+                    pointGlow.intensity = 2 + Math.sin(clock.elapsedTime * 1.5) * 0.8;
+
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                // ── Data ──
+                let _seed = 0xABCD1234;
+                function rand() { _seed=(_seed*1664525+1013904223)&0xffffffff; return (_seed>>>0)/0xffffffff; }
+
+                function makeData(map) {
+                    const result=[], today=new Date(), WEEKS=26;
+                    const start=new Date(today);
+                    start.setDate(today.getDate()-today.getDay()-WEEKS*7);
+                    for (let w=0;w<=WEEKS;w++) for (let d=0;d<7;d++){
+                        const dt=new Date(start); dt.setDate(start.getDate()+w*7+d);
+                        if(dt>today) continue;
+                        const key=dt.toISOString().split('T')[0];
+                        const count=(map&&map[key]!=null)?map[key]:(rand()>0.62?Math.floor(rand()*11)+1:0);
+                        const level=count===0?0:count<=2?1:count<=5?2:count<=9?3:4;
+                        result.push({date:key,count,level,week:w,day:d});
+                    }
+                    return result;
                 }
 
-                // Update cursor
-                if (!dragMode) canvas.style.cursor = hoveredCell ? 'pointer' : 'grab';
-
-                // Gentle auto-spin when idle
-                if (!dragMode) rotY += 0.0010;
-
-                requestAnimationFrame(draw);
-            }
-
-            // ── Mouse controls: LMB = rotate, RMB = pan ──
-            canvas.addEventListener('contextmenu', e => e.preventDefault());
-            canvas.addEventListener('mousedown', e => {
-                e.preventDefault();
-                dragMode = e.button === 2 ? 'pan' : 'rotate';
-                lastMX = e.clientX; lastMY = e.clientY;
-            });
-            window.addEventListener('mouseup', () => { dragMode = null; });
-            canvas.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; tooltip.style.display = 'none'; });
-            canvas.addEventListener('mousemove', e => {
-                const r = canvas.getBoundingClientRect();
-                mouseX = e.clientX - r.left;
-                mouseY = e.clientY - r.top;
-                const dx = e.clientX - lastMX, dy = e.clientY - lastMY;
-                if (dragMode === 'rotate') {
-                    rotY += dx * 0.007;
-                    // rotX is intentionally locked — tilting breaks painter's sort badly
-                    canvas.style.cursor = 'grabbing';
-                } else if (dragMode === 'pan') {
-                    panX += dx; panY += dy;
-                    canvas.style.cursor = 'move';
+                function computeStats(data) {
+                    const total=data.reduce((s,c)=>s+c.count,0);
+                    const active=data.filter(c=>c.count>0).length;
+                    const sorted=data.slice().sort((a,b)=>a.date.localeCompare(b.date));
+                    let cur=0,best=0;
+                    sorted.forEach(c=>c.count>0?(cur++,best=Math.max(best,cur)):(cur=0));
+                    const avg=total>0?(total/data.length).toFixed(1):'0.0';
+                    document.getElementById('cs-total').textContent=total;
+                    document.getElementById('cs-streak').textContent=best;
+                    document.getElementById('cs-days').textContent=active;
+                    document.getElementById('cs-avg').textContent=avg;
                 }
-                lastMX = e.clientX; lastMY = e.clientY;
-            });
-            canvas.addEventListener('wheel', e => {
-                e.preventDefault();
-                zoom *= e.deltaY > 0 ? 0.93 : 1.08;
-                zoom  = Math.max(0.3, Math.min(4.0, zoom));
-            }, { passive: false });
 
-            // Touch support
-            let t0x=0, t0y=0, tDist=0;
-            canvas.addEventListener('touchstart', e => {
-                if (e.touches.length===1) { t0x=e.touches[0].clientX; t0y=e.touches[0].clientY; dragMode='rotate'; }
-                if (e.touches.length===2)  tDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-                e.preventDefault();
-            }, {passive:false});
-            canvas.addEventListener('touchend', () => dragMode=null, {passive:false});
-            canvas.addEventListener('touchmove', e => {
-                if (e.touches.length===1) { rotY+=(e.touches[0].clientX-t0x)*0.007; t0x=e.touches[0].clientX; t0y=e.touches[0].clientY; }
-                if (e.touches.length===2) { const d2=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); zoom*=d2/tDist; zoom=Math.max(0.3,Math.min(4,zoom)); tDist=d2; }
-                e.preventDefault();
-            }, {passive:false});
-
-            // ── Data ──
-            function makeData(map) {
-                const result=[], today=new Date(), WEEKS=26;
-                const start=new Date(today);
-                start.setDate(today.getDate()-today.getDay()-WEEKS*7);
-                for (let w=0;w<=WEEKS;w++) for (let d=0;d<7;d++) {
-                    const dt=new Date(start); dt.setDate(start.getDate()+w*7+d);
-                    if (dt>today) continue;
-                    const key=dt.toISOString().split('T')[0];
-                    const count=(map&&map[key]!=null)?map[key]:(rand()>0.62?Math.floor(rand()*11)+1:0);
-                    const level=count===0?0:count<=2?1:count<=5?2:count<=9?3:4;
-                    result.push({date:key,count,level,week:w,day:d});
+                async function loadData() {
+                    let map=null;
+                    try {
+                        const res=await fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`,{signal:AbortSignal.timeout(6000)});
+                        if(res.ok){const json=await res.json();if(json.contributions){map={};json.contributions.forEach(c=>{map[c.date]=c.count;});}}
+                    } catch(e){}
+                    const data=makeData(map);
+                    buildBars(data);
+                    computeStats(data);
                 }
-                return result;
-            }
-
-            function computeStats(data) {
-                const total=data.reduce((s,c)=>s+c.count,0);
-                const active=data.filter(c=>c.count>0).length;
-                const sorted=data.slice().sort((a,b)=>a.date.localeCompare(b.date));
-                let cur=0,best=0;
-                sorted.forEach(c=>c.count>0?(cur++,best=Math.max(best,cur)):(cur=0));
-                const avg=total>0?(total/data.length).toFixed(1):'0.0';
-                document.getElementById('cs-total').textContent=total;
-                document.getElementById('cs-streak').textContent=best;
-                document.getElementById('cs-days').textContent=active;
-                document.getElementById('cs-avg').textContent=avg;
-            }
-
-            async function loadData() {
-                let map=null;
-                try {
-                    const res=await fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`,{signal:AbortSignal.timeout(6000)});
-                    if (res.ok) { const json=await res.json(); if (json.contributions){map={};json.contributions.forEach(c=>{map[c.date]=c.count;});} }
-                } catch(e) {}
-                contributions=makeData(map);
-                computeStats(contributions);
-            }
-
-            loadData();
-            draw();
+                loadData();
+            }); // end Three.js load
         })();
         // ── END 3D GITHUB CITY ───────────────────────────────────────
         document.addEventListener('DOMContentLoaded', type);
