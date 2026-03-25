@@ -238,6 +238,18 @@ title: Links
         <!-- LINKS -->
         <div class="links-list">
 
+            <div class="links-divider">VISITENKARTE</div>
+
+            <a href="#" class="link-btn" id="vcard-btn" style="--btn-color:#27c93f; --btn-color-rgb:39,201,63; animation-delay:0s;" onclick="downloadVCard(event)">
+                <div class="link-btn-bar"></div>
+                <div class="link-icon-wrap">👤</div>
+                <div class="link-text">
+                    <span class="link-title" data-de="Kontakt speichern" data-en="Save Contact">Kontakt speichern</span>
+                    <span class="link-subtitle" data-de="Visitenkarte (.vcf) herunterladen" data-en="Download business card (.vcf)">Visitenkarte (.vcf) herunterladen</span>
+                </div>
+                <span class="link-arrow">↓</span>
+            </a>
+
             <div class="links-divider">PORTFOLIO</div>
 
             <a href="/index.html" class="link-btn" style="--btn-color:#007aff; --btn-color-rgb:0,122,255;">
@@ -327,3 +339,48 @@ title: Links
         </div>
     </div>
 </div>
+
+<!-- stagger delays updated for vCard btn -->
+<style>
+    .link-btn:nth-child(1) { animation-delay: 0.00s; }
+    .link-btn:nth-child(2) { animation-delay: 0.07s; }
+    .link-btn:nth-child(3) { animation-delay: 0.14s; }
+    .link-btn:nth-child(4) { animation-delay: 0.21s; }
+    .link-btn:nth-child(5) { animation-delay: 0.28s; }
+    .link-btn:nth-child(6) { animation-delay: 0.35s; }
+    .link-btn:nth-child(7) { animation-delay: 0.42s; }
+    .link-btn:nth-child(8) { animation-delay: 0.49s; }
+    .link-btn:nth-child(9) { animation-delay: 0.56s; }
+</style>
+
+<script>
+function downloadVCard(e) {
+    e.preventDefault();
+    var vcard = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'FN:Sandro Exenberger',
+        'N:Exenberger;Sandro;;;',
+        'TITLE:Elektroniker & Netzwerktechniker',
+        'ORG:HTBLVA Anichstrasse',
+        'TEL;TYPE=CELL:+436767406799',
+        'EMAIL;TYPE=INTERNET:sandro@exemail.at',
+        'URL:https://exemail.at',
+        'X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/sandro-exenberger-1a5486315/',
+        'X-SOCIALPROFILE;TYPE=instagram:https://instagram.com/sandro_exe_2008',
+        'X-SOCIALPROFILE;TYPE=github:https://github.com/Sandroexe',
+        'ADR;TYPE=HOME:;;Schwoich;Tirol;;Austria',
+        'NOTE:CCNA zertifiziert. Regionalvorstand Schuelerunion Tirol.',
+        'END:VCARD'
+    ].join('\r\n');
+    var blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'Sandro_Exenberger.vcf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+</script>
