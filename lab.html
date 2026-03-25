@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Lab & Setup
+title: "Lab & Setup"
 ---
 
 <style>
@@ -44,7 +44,7 @@ title: Lab & Setup
     .hotspot::after {
         content: ''; position: absolute;
         top: -8px; left: -8px; right: -8px; bottom: -8px;
-        border-radius: 50%; border: 2px solid inherit;
+        border-radius: 50%; border: 2px solid currentColor;
         animation: pulse 2.5s infinite;
     }
     @keyframes pulse {
@@ -125,7 +125,7 @@ title: Lab & Setup
 <div class="container">
     <div class="page-header">
         <h1 data-de="[NODE_LAB_INFO]" data-en="[NODE_LAB_INFO]">[NODE_LAB_INFO]</h1>
-        <a href="index.html" class="back-link">← TERMINATE_SESSION</a>
+        <a href="index.html" class="back-link">&#8592; TERMINATE_SESSION</a>
     </div>
 
     <div class="setup-visualizer reveal" id="visualizer">
@@ -133,7 +133,7 @@ title: Lab & Setup
             <img src="pc-setup.jpg" alt="Sandro's Workstation" class="main-img">
 
             <div class="connector-group" style="top:34%;left:32%;">
-                <div class="hotspot" style="background:var(--cpu-color);box-shadow:0 0 14px var(--cpu-color);"></div>
+                <div class="hotspot" style="background:var(--cpu-color);color:var(--cpu-color);box-shadow:0 0 14px var(--cpu-color);"></div>
                 <div class="line-segment" style="width:80px;transform:rotate(210deg);background:var(--cpu-color);box-shadow:0 0 8px var(--cpu-color);"></div>
                 <div class="line-segment" style="left:-70px;top:-40px;width:100px;transform:rotate(180deg);background:var(--cpu-color);"></div>
                 <div class="hw-label" style="top:-88px;left:-330px;">
@@ -150,7 +150,7 @@ title: Lab & Setup
             </div>
 
             <div class="connector-group" style="top:66%;left:48%;">
-                <div class="hotspot" style="background:var(--gpu-color);box-shadow:0 0 14px var(--gpu-color);"></div>
+                <div class="hotspot" style="background:var(--gpu-color);color:var(--gpu-color);box-shadow:0 0 14px var(--gpu-color);"></div>
                 <div class="line-segment" style="width:60px;transform:rotate(45deg);background:var(--gpu-color);box-shadow:0 0 8px var(--gpu-color);"></div>
                 <div class="line-segment" style="left:42px;top:42px;width:120px;background:var(--gpu-color);"></div>
                 <div class="hw-label" style="top:30px;left:160px;">
@@ -160,14 +160,14 @@ title: Lab & Setup
                         <div class="detail-row"><span>VRAM</span><span class="highlight-val">12 GB GDDR7</span></div>
                         <div class="detail-row"><span>Architektur</span><span class="highlight-val">Blackwell GB205</span></div>
                         <div class="detail-row"><span>Feature</span><span class="highlight-val">DLSS 4 / Frame Gen</span></div>
-                        <div class="detail-row"><span>Kühlung</span><span class="highlight-val">Triple-Fan TUF</span></div>
+                        <div class="detail-row"><span>K&uuml;hlung</span><span class="highlight-val">Triple-Fan TUF</span></div>
                         <div class="detail-row"><span>TDP</span><span class="highlight-val">220W</span></div>
                     </div>
                 </div>
             </div>
 
             <div class="connector-group" style="top:28%;left:48.5%;">
-                <div class="hotspot" style="background:var(--ram-color);box-shadow:0 0 14px var(--ram-color);"></div>
+                <div class="hotspot" style="background:var(--ram-color);color:var(--ram-color);box-shadow:0 0 14px var(--ram-color);"></div>
                 <div class="line-segment" style="width:50px;transform:rotate(-45deg);background:var(--ram-color);box-shadow:0 0 8px var(--ram-color);"></div>
                 <div class="line-segment" style="left:35px;top:-35px;width:150px;background:var(--ram-color);"></div>
                 <div class="hw-label" style="top:-63px;left:185px;">
@@ -199,6 +199,13 @@ title: Lab & Setup
                     <div class="detail-row"><span>Feature</span><span class="highlight-val">DLSS 4</span></div>
                 </div>
             </div>
+            <div class="hw-label" style="position:relative;width:100%;max-height:none;">
+                <h3 style="color:var(--ram-color);">RAM - 32 GB DDR5 Corsair</h3>
+                <div class="extra-details" style="opacity:1;">
+                    <div class="detail-row"><span>Frequenz</span><span class="highlight-val">6000 MHz</span></div>
+                    <div class="detail-row"><span>Profil</span><span class="highlight-val">AMD EXPO / XMP 3.0</span></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -222,6 +229,6 @@ title: Lab & Setup
 
     <div class="summary-box reveal">
         <h2>&gt; System_Summary.txt</h2>
-        <p data-de="Bei der Konfiguration dieses PCs habe ich sehr viel Wert auf Preis/Leistung und Optik gelegt. Der AMD Ryzen 7 9800X3D ist durch seinen riesigen 3D V-Cache eine der besten Gaming-CPUs auf dem Markt. Die RTX 5070 in der ASUS TUF OC Edition bietet mit DLSS 4 und Frame Generation absolute Top-Performance bei moderatem Stromverbrauch. CachyOS als prim&auml;res OS liefert durch den optimierten BORE/EEVDF-Kernel sp&uuml;rbar mehr Systemresponsivit&auml;t im Alltag und beim Coden." data-en="When configuring this PC I placed great emphasis on price/performance and aesthetics. The AMD Ryzen 7 9800X3D is one of the best gaming CPUs on the market thanks to its massive 3D V-Cache. The RTX 5070 in the ASUS TUF OC Edition delivers absolute top performance with DLSS 4 and Frame Generation at moderate power consumption. CachyOS as the primary OS delivers noticeably better system responsiveness in daily use and coding through its optimized BORE/EEVDF kernel.">Bei der Konfiguration dieses PCs habe ich sehr viel Wert auf Preis/Leistung und Optik gelegt. Der AMD Ryzen 7 9800X3D ist durch seinen riesigen 3D V-Cache eine der besten Gaming-CPUs auf dem Markt. Die RTX 5070 in der ASUS TUF OC Edition bietet mit DLSS 4 und Frame Generation absolute Top-Performance bei moderatem Stromverbrauch. CachyOS als primäres OS liefert durch den optimierten BORE/EEVDF-Kernel spürbar mehr Systemresponsivität im Alltag und beim Coden.</p>
+        <p data-de="Bei der Konfiguration dieses PCs habe ich sehr viel Wert auf Preis/Leistung und Optik gelegt. Der AMD Ryzen 7 9800X3D ist durch seinen riesigen 3D V-Cache eine der besten Gaming-CPUs auf dem Markt. Die RTX 5070 in der ASUS TUF OC Edition bietet mit DLSS 4 und Frame Generation absolute Top-Performance bei moderatem Stromverbrauch. CachyOS als prim&auml;res OS liefert durch den optimierten BORE/EEVDF-Kernel sp&uuml;rbar mehr Systemresponsivit&auml;t im Alltag und beim Coden." data-en="When configuring this PC I placed great emphasis on price/performance and aesthetics. The AMD Ryzen 7 9800X3D is one of the best gaming CPUs on the market thanks to its massive 3D V-Cache. The RTX 5070 in the ASUS TUF OC Edition delivers absolute top performance with DLSS 4 and Frame Generation at moderate power consumption. CachyOS as the primary OS delivers noticeably better system responsiveness in daily use and coding through its optimized BORE/EEVDF kernel.">Bei der Konfiguration dieses PCs habe ich sehr viel Wert auf Preis/Leistung und Optik gelegt. Der AMD Ryzen 7 9800X3D ist durch seinen riesigen 3D V-Cache eine der besten Gaming-CPUs auf dem Markt. Die RTX 5070 in der ASUS TUF OC Edition bietet mit DLSS 4 und Frame Generation absolute Top-Performance bei moderatem Stromverbrauch. CachyOS als prim&auml;res OS liefert durch den optimierten BORE/EEVDF-Kernel sp&uuml;rbar mehr Systemresponsivit&auml;t im Alltag und beim Coden.</p>
     </div>
 </div>
