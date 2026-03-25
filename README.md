@@ -1,4 +1,4 @@
-# 🌐 exemail.at | Sandro Exenberger Portfolio
+# 🌐 sandro.exemail.at | Sandro Exenberger Portfolio
 
 ![Status](https://img.shields.io/website?url=https%3A%2F%2Fexemail.at&label=Status&style=flat-square&color=success)
 ![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
