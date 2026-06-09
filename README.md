@@ -11,6 +11,10 @@ Ich bin ein angehender Elektroniker und Netzwerktechniker von der HTBLVA Anichst
 ## 🔗 Vernetzung
 * 🌍 **Portfolio:** [sandro.exemail.at](https://sandro.exemail.at) (Hier findest du meine Projekte & Zertifikate)
 * 💼 **LinkedIn:** [Sandro Exenberger](https://www.linkedin.com/in/sandro-exenberger-1a5486315/)
+* 💼 **XING:** [Sandro Exenberger](https://www.xing.com/profile/Sandro_Exenberger/web_profiles?nwt_nav=profile)
+* 📸 **Instagram:** [sandro_exe_2008](https://www.instagram.com/sandro_exe_2008/)
+* 💻 **Stack Overflow:** [Sandro Exenberger](https://stackoverflow.com/users/32745248/sandro-exenberger)
+* 🧡 **Reddit:** [Sandro_exe08](https://www.reddit.com/user/Sandro_exe08/)
 
 ---
 *„Technik ist für mich mehr als nur ein Schulfach – es ist die Leidenschaft, Dinge zu verstehen und besser zu machen.“*
